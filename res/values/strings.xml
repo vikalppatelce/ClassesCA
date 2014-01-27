@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CA</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="timetable">Time Table</string>
+    <string name="postquery">Post Query</string>
+    <string name="go">Go</string>
+    <string name="hd_course">SELECT COURSE</string>
+    <string name="setasdefault">Set as default</string>
+
+</resources>
