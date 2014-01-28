@@ -1,0 +1,35 @@
+<!--
+/*
+**
+ * /res/layout/custom_toast.xml
+ *
+ * Author: VIKALP PATEL
+ * Purpose: Custom Toast
+ * S - START E- END  C- COMMENTED  U -EDITED A -ADDED
+ * **********************************************************************************************************************
+ * INDEX       DEVELOPER		DATE			DESCRIPTION
+ * **********************************************************************************************************************
+ * 10001       VIKALP PATEL    07/01/2014       CUSTOMIZE TOAST
+**
+*/ 
+
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/toast_layout_root"
+              android:orientation="horizontal"
+              android:layout_width="wrap_content"
+              android:layout_height="fill_parent"
+              android:padding="8dp"
+              android:background="@drawable/button_large_red_bg"
+              >
+   <!-- <ImageView android:src="@android:drawable/ic_dialog_info"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginRight="8dp"
+               android:contentDescription="@string/info"/> --> 
+    <TextView android:id="@+id/text"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+              />
+</LinearLayout>

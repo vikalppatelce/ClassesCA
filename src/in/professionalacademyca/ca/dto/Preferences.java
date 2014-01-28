@@ -45,16 +45,29 @@ public class Preferences {
 		return userLoginDTO;
 	}
 	
-	public String getSpeciality()
+	public boolean getDefault()
 	{
-		String flag = sharedPreferences.getString("isSet", null);
+		boolean flag = sharedPreferences.getBoolean("isDefault", false);
 		return flag;
 	}
 	
-	public void setSpeciality(String flag)
+	public void setDefault(boolean flag)
 	{
 		editor = sharedPreferences.edit();
-		editor.putString("isSet", flag);
+		editor.putBoolean("isDefault", flag);
+		editor.commit();
+	}
+	
+	public String getArea()
+	{
+		String area = sharedPreferences.getString("isArea", null);
+		return area;
+	}
+	
+	public void setArea(String area)
+	{
+		editor = sharedPreferences.edit();
+		editor.putString("isArea", area);
 		editor.commit();
 	}
 	

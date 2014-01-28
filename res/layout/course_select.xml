@@ -2,102 +2,152 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/light_grey"
-     >
-     
-    <TextView 
+    android:orientation="vertical" >
+
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="@string/hd_course"
-        android:textStyle="bold"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        />
-    
-<ScrollView 
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    >
-    
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        >
-    
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:background="@drawable/shape_rectangle_course"
-        >
+        android:text="@string/hd_course"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+       <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_rectangle_course"
+                android:layout_margin="5dp"
+                android:orientation="vertical" >
 
-        <Spinner 
-            android:id="@+id/spin_course"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:background="@drawable/select_spinner"
-            />
-        
-        <Spinner 
-            android:id="@+id/spin_city"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/select_spinner"
-            />
-        <Spinner 
-            android:id="@+id/spin_batch"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/select_spinner"
-            />
-        <Spinner 
-            android:id="@+id/spin_sub"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:background="@drawable/select_spinner"
-            />
-    </LinearLayout>
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="2" >
 
-    <CheckBox
-        android:id="@+id/set_default"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"  
-        android:text="@string/setasdefault"
-        android:layout_marginLeft="10dp"
-        android:textSize="15sp"
-        android:layout_marginTop="7dp"
-    	android:button="@drawable/selector_checkbox" />
-    
-    <Button 
-        android:layout_gravity="right"
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="left|bottom"
+                            android:layout_weight="1"
+                            android:text="@string/course"
+                            android:textSize="20sp" />
+
+                        <Spinner
+                            android:id="@+id/spin_course"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="fill"
+                            android:layout_weight="1"
+                            android:gravity="right|bottom"
+                            android:singleLine="true" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="left|bottom"
+                            android:layout_weight="1"
+                            android:text="@string/city"
+                            android:textSize="20sp" />
+
+                        <Spinner
+                            android:id="@+id/spin_city"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="fill"
+                            android:layout_weight="1"
+                            android:gravity="right|bottom"
+                            android:singleLine="true" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="left|bottom"
+                            android:layout_weight="1"
+                            android:text="@string/area"
+                            android:textSize="20sp" />
+
+                        <Spinner
+                            android:id="@+id/spin_area"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="fill"
+                            android:layout_weight="1"
+                            android:gravity="right|bottom"
+                            android:singleLine="true" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="left|bottom"
+                            android:text="@string/batch"
+                            android:textSize="20sp" />
+
+                        <Spinner
+                            android:id="@+id/spin_batch"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:singleLine="true" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:padding="5dp"
-        android:drawableLeft="@android:drawable/ic_menu_set_as"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        style="@style/IgGreenButtonStyleLarge"
-        android:text="@string/go"
-        android:layout_alignParentRight="true"
-        />
-    </LinearLayout>
-</ScrollView>
+        android:layout_height="match_parent" >
+
+        <Button
+            android:id="@+id/go"
+            style="@style/IgGreenButtonStyleLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:drawableLeft="@android:drawable/ic_menu_set_as"
+            android:padding="5dp"
+            android:text="@string/go"
+            android:onClick="onGo"
+            android:textSize="20sp" />
+
+        <CheckBox
+            android:id="@+id/set_default"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/go"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="10dp"
+            android:button="@drawable/selector_checkbox"
+            android:text="@string/setasdefault"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
 </LinearLayout>

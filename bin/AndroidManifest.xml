@@ -6,15 +6,22 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+         />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:name="in.professionalacademyca.ca.app.CA"
         android:theme="@style/AppTheme" >
         <activity 
             android:name="in.professionalacademyca.ca.ui.CourseActivity"
+            />
+        <activity 
+            android:name="in.professionalacademyca.ca.ui.PostQueryActivity"
+            />
+        <activity 
+            android:name="in.professionalacademyca.ca.ui.TimeTableActivity"
             />
         <activity
             android:name="in.professionalacademyca.ca.ui.HomeActivity"
