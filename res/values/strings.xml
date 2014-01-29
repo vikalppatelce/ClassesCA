@@ -64,7 +64,11 @@
     <string name="postquery">Post Query</string>
     <string name="go">Go</string>
     <string name="post">Post</string>
+    <string name="next">Next</string>
+    <string name="strTimeTable1">Time Table of Batch Andheri</string>
+    <string name="strTimeTable2">01-01-14</string>
     <string name="query">Write your Query</string>
     <string name="hd_course">SELECT COURSE</string>
     <string name="setasdefault">Set as default</string>
+    <string name="query_error">Please enter query</string>
 </resources>

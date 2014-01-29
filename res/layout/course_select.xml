@@ -43,6 +43,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="fill"
+                            android:minWidth="200dp"
                             android:layout_weight="1"
                             android:gravity="right|bottom"
                             android:singleLine="true" />
@@ -67,6 +68,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="fill"
                             android:layout_weight="1"
+                            android:minWidth="200dp"
                             android:gravity="right|bottom"
                             android:singleLine="true" />
                     </TableRow>
@@ -90,6 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="fill"
                             android:layout_weight="1"
+                            android:minWidth="200dp"
                             android:gravity="right|bottom"
                             android:singleLine="true" />
                     </TableRow>

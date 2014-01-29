@@ -38,7 +38,7 @@ public final class TestFragment extends Fragment {
         text.setScaleType(ScaleType.FIT_XY);
 
         LinearLayout layout = new LinearLayout(getActivity());
-        layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        layout.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
         layout.setGravity(Gravity.CENTER);
         layout.addView(text);
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -19,6 +18,7 @@ public class CourseActivity  extends FragmentActivity implements OnItemSelectedL
 	Spinner spin_course,spin_city,spin_area,spin_batch;
 	CheckBox chk_default;
 	ArrayAdapter adap_course,adap_city,adap_area,adap_batch;
+	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);

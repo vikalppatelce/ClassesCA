@@ -1,7 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <include layout="@layout/header"/>
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:id="@+id/txtTimeTable2"
+        >
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.3"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            >
 
-</LinearLayout>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Time Table For Batch"
+                android:textSize="16sp"
+                 />
+
+            <TextView 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="16sp"
+                android:text = "dated on 01-01-14"
+                />
+        </LinearLayout>
+    <Button 
+        android:id="@+id/next"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="0.7"
+        android:layout_gravity="right|center"
+        android:text="@string/next"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        style="@style/IgRedButtonStyle"
+        />    
+    </LinearLayout>
+
+     <View
+        android:layout_below="@id/txtTimeTable2"
+        android:id="@+id/divider" 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#FF0000"
+        android:layout_margin="10dp"
+        />
+    <ListView 
+        android:layout_below="@id/divider"
+        android:layout_width="fill_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/timetable_list"
+        />
+</RelativeLayout>
