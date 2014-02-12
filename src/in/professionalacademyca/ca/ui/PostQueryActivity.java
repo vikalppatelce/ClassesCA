@@ -2,12 +2,16 @@ package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class PostQueryActivity extends FragmentActivity{
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class PostQueryActivity extends SherlockFragmentActivity{
 
 	Button post;
 	EditText query;
@@ -19,6 +23,24 @@ public class PostQueryActivity extends FragmentActivity{
 		post= (Button)findViewById(R.id.post);
 		query = (EditText)findViewById(R.id.query);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+	       inflater.inflate(R.menu.main, menu);
+		 return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case R.id.notification: 
+        	return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 	
 	public void onPost(View v)
 	{

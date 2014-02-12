@@ -5,7 +5,6 @@ import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.ui.utils.CustomToast;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -13,7 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
-public class CourseActivity  extends FragmentActivity implements OnItemSelectedListener{
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class CourseActivity  extends SherlockFragmentActivity implements OnItemSelectedListener{
 
 	Spinner spin_course,spin_city,spin_area,spin_batch;
 	CheckBox chk_default;
@@ -41,6 +45,24 @@ public class CourseActivity  extends FragmentActivity implements OnItemSelectedL
 		
 	}
 	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+	       inflater.inflate(R.menu.main, menu);
+		 return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case R.id.notification: 
+        	return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 	
 	public void onGo(View v)
 	{

@@ -45,7 +45,7 @@
         android:text="@string/next"
         android:layout_margin="10dp"
         android:textSize="20sp"
-        style="@style/IgRedButtonStyle"
+        style="@style/IgBlueButtonStyleLarge"
         />    
     </LinearLayout>
 
@@ -54,7 +54,7 @@
         android:id="@+id/divider" 
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="#FF0000"
+        android:background="#0000FF"
         android:layout_margin="10dp"
         />
     <ListView 

@@ -1,7 +1,6 @@
 package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
-import in.professionalacademyca.ca.ui.utils.BaseSampleActivity;
 import in.professionalacademyca.ca.ui.utils.TestFragmentAdapter;
 
 import java.util.Timer;
@@ -14,11 +13,20 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.PageIndicator;
 
-public class HomeActivity extends BaseSampleActivity {
+public class HomeActivity extends SherlockFragmentActivity {
 
 
+	public TestFragmentAdapter mAdapter;
+    public ViewPager mPager;
+    public PageIndicator mIndicator;
+	
 	TextView ticker;
 	int currentPage;
 	boolean onlyOnce = false;
@@ -69,14 +77,23 @@ public class HomeActivity extends BaseSampleActivity {
             }
         }, 100, 2000);
 	}
-	
-/*	@Override
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		return true;
-	}*/
-	
-	public void onTimeTable(View v)
+		MenuInflater inflater = getSupportMenuInflater();
+	       inflater.inflate(R.menu.main, menu);
+		 return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case R.id.notification: 
+        	return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }	public void onTimeTable(View v)
 	{
 		Intent i = new Intent(this, CourseActivity.class);
 		startActivity(i);
