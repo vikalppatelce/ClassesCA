@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity" >
 
+
 <in.professionalacademyca.ca.ui.utils.MarqueeView
     android:id="@+id/marqueeTicker"
     android:layout_width="fill_parent"

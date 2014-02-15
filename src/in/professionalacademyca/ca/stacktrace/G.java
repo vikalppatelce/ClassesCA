@@ -31,7 +31,7 @@ Peter Hewitt
 
 package in.professionalacademyca.ca.stacktrace;
 
-import in.professionalacademyca.ca.service.utils.AppConstants;
+import in.professionalacademyca.ca.app.AppConstants;
 
 public class G {
 	// This must be set by the application - it used to automatically

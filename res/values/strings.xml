@@ -53,7 +53,7 @@
         <item >Charni Morning</item>
         <item >Charni Evening</item>
     </string-array>
-    <string name="app_name">CA</string>
+    <string name="app_name">Professional Academy</string>
     <string name="action_settings">Settings</string>
     <string name="course">Course</string>
     <string name="city">City </string>

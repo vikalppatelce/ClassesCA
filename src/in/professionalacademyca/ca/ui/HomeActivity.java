@@ -35,7 +35,6 @@ public class HomeActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
 		
-		
 		mAdapter = new TestFragmentAdapter(getSupportFragmentManager());
 
         mPager = (ViewPager)findViewById(R.id.pager);
@@ -44,8 +43,8 @@ public class HomeActivity extends SherlockFragmentActivity {
         mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
         
-		//ticker = (TextView)findViewById(R.id.ticker);
-		//ticker.setSelected(true);
+//		ticker = (TextView)findViewById(R.id.ticker);
+//		ticker.setSelected(true);
 		
 		final Handler handler = new Handler();
 
@@ -97,11 +96,13 @@ public class HomeActivity extends SherlockFragmentActivity {
 	{
 		Intent i = new Intent(this, CourseActivity.class);
 		startActivity(i);
+		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 	}
 	
 	public void onPostQuery(View v)
 	{
 		Intent i = new Intent(this, PostQueryActivity.class);
 		startActivity(i);
+		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 	}
 }

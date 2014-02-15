@@ -254,7 +254,6 @@ public class MarqueeView extends LinearLayout {
                 if (mCancelled) {
                     return;
                 }
-
                 mTextField.startAnimation(mMoveTextIn);
             }
 

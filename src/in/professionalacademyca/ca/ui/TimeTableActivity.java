@@ -15,6 +15,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.time_table);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	@Override
@@ -33,5 +34,11 @@ public class TimeTableActivity extends SherlockFragmentActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+	@Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

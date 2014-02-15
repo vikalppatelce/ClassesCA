@@ -20,6 +20,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_query);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		post= (Button)findViewById(R.id.post);
 		query = (EditText)findViewById(R.id.query);
 	}
@@ -30,6 +31,12 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	       inflater.inflate(R.menu.main, menu);
 		 return true;
 	}
+	@Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
+    }
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
     {

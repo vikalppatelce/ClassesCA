@@ -17,7 +17,6 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-    
     <style name="IgRedButtonStyle">
         <item name="android:textSize">12.0sp</item>
         <item name="android:textStyle">bold</item>

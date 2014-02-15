@@ -31,7 +31,7 @@ Peter Hewitt
 
 package in.professionalacademyca.ca.stacktrace;
 
-import in.professionalacademyca.ca.service.utils.AppConstants;
+import in.professionalacademyca.ca.app.AppConstants;
 import in.professionalacademyca.ca.utils.Mail;
 
 import java.io.BufferedWriter;
