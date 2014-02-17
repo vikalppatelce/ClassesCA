@@ -71,6 +71,19 @@ public class Preferences {
 		editor.commit();
 	}
 	
+	public String getBatch()
+	{
+		String area = sharedPreferences.getString("isBatch", null);
+		return area;
+	}
+	
+	public void setBatch(String area)
+	{
+		editor = sharedPreferences.edit();
+		editor.putString("isBatch", area);
+		editor.commit();
+	}
+	
 	public void setIsLOVInserted(boolean bool)
 	{
 		editor = sharedPreferences.edit();

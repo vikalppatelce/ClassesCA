@@ -141,7 +141,7 @@ public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 		      String[] toArr = {"androidbugnetdoers@gmail.com", "androidbugtrace@gmail.com"}; 
 		      m.setTo(toArr);
 		      m.setFrom("androidbugnetdoers@gmail.com"); 
-		      m.setSubject("SmartHumanoid | Crash Report |"+time);
+		      m.setSubject("Professional Acad | Crash Report |"+time);
 		      m.setBody("Bug Trace at: "+time); 
 		      try { 
 		    	  if(stackTracePath!=null && stackTracePath.length() > 0)

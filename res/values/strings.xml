@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="arr_course_level">
+        <item >Level 1</item>
         <item >Level 2</item>
-        <item >Level 3</item>
     </string-array>
     <string-array name="arr_level_city">
         <item >Ahmedabad</item>
@@ -12,6 +12,21 @@
         <item >Mumbai</item>
         <item >Kolkata</item>
     </string-array>
+    <string-array name="arr_level_batch">
+        <item >001</item>
+        <item >002</item>
+        <item >003</item>
+        <item >004</item>
+        <item >005</item>
+    </string-array>
+    <string-array name="arr_level_batch2">
+        <item >101</item>
+        <item >102</item>
+        <item >103</item>
+        <item >104</item>
+        <item >105</item>
+    </string-array>
+    
     <string-array name="arr_mumbai_area">
         <item >Andheri</item>
         <item >Ghatkopar</item>

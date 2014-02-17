@@ -16,6 +16,7 @@
     marquee:speed="10" >
 
         <TextView
+            	android:id="@+id/ticker"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Welcome to ProfessionalAcademcy CA Classes Android Application"
@@ -58,6 +59,7 @@
         android:id="@id/buttonPanel"
         >
         <Button 
+            android:id="@+id/btntimetable"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -70,6 +72,7 @@
             android:text="@string/timetable"
             />
         <Button 
+            android:id="@+id/btnpostquery"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
