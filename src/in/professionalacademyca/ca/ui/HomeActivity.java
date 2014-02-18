@@ -119,6 +119,10 @@ public class HomeActivity extends SherlockFragmentActivity {
         {
         case R.id.notification: 
         	return true;
+        case R.id.settings:
+        	Intent i = new Intent(HomeActivity.this, PrefsActivity.class);
+        	startActivity(i);
+        	return true;
         default:
             return super.onOptionsItemSelected(item);
         }
