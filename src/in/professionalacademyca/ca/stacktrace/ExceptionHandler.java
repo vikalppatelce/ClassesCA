@@ -142,6 +142,7 @@ public class ExceptionHandler {
 		dir.mkdir();
 		// Filter for ".stacktrace" files
 		FilenameFilter filter = new FilenameFilter() { 
+			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".stacktrace"); 
 			} 

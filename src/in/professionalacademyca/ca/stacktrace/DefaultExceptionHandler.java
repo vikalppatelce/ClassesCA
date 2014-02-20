@@ -68,6 +68,7 @@ public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 	}
 	 
 	// Default exception handler
+	@Override
 	public void uncaughtException(Thread t, Throwable e) {
 		// Here you should have a more robust, permanent record of problems
 	    final Writer result = new StringWriter();

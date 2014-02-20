@@ -2,9 +2,13 @@ package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
 import in.professionalacademyca.ca.app.AppConstants;
+import in.professionalacademyca.ca.dto.AnswerDTO;
 import in.professionalacademyca.ca.dto.QueryDTO;
+import in.professionalacademyca.ca.dto.UploadDataResponseDTO;
 import in.professionalacademyca.ca.service.RequestBuilder;
+import in.professionalacademyca.ca.service.ResponseParser;
 import in.professionalacademyca.ca.service.ServiceDelegate;
+import in.professionalacademyca.ca.sql.CustomSqlCursorAdapter;
 import in.professionalacademyca.ca.sql.DBConstant;
 
 import java.text.SimpleDateFormat;
@@ -12,22 +16,34 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +57,20 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 
 	Button post;
 	EditText query;
+	ProgressBar progress;
 	
 	ActionBar actionBar;
 	Typeface stylefont;
+
+	ListView listQuery;
+	CursorAdapter adapterQuery;
 	
 	ArrayList<QueryDTO> queryDTOs;
+	ArrayList<AnswerDTO> unAnsQueryDTOs;
+	
+	String dialogQuery=null,dialogResponse=null,dialogQDate=null,dialogRDate=null;
+	
+	JSONArray query_answer = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -63,9 +88,66 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		
 		post= (Button)findViewById(R.id.post);
 		query = (EditText)findViewById(R.id.query);
+		listQuery = (ListView)findViewById(R.id.list);
+		progress = (ProgressBar)findViewById(R.id.progress);
 		
 		post.setTypeface(stylefont);
 		query.setTypeface(stylefont);
+		
+//		new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
+		loadUnQueryData();
+		uploadUnQueryData();
+		
+		listQuery.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				String query_id=view.getTag().toString();
+				Log.e("ID", String.valueOf(position) + ":"+ query_id);
+				showDialogBox(query_id);
+				}
+		});
+	}
+	
+	public void showDialogBox(String query_id)
+	{
+		dialogRDate="";
+		dialogResponse="";
+		dialogQDate="";
+		dialogQuery="";
+		final AlertDialog alertDialog = new AlertDialog.Builder(PostQueryActivity.this).create();
+		alertDialog.setTitle("Query");
+		// Setting Dialog Message
+		Cursor c = getContentResolver().query(DBConstant.Query_Columns.CONTENT_URI, null, DBConstant.Query_Columns.COLUMN_ID +"=?", new String[]{query_id}, null);
+		// Setting Dialog Title
+		if(c!=null && c.getCount()>0)
+		{
+			c.moveToFirst();
+			dialogQDate = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY_DATE));
+			dialogQuery= c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY));
+			dialogResponse = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE)).equalsIgnoreCase("0")?
+					"Not yet answered": c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE))
+					;
+			
+			dialogRDate = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE)).equalsIgnoreCase("0")?
+					"": c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE))
+					;
+		}
+		
+		String styledText = "<body><b><div style=\"color:#A7CA01;\">Q."+dialogQuery+"</div></b></br>"
+				+ "</br><div style=\"color:#EFEFEF;\">A. "+dialogResponse+" </div></body>";
+		
+//		alertDialog.setMessage(dialogQuery + "" +dialogQDate + "" +dialogResponse + "" +dialogRDate);
+		alertDialog.setMessage(Html.fromHtml(styledText));
+		alertDialog.setButton("CLOSE", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				alertDialog.dismiss();
+			}
+		});
+		alertDialog.show();
 	}
 	
 	public void fontActionBar(String str)
@@ -116,7 +198,9 @@ public class PostQueryActivity extends SherlockFragmentActivity{
           saveQuery(query.getText().toString().trim());
           if (isNetworkAvailable()) {
               loadQueryData();
+              loadUnQueryData();
               uploadQueryData();
+              uploadUnQueryData();
   		}
   		else
   		{
@@ -144,7 +228,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			if(queryDTOs != null && queryDTOs.size() > 0)
 			{
 				JSONArray exp = RequestBuilder.getQueryDetails(queryDTOs);
-				tables.put("data", exp);
+				tables.put("tables", exp);
 			}
 		}
 		catch (Exception e) {
@@ -161,6 +245,32 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		uploadTask.execute(new JSONObject[]{jsonObject});
 	}
 	
+	public void uploadUnQueryData()
+	{
+		JSONObject finalJSON = new JSONObject();
+		JSONObject tables = new JSONObject();
+		try
+		{
+			if(unAnsQueryDTOs != null && unAnsQueryDTOs.size() > 0)
+			{
+				JSONArray exp = RequestBuilder.getUnAnsQueryDetails(unAnsQueryDTOs);
+				tables.put("tables", exp);
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			Log.e("jSON - Query", e.toString());
+		}		
+		TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		String currentSIMImsi = mTelephonyMgr.getDeviceId();
+		
+		JSONObject jsonObject = RequestBuilder.getQueryData(currentSIMImsi, tables);
+		Log.e("UNQUERY--------------->>>>>>>>>>", jsonObject.toString());
+		Log.e("UNQUERY--------------->>>>>>>>>>", tables.toString());
+		UploadUnAnswerTask uploadTask = new UploadUnAnswerTask();
+		uploadTask.execute(new JSONObject[]{jsonObject});
+	}
+	
 	public void clearQuery()
 	{
 		query.setText("");
@@ -171,7 +281,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		Bundle b = new Bundle();
 		b.putString("message", "Saving");
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		String date = sdf.format(new Date(System.currentTimeMillis()));
 		if (date.contains("/")) {
 			date = date.replace("/", "-");
@@ -179,8 +289,10 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		
 		ContentValues dataValues = new ContentValues();
 		dataValues.put(DBConstant.Query_Columns.COLUMN_QUERY, str);
-		dataValues.put(DBConstant.Query_Columns.COLUMN_DATE, date);
+		dataValues.put(DBConstant.Query_Columns.COLUMN_QUERY_DATE, date);
 		dataValues.put(DBConstant.Query_Columns.COLUMN_SYNC_STATUS, "0");
+		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE, "0");
+		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, "0");
 		getContentResolver().insert(DBConstant.Query_Columns.CONTENT_URI,dataValues);		
 		clearQuery();
 	}
@@ -208,15 +320,35 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			{
 				_id = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_ID));
 				query = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY));
-				date = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_DATE));
+				date = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY_DATE));
 				queryDTOs.add(new QueryDTO(_id, query, null, date,null));
 			}
 			c.close();
 
 		}
 	}
-
 	
+	public void loadUnQueryData()
+	{
+		String _id;
+		String query;
+		String date;
+
+		Cursor c = getContentResolver().query(DBConstant.Query_Columns.CONTENT_URI, null, DBConstant.Query_Columns.COLUMN_RESPONSE +"=?", new String[]{"0"}, null);
+		if( c != null && c.getCount() > 0)
+		{
+			unAnsQueryDTOs = new ArrayList<AnswerDTO>();
+			while(c.moveToNext())
+			{
+				_id = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_ID));
+				query = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY));
+				date = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY_DATE));
+				unAnsQueryDTOs.add(new AnswerDTO(_id, query, null, date,null));
+			}
+			c.close();
+
+		}
+	}
 	
 	private class UploadTask extends AsyncTask<JSONObject, Void, Void>
 	{
@@ -224,6 +356,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
+			progress.setVisibility(View.VISIBLE);
 		}
 		@Override
 		protected Void doInBackground(JSONObject... params) {
@@ -232,7 +365,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			String jsonString = dataToSend.toString();
 			try {
 				String str = ServiceDelegate.postData(AppConstants.URLS.BASE_URL, dataToSend);
-				/*				
+				
 				//str = "{\"tables\":{\"service\":[]},\"lov\":{\"location\":[\"L 1\"],\"expense_category\":[],\"patient_type\":[\"OPD\",\"IPD\",\"SX\"],\"payment_mode\":[\"M2\",\"M1\"],\"diagnose_procedure\":[],\"referred_by\":[\"R2\",\"R1\"],\"start_time\":[],\"surgery_level\":[\"Level : 7\",\"Level : 6\",\"Level : 5\",\"Level : 4\",\"Level : 3\",\"Level : 2\",\"Level : 1\"],\"team_member\":[],\"ward\":[]}}";
 				UploadDataResponseDTO responseDTO = ResponseParser.getUploadDataResponse(str);
 				
@@ -240,13 +373,13 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 				{
 					// update services
 					
-					String _data = responseDTO.getData();
+					String _data = responseDTO.getQuery();
 					if(_data!= null && !_data.equals("[]") && !_data.equals(""))
 					{
 						_data = _data.substring(1, _data.length() - 1);
 						{
 							ContentValues contentValues = new ContentValues();
-							contentValues.put(DBConstant.Data_Columns.COLUMN_SYNC_STATUS, 1);
+							contentValues.put(DBConstant.Query_Columns.COLUMN_SYNC_STATUS, 1);
 							String[] data =  _data.split(",");
 							if(data.length > 0)
 							{
@@ -259,7 +392,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 									}
 									try
 									{
-										int col = getContentResolver().update(DBConstant.Data_Columns.CONTENT_URI, contentValues, DBConstant.Data_Columns.COLUMN_ID +"=?", new String[]{s});
+										int col = getContentResolver().update(DBConstant.Query_Columns.CONTENT_URI, contentValues, DBConstant.Query_Columns.COLUMN_ID +"=?", new String[]{s});
 										Log.e("ROWS UPDATED : data : ", col +"");
 									}
 									catch (Exception e) {
@@ -271,7 +404,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 							
 						}
 					}	
-				}*/
+				}
 				Log.e("UploadTask","");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -283,6 +416,115 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
+			progress.setVisibility(View.GONE);
 		}
 	}
+	
+	private class UploadUnAnswerTask extends AsyncTask<JSONObject, Void, Void>
+	{
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			progress.setVisibility(View.VISIBLE);
+		}
+		@Override
+		protected Void doInBackground(JSONObject... params) {
+			// TODO Auto-generated method stub
+			JSONObject dataToSend = params[0];
+			boolean status = false;
+			String device_id=null,currentSIMImsi=null;
+			String jsonString = dataToSend.toString();
+			String query_reply =  null, query_id= null, reply_date=null;
+			try {
+				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.ANSWER_URL, dataToSend);
+				TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+				currentSIMImsi = mTelephonyMgr.getDeviceId();
+				
+				//str = "{\"tables\":{\"service\":[]},\"lov\":{\"location\":[\"L 1\"],\"expense_category\":[],\"patient_type\":[\"OPD\",\"IPD\",\"SX\"],\"payment_mode\":[\"M2\",\"M1\"],\"diagnose_procedure\":[],\"referred_by\":[\"R2\",\"R1\"],\"start_time\":[],\"surgery_level\":[\"Level : 7\",\"Level : 6\",\"Level : 5\",\"Level : 4\",\"Level : 3\",\"Level : 2\",\"Level : 1\"],\"team_member\":[],\"ward\":[]}}";
+				if(jsonStr != null)
+				{
+					JSONObject jsonObject = new JSONObject(new String(jsonStr));
+					status = jsonObject.getBoolean(AppConstants.RESPONSES.QueryResponse.QSTATUS);
+					device_id=jsonObject.getString("device_id");
+					if(status && currentSIMImsi.equalsIgnoreCase(device_id))
+					{
+						try {
+		                    // Getting JSON Array node
+		                    query_answer = jsonObject.getJSONArray("query_answer");
+		 
+		                    // looping through All Contacts
+		                    for (int i = 0; i < query_answer.length(); i++) {
+		                        JSONObject c = query_answer.getJSONObject(i);
+		                         query_reply="";
+		                         query_id="";
+		                         reply_date="";
+		                        query_reply = c.getString("query_replay");
+		                        query_id = c.getString("question_id");
+		                        reply_date = c.getString("replay_date");
+
+		                        ContentValues contentValues = new ContentValues();
+		    					contentValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE, query_reply);
+		    					contentValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, reply_date);
+		    					int col = getContentResolver().update(DBConstant.Query_Columns.CONTENT_URI,contentValues,DBConstant.Query_Columns.COLUMN_ID + "=?",new String[] { query_id});
+		    					Log.e("ROWS UPDATED : data : ", col + "");
+		                        // adding contact to contact list
+		                    }
+		                } catch (JSONException e) {
+		                    e.printStackTrace();
+		                }
+					}
+					}
+				Log.e("UploadTask","");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
+			progress.setVisibility(View.GONE);
+		}
+	}
+	
+	private class SelectDataTask extends AsyncTask<Uri, Void ,Cursor> {
+
+		Uri currentUri;
+		@Override
+		protected void onPreExecute() {
+			// this.dialog.setMessage("Getting Names...");
+			// this.dialog.show();
+			progress.setVisibility(View.VISIBLE);
+		}
+
+		// can use UI thread here
+		@Override
+		protected void onPostExecute(final Cursor result) {
+
+			startManagingCursor(result);
+			int[] listFields = new int[] { R.id.question , R.id.answer};
+			String[] dbColumns = new String[] { DBConstant.Query_Columns.COLUMN_ID, DBConstant.Query_Columns.COLUMN_QUERY , DBConstant.Query_Columns.COLUMN_RESPONSE};
+
+			PostQueryActivity.this.adapterQuery = new CustomSqlCursorAdapter(PostQueryActivity.this, R.layout.post_item,result, dbColumns, listFields,currentUri);
+			PostQueryActivity.this.listQuery.setAdapter(PostQueryActivity.this.adapterQuery);
+			progress.setVisibility(View.GONE);
+		}
+
+		@Override
+		protected Cursor doInBackground(Uri... arg0) {
+			// TODO Auto-generated method stub
+			try {
+				currentUri = arg0[0];
+				return PostQueryActivity.this.getContentResolver().query(currentUri, null, null, null, DBConstant.Query_Columns.COLUMN_ID+" DESC");
+			} catch (SQLException sqle) {
+				throw sqle;
+			}
+		}
+	}
+	
 }

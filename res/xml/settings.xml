@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+   <PreferenceCategory android:title="Developer">
+       <Preference android:title="Developer Options" android:key="prefDev"
+           android:enabled="true"/>       
+   </PreferenceCategory>
+   <PreferenceCategory android:title="Release Note">
+       <Preference android:title="Change Log" android:key="prefRelease"
+           android:enabled="true"/>       
+   </PreferenceCategory>
+</PreferenceScreen>
