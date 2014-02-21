@@ -56,6 +56,9 @@ public class RequestBuilder {
 					jsonObject.put("question_id", queryDTO.get(i).getId());
 					jsonObject.put("user_query", queryDTO.get(i).getQuery());
 					jsonObject.put("query_date", queryDTO.get(i).getDate());
+					jsonObject.put("level_name", queryDTO.get(i).getLevel());
+					jsonObject.put("batch_name", queryDTO.get(i).getBatch());
+					jsonObject.put("subject_name", queryDTO.get(i).getSubject());
 					jsonArray.put(jsonObject);
 				}
 				catch (Exception e) {

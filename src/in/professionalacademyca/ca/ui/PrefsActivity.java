@@ -115,6 +115,12 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 		// Unregister the listener whenever a key changes
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
+	@Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
+    }
 	// EA 10001
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,

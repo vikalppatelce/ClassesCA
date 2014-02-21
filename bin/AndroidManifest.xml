@@ -21,27 +21,36 @@
             android:name="in.professionalacademyca.ca.sql.CaDB"
             android:authorities="in.professionalacademyca.ca.sql.CaDB" />
 
-        <activity android:name="in.professionalacademyca.ca.ui.CourseActivity"
-            android:screenOrientation="portrait"  />
-        <activity android:name="in.professionalacademyca.ca.ui.NewCourseActivity"
-            android:screenOrientation="portrait"  />
+        <activity
+            android:name="in.professionalacademyca.ca.ui.CourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="in.professionalacademyca.ca.ui.NewCourseActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="in.professionalacademyca.ca.ui.PostQueryActivity"
-            android:screenOrientation="portrait" 
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name="in.professionalacademyca.ca.ui.TimeTableActivity"
-            android:screenOrientation="portrait"  />
-        <activity android:name="in.professionalacademyca.ca.ui.PrefsActivity"
-            android:screenOrientation="portrait"  />
         <activity
-            android:name="in.professionalacademyca.ca.ui.HomeActivity"
-            android:screenOrientation="portrait" 
-            android:label="@string/app_name" >
+            android:name="in.professionalacademyca.ca.ui.TimeTableActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="in.professionalacademyca.ca.ui.PrefsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="in.professionalacademyca.ca.ui.NewHomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="in.professionalacademyca.ca.ui.HomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

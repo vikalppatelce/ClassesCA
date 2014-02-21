@@ -25,11 +25,10 @@ public class CustomToast {
 
 	public static void showToastMessage(Context context,String message){
 
-		View layout = LayoutInflater.from(context).inflate(R.layout.customtoast, null);
+		View layout = LayoutInflater.from(context).inflate(R.layout.custom_toast, null);
          TextView text = (TextView) layout.findViewById(R.id.text);
          text.setText(message);
          Toast toast = new Toast(context);
-         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
          toast.setDuration(Toast.LENGTH_SHORT);
          toast.setView(layout);
          toast.show();

@@ -21,6 +21,9 @@ public class DBConstant {
 		public static final String COLUMN_QUERY_DATE		= "query_date";
 		public static final String COLUMN_RESPONSE_DATE		= "response_date";
 		public static final String COLUMN_RESPONSE 			= "response";
+		public static final String COLUMN_BATCH 			= "batch";
+		public static final String COLUMN_LEVEL 			= "level";
+		public static final String COLUMN_SUBJECT 			= "subject";
 		public static final String COLUMN_SYNC_STATUS 		= "post";
 	}
 	

@@ -49,7 +49,7 @@ public class AppConstants {
 	
 	public static final boolean DEBUG = false;
 	
-	public static final String fontStyle = "fonts/RobotoCondensedRegular.ttf";
+	public static final String fontStyle = "fonts/Georgia.ttf";
 	
 	public static final String res = "{\"success\":true,\"tables\":{\"service\":[\"1\",\"2\"],\"expense\":[\"1\",\"2\"],\"expense_image\":[\"1\",\"2\",\"3\",\"4\"],\"service_audio\":[\"1\",\"2\",\"3\"],\"location\":[\"1\",\"2\"]},\"lov\":{\"bank\":[\"ICICI\",\"HDFC\"],\"location\":[\"Lilavati\",\"Rehja\"],\"expense_category\":[\"Food Expense\",\"Office Expense\",\"Bill Payment\",\"Stationary\"]\"patient_type\":[\"Regular\",\"Occasional\"],\"payment_mode\":[\"Net Banking\",\"Cash\",\"Online Transfer\",\"Cheque\"],\"procedure\":[\"Procedure 1\",\"Procedure 2\"],\"referred_by\":[\"Jaykishan Parikh\",\"Mahendra Nagar\"],\"start_time\":[\"Morning\",\"Evening\"],\"surgery_level\":[\"Level 1\",\"Level 2\"],\"team_member\":[\"Rakesh Pratap\",\"Milan Shah\"],\"ward\":[\"General Ward\",\"Emergency Ward\"]}}";
 	

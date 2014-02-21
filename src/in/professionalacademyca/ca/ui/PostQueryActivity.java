@@ -10,6 +10,9 @@ import in.professionalacademyca.ca.service.ResponseParser;
 import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.CustomSqlCursorAdapter;
 import in.professionalacademyca.ca.sql.DBConstant;
+import in.professionalacademyca.ca.sql.DBConstant.Query_Columns;
+import in.professionalacademyca.ca.ui.utils.CustomToast;
+import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +28,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -109,6 +111,41 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 				showDialogBox(query_id);
 				}
 		});
+		
+		SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                		listQuery,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+
+                                	try
+                                	{
+                                	long _id  = adapterQuery.getItemId(position);
+                                	getContentResolver().delete(DBConstant.Query_Columns.CONTENT_URI, "_id=?", new String[] { String.valueOf(_id) });
+                                	CustomToast.showToastMessage(PostQueryActivity.this, "Deleted");
+                                	}
+                                	catch(Exception e)
+                                	{
+                                		Log.e("Swipe to Dismiss", e.toString());
+                                	}
+                                }
+                                adapterQuery.notifyDataSetChanged();
+                            }
+                        });
+		
+		listQuery.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+		listQuery.setOnScrollListener(touchListener.makeScrollListener());
+
+		
 	}
 	
 	public void showDialogBox(String query_id)
@@ -292,6 +329,9 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		dataValues.put(DBConstant.Query_Columns.COLUMN_QUERY_DATE, date);
 		dataValues.put(DBConstant.Query_Columns.COLUMN_SYNC_STATUS, "0");
 		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE, "0");
+		dataValues.put(DBConstant.Query_Columns.COLUMN_BATCH, "batch");
+		dataValues.put(DBConstant.Query_Columns.COLUMN_SUBJECT, "subject");
+		dataValues.put(DBConstant.Query_Columns.COLUMN_LEVEL, "level");
 		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, "0");
 		getContentResolver().insert(DBConstant.Query_Columns.CONTENT_URI,dataValues);		
 		clearQuery();
@@ -311,6 +351,9 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		String _id;
 		String query;
 		String date;
+		String subject;
+		String level;
+		String batch;
 
 		Cursor c = getContentResolver().query(DBConstant.Query_Columns.CONTENT_URI, null, DBConstant.Query_Columns.COLUMN_SYNC_STATUS +"=?", new String[]{"0"}, null);
 		if( c != null && c.getCount() > 0)
@@ -321,7 +364,10 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 				_id = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_ID));
 				query = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY));
 				date = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY_DATE));
-				queryDTOs.add(new QueryDTO(_id, query, null, date,null));
+				level = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_LEVEL));
+				batch = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_BATCH));
+				subject = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_SUBJECT));
+				queryDTOs.add(new QueryDTO(_id, query, null, date, null, level, batch, subject));
 			}
 			c.close();
 

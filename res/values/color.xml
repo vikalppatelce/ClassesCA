@@ -8,4 +8,6 @@
     <color name="border_color">#dedede</color>
     <color name="text_shadow_green_button">#ff237531</color>
     <color name="light_grey">#ffaaaaaa</color>
+    <color name="popup_bg_color">#EE666666</color>
+	<color name="popup_text_color">#FFFFFF</color>
 </resources>

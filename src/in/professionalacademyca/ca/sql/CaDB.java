@@ -48,6 +48,9 @@ public class CaDB extends ContentProvider {
 			strBuilder.append(DBConstant.Query_Columns.COLUMN_RESPONSE +" TEXT , " );
 			strBuilder.append(DBConstant.Query_Columns.COLUMN_QUERY_DATE +" TEXT , " );
 			strBuilder.append(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE +" TEXT , " );
+			strBuilder.append(DBConstant.Query_Columns.COLUMN_BATCH +" TEXT , " );
+			strBuilder.append(DBConstant.Query_Columns.COLUMN_LEVEL +" TEXT , " );
+			strBuilder.append(DBConstant.Query_Columns.COLUMN_SUBJECT +" TEXT , " );
 			strBuilder.append(DBConstant.Query_Columns.COLUMN_SYNC_STATUS +" NUMBER" );
 			strBuilder.append(')');
 			db.execSQL(strBuilder.toString());
@@ -218,6 +221,9 @@ static {
 		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_QUERY_DATE, DBConstant.Query_Columns.COLUMN_QUERY_DATE);
 		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, DBConstant.Query_Columns.COLUMN_RESPONSE_DATE);
 		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_RESPONSE, DBConstant.Query_Columns.COLUMN_RESPONSE);
+		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_BATCH, DBConstant.Query_Columns.COLUMN_BATCH);
+		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_LEVEL, DBConstant.Query_Columns.COLUMN_LEVEL);
+		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_SUBJECT, DBConstant.Query_Columns.COLUMN_SUBJECT);
 		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_SYNC_STATUS, DBConstant.Query_Columns.COLUMN_SYNC_STATUS);
 		
 		timeTableProjectionMap = new HashMap<String, String>();
