@@ -4,8 +4,6 @@ import in.professionalacademyca.ca.R;
 import in.professionalacademyca.ca.app.AppConstants;
 import in.professionalacademyca.ca.service.RequestBuilder;
 import in.professionalacademyca.ca.service.ServiceDelegate;
-import in.professionalacademyca.ca.sql.DBConstant;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,21 +11,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Window;
 
 public class NewHomeActivity extends FragmentActivity {
     Typeface stylefont;
@@ -42,7 +36,7 @@ public class NewHomeActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().requestFeature(android.view.Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.new_home);
+		setContentView(R.layout.dashboard);
 		
 		stylefont = Typeface.createFromAsset(getAssets(), AppConstants.fontStyle);
 		
@@ -80,7 +74,7 @@ public class NewHomeActivity extends FragmentActivity {
 	
 	public void onNotification(View v)
 	{
-		Intent i = new Intent(this, PostQueryActivity.class);
+		Intent i = new Intent(this, NotificationActivity.class);
 		startActivity(i);
 		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 	}

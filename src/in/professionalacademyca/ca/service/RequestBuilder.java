@@ -2,6 +2,7 @@ package in.professionalacademyca.ca.service;
 
 import java.util.ArrayList;
 
+import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.dto.AnswerDTO;
 import in.professionalacademyca.ca.dto.QueryDTO;
 
@@ -69,6 +70,24 @@ public class RequestBuilder {
 		}
 		return jsonArray;
 	}
+	
+	public static JSONArray getNotificationData()
+	{
+		JSONArray jsonArray = new JSONArray();
+				JSONObject jsonObject = new JSONObject();
+				try
+				{
+					jsonObject.put("batch_name", CA.getPreferences().getBatch());
+					jsonObject.put("level_name", CA.getPreferences().getLevel());
+					jsonArray.put(jsonObject);
+				}
+				catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+				return jsonArray;
+		}
+
 	
 	public static JSONArray getUnAnsQueryDetails(ArrayList<AnswerDTO> answerDTO)
 	{

@@ -80,10 +80,10 @@ public class CourseActivity  extends SherlockFragmentActivity implements OnItemS
 			if(chk_default.isChecked())
 			{
 				CA.getPreferences().setDefault(true);
-				CA.getPreferences().setArea(spin_area.getSelectedItem().toString().trim());
+				CA.getPreferences().setLevel(spin_area.getSelectedItem().toString().trim());
 			}
 			Intent timeTable = new Intent(this, TimeTableActivity.class);
-			timeTable.putExtra("isArea", spin_area.getSelectedItem().toString().trim());
+			timeTable.putExtra("isLevel", spin_area.getSelectedItem().toString().trim());
 			startActivity(timeTable);
 			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 		}

@@ -10,7 +10,6 @@ import in.professionalacademyca.ca.service.ResponseParser;
 import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.CustomSqlCursorAdapter;
 import in.professionalacademyca.ca.sql.DBConstant;
-import in.professionalacademyca.ca.sql.DBConstant.Query_Columns;
 import in.professionalacademyca.ca.ui.utils.CustomToast;
 import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 

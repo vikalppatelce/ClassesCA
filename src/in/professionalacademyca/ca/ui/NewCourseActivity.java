@@ -30,6 +30,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 	TextView header,txtcourse,txtbatch;
 	Button go;
 	ActionBar actionBar;
+	String fromWhere;
 	
 	ArrayAdapter adap_course,adap_city,adap_area,adap_batch;
 	
@@ -49,6 +50,14 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		
 		fontActionBar(actionBar.getTitle().toString());
 		actionBar.setIcon(android.R.drawable.ic_menu_set_as);
+		try
+		{
+			fromWhere = getIntent().getExtras().getString("FROM");	
+		}
+		catch(Exception e)
+		{
+			Log.e("Traversal", e.toString());
+		}
 		
 		
 		spin_course = (Spinner)findViewById(R.id.spin_course);
@@ -126,11 +135,22 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 			{
 				CA.getPreferences().setDefault(true);
 				CA.getPreferences().setBatch(spin_batch.getSelectedItem().toString().trim());
+				CA.getPreferences().setLevel(spin_course.getSelectedItem().toString().trim());
 			}
+			
+			if(fromWhere.equalsIgnoreCase("Notification"))
+			{
+				setResult(RESULT_OK);
+				finish();
+				overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
+			}
+			else
+			{
 			Intent timeTable = new Intent(this, TimeTableActivity.class);
 			timeTable.putExtra("isBatch", spin_batch.getSelectedItem().toString().trim());
 			startActivity(timeTable);
 			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+			}
 		}
 		else
 		{

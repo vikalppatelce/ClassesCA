@@ -15,7 +15,6 @@ package in.professionalacademyca.ca.ui.utils;
 
 import in.professionalacademyca.ca.R;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;

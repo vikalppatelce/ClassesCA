@@ -58,16 +58,16 @@ public class Preferences {
 		editor.commit();
 	}
 	
-	public String getArea()
+	public String getLevel()
 	{
-		String area = sharedPreferences.getString("isArea", null);
+		String area = sharedPreferences.getString("isLevel", null);
 		return area;
 	}
 	
-	public void setArea(String area)
+	public void setLevel(String area)
 	{
 		editor = sharedPreferences.edit();
-		editor.putString("isArea", area);
+		editor.putString("isLevel", area);
 		editor.commit();
 	}
 	
