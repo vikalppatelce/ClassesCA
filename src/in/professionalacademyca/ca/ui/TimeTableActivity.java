@@ -2,6 +2,7 @@ package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
 import in.professionalacademyca.ca.app.AppConstants;
+import in.professionalacademyca.ca.app.CA;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,8 +11,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 public class TimeTableActivity extends SherlockFragmentActivity {
@@ -45,25 +44,20 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		t1.setTypeface(stylefont);
 		t2.setTypeface(stylefont);
 		next.setTypeface(stylefont);
+		
+		t1.setText("Time Table for " + CA.getPreferences().getBatch());
 	}
 	
 	public void fontActionBar(String str)
 	{
 		try {
-			int titleId = getResources().getIdentifier("action_bar_title",
-					"id", "android");
+			int titleId = getResources().getIdentifier("action_bar_title","id", "android");
 			TextView yourTextView = (TextView) findViewById(titleId);
 			yourTextView.setText(str);
 			yourTextView.setTypeface(stylefont);
 		} catch (Exception e) {
 			Log.e("ActionBar Style", e.toString());
 		}
-	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-	       inflater.inflate(R.menu.main, menu);
-		 return true;
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
@@ -74,8 +68,6 @@ public class TimeTableActivity extends SherlockFragmentActivity {
             finish();
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             return true;
-        case R.id.notification: 
-        	return true;
         default:
             return super.onOptionsItemSelected(item);
         }

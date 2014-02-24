@@ -10,6 +10,8 @@ public class DBConstant {
 	
 	public static final String TABLE_QUERY 							= "query";
 	public static final String TABLE_TIME_TABLE 					= "timetable";
+	public static final String TABLE_NOTIFICATION 					= "notification";
+	public static final String TABLE_NOTIFICATION_TEMP 				= "notificationTemp";
 	
 	public static class Query_Columns implements BaseColumns
 	{
@@ -38,5 +40,27 @@ public class DBConstant {
 		public static final String COLUMN_URL 				= "url";
 		public static final String COLUMN_SYNC_STATUS 		= "status";
 	}
+	
+	public static class Notification_Columnns implements BaseColumns
+	{
+		public static final Uri CONTENT_URI = Uri.parse("content://"+ CaDB.AUTHORITY + "/notification");
+		public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/notification";
 
+		public static final String COLUMN_ID 				= "_id";
+		public static final String COLUMN_NOTIFICATION_ID	= "n_id";
+		public static final String COLUMN_BATCH 			= "batch";
+		public static final String COLUMN_TITLE 			= "title";
+		public static final String COLUMN_DESCRIPTION		= "description";
+		public static final String COLUMN_NOTIFICATION_DATE	= "ndate";
+		public static final String COLUMN_SYNC_STATUS 		= "status";
+	}
+	
+	public static class Notification_Temp_Columnns implements BaseColumns
+	{
+		public static final Uri CONTENT_URI = Uri.parse("content://"+ CaDB.AUTHORITY + "/notificationTemp");
+		public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/notificationTemp";
+
+		public static final String COLUMN_ID 				= "_id";
+		public static final String COLUMN_NOTIFICATION_ID	= "n_id";
+	}
 }

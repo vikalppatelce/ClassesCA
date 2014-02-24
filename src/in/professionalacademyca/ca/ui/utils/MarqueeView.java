@@ -94,13 +94,13 @@ public class MarqueeView extends LinearLayout {
         this.mInterpolator = interpolator;
     }
 
-    @SuppressWarnings({"UnusedDeclaration"})
+    @SuppressWarnings({})
     public MarqueeView(Context context) {
         super(context);
         init(context);
     }
 
-    @SuppressWarnings({"UnusedDeclaration"})
+    @SuppressWarnings({})
     public MarqueeView(Context context, AttributeSet attrs) {
         super(context, attrs);
 

@@ -31,7 +31,8 @@ public final class TestFragment extends Fragment {
         }
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ImageView text = new ImageView(getActivity());
         text.setImageResource(mContent);

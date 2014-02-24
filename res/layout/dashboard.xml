@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    
+        <LinearLayout
+        android:id="@+id/upcoming_empty_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <TextView
+            android:id="@+id/ticker"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#FC3060"
+            android:clickable="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:onClick="onTicker"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:text="Welcome to Professional Academcy CA Classes Android Application"
+            android:textColor="#FFF"
+            android:textSize="20sp" />
+    </LinearLayout>
+    
+    
+    
+    
+    
+    
+    <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ff1a1a1a"
+    android:layout_weight="1"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0" >
+
+        <LinearLayout
+            android:id="@+id/dashboard_top_left"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:onClick="onTimeTable"
+            android:background="@drawable/bg_dashboard" >
+
+            <TextView
+                android:id="@+id/txttimetable"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/ic_dashboard_artists"
+                android:text="Time Table" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="15.0dip"
+            android:background="#ff000000" />
+
+        <LinearLayout
+            android:id="@+id/dashboard_top_right"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:onClick="onPostQuery"
+            android:background="@drawable/bg_dashboard" >
+
+            <TextView
+                android:id="@+id/txthelp"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/ic_dashboard_events"
+                android:text="Post Query" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:background="#ff000000" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0" >
+
+        <LinearLayout
+            android:id="@+id/dashboard_bottom_left"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:onClick="onNotification"
+            android:background="@drawable/bg_dashboard" >
+
+            <TextView
+                android:id="@+id/txtnotification"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/ic_dashboard_location"
+                android:text="Notification" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="15.0dip"
+            android:background="#ff000000" />
+
+        <LinearLayout
+            android:id="@+id/dashboard_bottom_right"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:onClick="onSetUp"
+            android:background="@drawable/bg_dashboard" >
+
+            <TextView
+                android:id="@+id/txtsetup"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/ic_dashboard_mygigs"
+                android:text="Setup" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+    
+</LinearLayout>

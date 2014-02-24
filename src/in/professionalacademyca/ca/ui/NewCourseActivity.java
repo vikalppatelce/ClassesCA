@@ -27,7 +27,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 
 	Spinner spin_course,spin_city,spin_area,spin_batch;
 	CheckBox chk_default;
-	TextView header,txtcourse,txtbatch;
+	TextView header,txtcourse,txtbatch,txtsetdefault;
 	Button go;
 	ActionBar actionBar;
 	String fromWhere;
@@ -68,12 +68,14 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		header = (TextView)findViewById(R.id.headercourse);
 		txtbatch = (TextView)findViewById(R.id.batch);
 		txtcourse = (TextView)findViewById(R.id.course);
+		txtsetdefault = (TextView)findViewById(R.id.txtsetdefault);
 		go =(Button)findViewById(R.id.go);
 				
 		chk_default.setTypeface(stylefont);
 		header.setTypeface(stylefont);
 		txtbatch.setTypeface(stylefont);
 		txtcourse.setTypeface(stylefont);
+		txtsetdefault.setTypeface(stylefont);
 		go.setTypeface(stylefont);
 		
 		adap_course = ArrayAdapter.createFromResource(this, R.array.arr_course_level, android.R.layout.simple_spinner_dropdown_item);
@@ -144,12 +146,21 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 				finish();
 				overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
 			}
-			else
+			else if(fromWhere.equalsIgnoreCase("Home"))
 			{
 			Intent timeTable = new Intent(this, TimeTableActivity.class);
 			timeTable.putExtra("isBatch", spin_batch.getSelectedItem().toString().trim());
 			startActivity(timeTable);
+			finish();
 			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+			}
+			else if(fromWhere.equalsIgnoreCase("Settings"))
+			{
+				Intent timeTable = new Intent(this, TimeTableActivity.class);
+				timeTable.putExtra("isBatch", spin_batch.getSelectedItem().toString().trim());
+				startActivity(timeTable);
+				finish();
+				overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 			}
 		}
 		else
@@ -170,7 +181,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		int pos_course,pos_city ,pos_area ,pos_batch;
+		int pos_course;
 		int which_spinner;
 		
 		pos_course = spin_course.getSelectedItemPosition();

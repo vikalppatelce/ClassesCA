@@ -18,8 +18,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import android.text.Spanned;
  
  
 public class Mail extends javax.mail.Authenticator { 
@@ -177,11 +175,6 @@ private String _body;
   public void setBody(String _body) { 
     this._body = _body; 
   }
-
-public void setBody(Spanned fromHtml) {
-	// TODO Auto-generated method stub
-	this._body=_body;
-} 
  
   // more of the getters and setters ….. 
 } 

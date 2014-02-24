@@ -154,8 +154,6 @@ public class HomeActivity extends SherlockFragmentActivity {
 	
 	public void fetchTickerData()
 	{
-		JSONObject finalJSON = new JSONObject();
-		JSONObject tables = new JSONObject();
 		TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		String currentSIMImsi = mTelephonyMgr.getDeviceId();
 		

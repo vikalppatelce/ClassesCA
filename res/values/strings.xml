@@ -1,73 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="arr_course_level">
-        <item >Level 1</item>
-        <item >Level 2</item>
+        <item>Level 1</item>
+        <item>Level 2</item>
     </string-array>
     <string-array name="arr_level_city">
-        <item >Ahmedabad</item>
-        <item >Banglore</item>
-        <item >Chennai</item>
-        <item >Delhi</item>
-        <item >Mumbai</item>
-        <item >Kolkata</item>
+        <item>Ahmedabad</item>
+        <item>Banglore</item>
+        <item>Chennai</item>
+        <item>Delhi</item>
+        <item>Mumbai</item>
+        <item>Kolkata</item>
     </string-array>
     <string-array name="arr_level_batch">
-        <item >001</item>
-        <item >002</item>
-        <item >003</item>
-        <item >004</item>
-        <item >005</item>
+        <item>001</item>
+        <item>002</item>
+        <item>003</item>
+        <item>004</item>
+        <item>005</item>
     </string-array>
     <string-array name="arr_level_batch2">
-        <item >101</item>
-        <item >102</item>
-        <item >103</item>
-        <item >104</item>
-        <item >105</item>
+        <item>101</item>
+        <item>102</item>
+        <item>103</item>
+        <item>104</item>
+        <item>105</item>
     </string-array>
-    
     <string-array name="arr_mumbai_area">
-        <item >Andheri</item>
-        <item >Ghatkopar</item>
-        <item >Charni Road</item>
+        <item>Andheri</item>
+        <item>Ghatkopar</item>
+        <item>Charni Road</item>
     </string-array>
     <string-array name="arr_kolkata_area">
-        <item >Park Street</item>
-        <item >Camac Street</item>
-        <item >Dum Dum</item>
-        <item >PhoolBhagan</item>
+        <item>Park Street</item>
+        <item>Camac Street</item>
+        <item>Dum Dum</item>
+        <item>PhoolBhagan</item>
     </string-array>
     <string-array name="arr_delhi_area">
-        <item >Parliament Street</item>
-        <item >JanakPuri</item>
-        <item >Connaught</item>
+        <item>Parliament Street</item>
+        <item>JanakPuri</item>
+        <item>Connaught</item>
     </string-array>
     <string-array name="arr_chennai_area">
-        <item >Alwarpet</item>
-        <item >Ambattur</item>
-        <item >Aminjikara</item>
+        <item>Alwarpet</item>
+        <item>Ambattur</item>
+        <item>Aminjikara</item>
     </string-array>
     <string-array name="arr_ahmd_area">
-        <item >Maninagar</item>
-        <item >Ashram Road</item>
-        <item >Satellite</item>
+        <item>Maninagar</item>
+        <item>Ashram Road</item>
+        <item>Satellite</item>
     </string-array>
     <string-array name="arr_banglore_area">
-        <item ></item>
+        <item></item>
     </string-array>
     <string-array name="arr_m_andheri_batch">
-        <item >Andheri Morning</item>
-        <item >Andheri Evening</item>
+        <item>Andheri Morning</item>
+        <item>Andheri Evening</item>
     </string-array>
     <string-array name="arr_m_ghatkopar_batch">
-        <item >Ghatkopar Morning</item>
-        <item >Ghatkopar Evening</item>
+        <item>Ghatkopar Morning</item>
+        <item>Ghatkopar Evening</item>
     </string-array>
     <string-array name="arr_m_charni_batch">
-        <item >Charni Morning</item>
-        <item >Charni Evening</item>
+        <item>Charni Morning</item>
+        <item>Charni Evening</item>
     </string-array>
+    <string-array name="arr_subject">
+        <item>Economics</item>
+        <item>Stat</item>
+        <item>BMS</item>
+        <item>BA</item>
+        <item>KLK</item>
+    </string-array>
+
     <string name="app_name">Professional Academy</string>
     <string name="action_settings">Settings</string>
     <string name="course">Course</string>
@@ -79,6 +87,7 @@
     <string name="postquery">Post Query</string>
     <string name="go">Go</string>
     <string name="post">Post</string>
+    <string name="subject">Subject</string>
     <string name="next">Next</string>
     <string name="strTimeTable1">Time Table of Batch Andheri</string>
     <string name="strTimeTable2">01-01-14</string>
@@ -86,4 +95,8 @@
     <string name="hd_course">SELECT COURSE</string>
     <string name="setasdefault">Set as default</string>
     <string name="query_error">Please enter query</string>
+    <string name="title_changelog">Change log</string>
+    <string name="changelog_close">Close</string>
+    <string name="about_summary">About Professional Academy</string>
+
 </resources>

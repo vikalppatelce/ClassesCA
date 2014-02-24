@@ -2,8 +2,10 @@ package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
 import in.professionalacademyca.ca.app.AppConstants;
+import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.service.RequestBuilder;
 import in.professionalacademyca.ca.service.ServiceDelegate;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +16,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,8 +23,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class NewHomeActivity extends FragmentActivity {
+public class NewHomeActivity extends SherlockFragmentActivity {
     Typeface stylefont;
     ActionBar actionBar;
     
@@ -32,13 +34,21 @@ public class NewHomeActivity extends FragmentActivity {
 	int currentPage;
 	boolean onlyOnce = false;
 	String tickerText=null;
+	final static int HOME = 1007;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().requestFeature(android.view.Window.FEATURE_NO_TITLE);
+//		getWindow().requestFeature(android.view.Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.dashboard);
 		
 		stylefont = Typeface.createFromAsset(getAssets(), AppConstants.fontStyle);
+		
+		
+		actionBar = getSupportActionBar();
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Professional Academy");
+		
+		fontActionBar(actionBar.getTitle().toString());
 		
 		ticker = (TextView)findViewById(R.id.ticker);
 		timetable = (TextView)findViewById(R.id.txttimetable);
@@ -56,13 +66,34 @@ public class NewHomeActivity extends FragmentActivity {
 		fetchTickerData();
 	}
 	
+	public void fontActionBar(String str)
+	{
+		try {
+			int titleId = getResources().getIdentifier("action_bar_title","id", "android");
+			TextView yourTextView = (TextView) findViewById(titleId);
+			yourTextView.setText(str);
+			yourTextView.setTypeface(stylefont);
+		} catch (Exception e) {
+			Log.e("ActionBar Style", e.toString());
+		}
+	}
 	
 	public void onTimeTable(View v)
 	{
 //		Intent i = new Intent(this, CourseActivity.class);
-    	Intent i = new Intent(this, NewCourseActivity.class);
-		startActivity(i);
-		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+		if(CA.getPreferences().getBatch() ==null)
+		{
+			Intent i = new Intent(this,NewCourseActivity.class);
+			i.putExtra("FROM", "Home");
+			startActivityForResult(i, HOME);
+			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+		}
+		else
+		{
+			Intent i = new Intent(this, TimeTableActivity.class);
+			startActivity(i);
+			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+		}
 	}
 	
 	public void onPostQuery(View v)
@@ -107,8 +138,6 @@ public class NewHomeActivity extends FragmentActivity {
 	
 	public void fetchTickerData()
 	{
-		JSONObject finalJSON = new JSONObject();
-		JSONObject tables = new JSONObject();
 		TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		String currentSIMImsi = mTelephonyMgr.getDeviceId();
 		

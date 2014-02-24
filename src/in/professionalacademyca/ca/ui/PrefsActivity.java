@@ -17,6 +17,9 @@ package in.professionalacademyca.ca.ui;
 
 
 import in.professionalacademyca.ca.R;
+import in.professionalacademyca.ca.app.AppConstants;
+import in.professionalacademyca.ca.utils.AboutDialog;
+import in.professionalacademyca.ca.utils.ChangeLogDialog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,9 +28,12 @@ import java.nio.channels.FileChannel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.EditTextPreference;
@@ -38,24 +44,61 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
+@SuppressLint("SdCardPath")
 public class PrefsActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener 
 {
 	ActionBar actionBar;
+	Typeface stylefont;
+	final static int SETTINGS = 1008;
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		PreferenceManager prefMgr = getPreferenceManager();
 		addPreferencesFromResource(R.xml.settings);
+		
+		stylefont = Typeface.createFromAsset(getAssets(), AppConstants.fontStyle);
+		
+		actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Set Up");
+		
+		fontActionBar(actionBar.getTitle().toString());
+		actionBar.setIcon(android.R.drawable.ic_menu_manage);
+		
 		//SA 10002
 //		for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
 //            initSummary(getPreferenceScreen().getPreference(i));
 //        }//EA 10002
+		
+		Preference batch = prefMgr.findPreference("prefBatch");
+		if(batch!=null)
+		{
+			batch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+				
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					// TODO Auto-generated method stub
+				//	showDialog(DEV);
+					Intent i = new Intent(PrefsActivity.this, NewCourseActivity.class);
+					i.putExtra("FROM", "Settings");
+					startActivityForResult(i, SETTINGS);
+					finish();
+					overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+					return false;
+				}
+			});
+		}
+		
 		
 		Preference release = prefMgr.findPreference("prefRelease");
 		if(release!=null)
@@ -64,8 +107,8 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
 					// TODO Auto-generated method stub
-//					ChangeLogDialog changeLogDialog = new ChangeLogDialog(PrefsActivity.this);
-//					changeLogDialog.show();
+					ChangeLogDialog changeLogDialog = new ChangeLogDialog(PrefsActivity.this);
+					changeLogDialog.show();
 					return false;
 				}
 			});
@@ -95,20 +138,49 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 				public boolean onPreferenceClick(Preference preference) {
 					// TODO Auto-generated method stub
 				//	showDialog(DEV);
-//					AboutDialog aboutDialog = new AboutDialog(PrefsActivity.this);
-//					aboutDialog.show();
+					AboutDialog aboutDialog = new AboutDialog(PrefsActivity.this);
+					aboutDialog.show();
 					return false;
 				}
 			});
 		}
 	}
+	
+	public void fontActionBar(String str)
+	{
+		try {
+			int titleId = getResources().getIdentifier("action_bar_title",
+					"id", "android");
+			TextView yourTextView = (TextView) findViewById(titleId);
+			yourTextView.setText(str);
+			yourTextView.setTypeface(stylefont);
+		} catch (Exception e) {
+			Log.e("ActionBar Style", e.toString());
+		}
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case android.R.id.home:
+            finish();
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+	
 	// SA 10001
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onResume() {
 		super.onResume();
 		// Set up a listener whenever a key changes
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -129,11 +201,12 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 //		updatePrefSummary(findPreference(key));
 		updatePreference(key);
 	}
+	@SuppressWarnings({ "resource", "unused" })
 	public void copyDatabase()
 	{
 		try {
             File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
+            File d1ata = Environment.getDataDirectory();
 
             if (sd.canWrite()) {
                 String currentDBPath = "/data/data/" + getPackageName() + "/databases/CaDB";
@@ -158,6 +231,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 
 	}
 	//SA 10002
+	@SuppressWarnings("unused")
 	private void initSummary(Preference p) {
         if (p instanceof PreferenceCategory) {
             PreferenceCategory pCat = (PreferenceCategory) p;
@@ -200,6 +274,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 	    }
 	    return isValid;
 	}
+	@SuppressWarnings("deprecation")
 	private void updatePreference(String key) {
 		if (key.equals("prefUser")) {
 			Preference preference = findPreference(key);

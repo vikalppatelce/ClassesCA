@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.dto.AnswerDTO;
 import in.professionalacademyca.ca.dto.QueryDTO;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,6 +19,25 @@ public class RequestBuilder {
 		{
 			stringBuffer.put("device_id", imei);
 			stringBuffer.put("query", tables.toString());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return stringBuffer;//ParentBuffer;
+	}
+	
+	public static JSONObject getQueryNotificationData(String imei, long id)
+	{
+		JSONObject stringBuffer = new JSONObject();
+		
+		//JSONObject ParentBuffer = new JSONObject();
+		try
+		{
+			stringBuffer.put("device_id", imei);
+			stringBuffer.put("batch_name", CA.getPreferences().getBatch());
+			stringBuffer.put("level_name", CA.getPreferences().getLevel());
+			stringBuffer.put("date_time", id);
 		}
 		catch(Exception e)
 		{

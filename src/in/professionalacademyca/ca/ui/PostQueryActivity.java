@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -40,31 +41,35 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+@SuppressLint("SimpleDateFormat")
 public class PostQueryActivity extends SherlockFragmentActivity{
 
 	Button post;
 	EditText query;
 	ProgressBar progress;
+	Spinner spin_subject;
+	TextView subject;
 	
 	ActionBar actionBar;
 	Typeface stylefont;
 
 	ListView listQuery;
 	CursorAdapter adapterQuery;
+	ArrayAdapter adap_subject;
 	
 	ArrayList<QueryDTO> queryDTOs;
 	ArrayList<AnswerDTO> unAnsQueryDTOs;
@@ -88,13 +93,21 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		actionBar.setIcon(android.R.drawable.ic_menu_help);
 		
 		post= (Button)findViewById(R.id.post);
+		spin_subject = (Spinner)findViewById(R.id.spin_subject);
+		subject = (TextView)findViewById(R.id.txtsubject);
 		query = (EditText)findViewById(R.id.query);
 		listQuery = (ListView)findViewById(R.id.list);
 		progress = (ProgressBar)findViewById(R.id.progress);
 		
 		post.setTypeface(stylefont);
 		query.setTypeface(stylefont);
+		subject.setTypeface(stylefont);
 		
+		adap_subject = ArrayAdapter.createFromResource(this, R.array.arr_subject, android.R.layout.simple_spinner_dropdown_item);
+		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spin_subject.setAdapter(adap_subject);
+		
+//		listQuery.setSelector(R.drawable.listselector);  
 //		new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
 		loadUnQueryData();
 		uploadUnQueryData();
@@ -106,6 +119,9 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 					long id) {
 				// TODO Auto-generated method stub
 				String query_id=view.getTag().toString();
+//				 listQuery.setItemChecked(position, true);
+//				 listQuery.setSelection(position);
+//				 listQuery.setSelected(true);
 				Log.e("ID", String.valueOf(position) + ":"+ query_id);
 				showDialogBox(query_id);
 				}
@@ -147,6 +163,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void showDialogBox(String query_id)
 	{
 		dialogRDate="";
@@ -175,6 +192,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		String styledText = "<body><b><div style=\"color:#A7CA01;\">Q."+dialogQuery+"</div></b></br>"
 				+ "</br><div style=\"color:#EFEFEF;\">A. "+dialogResponse+" </div></body>";
 		
+		
 //		alertDialog.setMessage(dialogQuery + "" +dialogQDate + "" +dialogResponse + "" +dialogRDate);
 		alertDialog.setMessage(Html.fromHtml(styledText));
 		alertDialog.setButton("CLOSE", new DialogInterface.OnClickListener() {
@@ -197,12 +215,6 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		} catch (Exception e) {
 			Log.e("ActionBar Style", e.toString());
 		}
-	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-	       inflater.inflate(R.menu.main, menu);
-		 return true;
 	}
 	@Override
     public void onBackPressed() {
@@ -231,7 +243,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
       if(validate())
       {
     	  Log.e("Saving", "Saving");
-          saveQuery(query.getText().toString().trim());
+          saveQuery(query.getText().toString().trim(),spin_subject.getSelectedItem().toString().trim());
           if (isNetworkAvailable()) {
               loadQueryData();
               loadUnQueryData();
@@ -257,7 +269,6 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	}
 	public void uploadQueryData()
 	{
-		JSONObject finalJSON = new JSONObject();
 		JSONObject tables = new JSONObject();
 		try
 		{
@@ -283,7 +294,6 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	
 	public void uploadUnQueryData()
 	{
-		JSONObject finalJSON = new JSONObject();
 		JSONObject tables = new JSONObject();
 		try
 		{
@@ -312,7 +322,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		query.setText("");
 	}
 	
-	public void saveQuery(String str)
+	public void saveQuery(String str,String sub)
 	{
 		Bundle b = new Bundle();
 		b.putString("message", "Saving");
@@ -329,7 +339,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		dataValues.put(DBConstant.Query_Columns.COLUMN_SYNC_STATUS, "0");
 		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE, "0");
 		dataValues.put(DBConstant.Query_Columns.COLUMN_BATCH, "batch");
-		dataValues.put(DBConstant.Query_Columns.COLUMN_SUBJECT, "subject");
+		dataValues.put(DBConstant.Query_Columns.COLUMN_SUBJECT, sub);
 		dataValues.put(DBConstant.Query_Columns.COLUMN_LEVEL, "level");
 		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, "0");
 		getContentResolver().insert(DBConstant.Query_Columns.CONTENT_URI,dataValues);		
@@ -407,7 +417,6 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		protected Void doInBackground(JSONObject... params) {
 			// TODO Auto-generated method stub
 			JSONObject dataToSend = params[0];
-			String jsonString = dataToSend.toString();
 			try {
 				String str = ServiceDelegate.postData(AppConstants.URLS.BASE_URL, dataToSend);
 				
@@ -480,7 +489,6 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			JSONObject dataToSend = params[0];
 			boolean status = false;
 			String device_id=null,currentSIMImsi=null;
-			String jsonString = dataToSend.toString();
 			String query_reply =  null, query_id= null, reply_date=null;
 			try {
 				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.ANSWER_URL, dataToSend);
@@ -548,6 +556,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		}
 
 		// can use UI thread here
+		@SuppressWarnings("deprecation")
 		@Override
 		protected void onPostExecute(final Cursor result) {
 

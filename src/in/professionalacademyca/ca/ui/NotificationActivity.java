@@ -5,13 +5,16 @@ import in.professionalacademyca.ca.app.AppConstants;
 import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.service.RequestBuilder;
 import in.professionalacademyca.ca.service.ServiceDelegate;
-import in.professionalacademyca.ca.sql.CustomSqlCursorAdapter;
 import in.professionalacademyca.ca.sql.DBConstant;
+import in.professionalacademyca.ca.sql.NotificationSqlCursorAdapter;
 import in.professionalacademyca.ca.ui.utils.CustomToast;
+import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -42,6 +45,8 @@ public class NotificationActivity extends SherlockFragmentActivity{
 	ActionBar actionBar;
 	Typeface stylefont;
 	
+	JSONArray notification;
+	
 	CursorAdapter adapterQuery;
 	final static int NOTIFICATION = 1001;
 	
@@ -69,6 +74,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			Intent i = new Intent(this,NewCourseActivity.class);
 			i.putExtra("FROM", "Notification");
 			startActivityForResult(i, NOTIFICATION);
+			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 		}
 		else
 		{
@@ -81,6 +87,42 @@ public class NotificationActivity extends SherlockFragmentActivity{
 				CustomToast.showToastMessage(this, "Please check your internet connection");
 			}
 		}
+		
+		SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                		listNotification,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+
+                                	try
+                                	{
+                                	long _id  = adapterQuery.getItemId(position);
+                                	getContentResolver().delete(DBConstant.Notification_Columnns.CONTENT_URI, "_id=?", new String[] { String.valueOf(_id) });
+                                	CustomToast.showToastMessage(NotificationActivity.this, "Keep it Clean!");
+                                	}
+                                	catch(Exception e)
+                                	{
+                                		Log.e("Swipe to Dismiss", e.toString());
+                                	}
+                                }
+                                adapterQuery.notifyDataSetChanged();
+                            }
+                        });
+		
+		listNotification.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+		listNotification.setOnScrollListener(touchListener.makeScrollListener());
+
+		
+		
 	}
 	
 	private boolean isNetworkAvailable() {
@@ -121,14 +163,38 @@ public class NotificationActivity extends SherlockFragmentActivity{
         }
     }
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK)
+		{
+			if(isNetworkAvailable())
+			{
+				uploadNotificationData();
+			}
+			else
+			{
+				CustomToast.showToastMessage(this, "Please check your internet connection");
+			}
+		}
+	}
+	
 	public void uploadNotificationData()
 	{
-		JSONObject finalJSON = new JSONObject();
-		JSONObject tables = new JSONObject();
+		long  notificationID=0;
 		try
 		{
-				JSONArray exp = RequestBuilder.getNotificationData();
-				tables.put("tables", exp);
+			Cursor c = getContentResolver().query(DBConstant.Notification_Temp_Columnns.CONTENT_URI, null, null, null, DBConstant.Notification_Columnns.COLUMN_NOTIFICATION_ID + " DESC");
+			if(c!=null && c.getCount()>0)
+			{
+				c.moveToFirst();
+				notificationID = Long.parseLong(c.getString(c.getColumnIndex(DBConstant.Notification_Temp_Columnns.COLUMN_NOTIFICATION_ID)));
+			}
+			else
+			{
+				notificationID = 0;
+			}
 		}
 		catch (Exception e) {
 			// TODO: handle exception
@@ -137,9 +203,9 @@ public class NotificationActivity extends SherlockFragmentActivity{
 		TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		String currentSIMImsi = mTelephonyMgr.getDeviceId();
 		
-		JSONObject jsonObject = RequestBuilder.getQueryData(currentSIMImsi, tables);
-		Log.e("VIKALP--------------->>>>>>>>>>", jsonObject.toString());
-		Log.e("VIKALP--------------->>>>>>>>>>", tables.toString());
+		
+		JSONObject jsonObject = RequestBuilder.getQueryNotificationData(currentSIMImsi,notificationID);
+		Log.e("NOTIFICATION------>>>>>>>>>>", jsonObject.toString());
 		UploadNotificationTask uploadNotificationTask = new UploadNotificationTask();
 		uploadNotificationTask.execute(new JSONObject[]{jsonObject});
 	}
@@ -157,47 +223,54 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			// TODO Auto-generated method stub
 			JSONObject dataToSend = params[0];
 			boolean status = false;
-			String device_id=null,currentSIMImsi=null;
-			String jsonString = dataToSend.toString();
-			String query_reply =  null, query_id= null, reply_date=null;
+			String type =  null, notification_txt= null, notification_date=null,notification_id=null;
 			try {
-				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.ANSWER_URL, dataToSend);
-				TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-				currentSIMImsi = mTelephonyMgr.getDeviceId();
+				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.NOTIFICATION_URL, dataToSend);
 				
 				//str = "{\"tables\":{\"service\":[]},\"lov\":{\"location\":[\"L 1\"],\"expense_category\":[],\"patient_type\":[\"OPD\",\"IPD\",\"SX\"],\"payment_mode\":[\"M2\",\"M1\"],\"diagnose_procedure\":[],\"referred_by\":[\"R2\",\"R1\"],\"start_time\":[],\"surgery_level\":[\"Level : 7\",\"Level : 6\",\"Level : 5\",\"Level : 4\",\"Level : 3\",\"Level : 2\",\"Level : 1\"],\"team_member\":[],\"ward\":[]}}";
 				if(jsonStr != null)
 				{
 					JSONObject jsonObject = new JSONObject(new String(jsonStr));
 					status = jsonObject.getBoolean(AppConstants.RESPONSES.QueryResponse.QSTATUS);
-					device_id=jsonObject.getString("device_id");
-					/*if(status && currentSIMImsi.equalsIgnoreCase(device_id))
+					if(status)
 					{
 						try {
 		                    // Getting JSON Array node
-		                    query_answer = jsonObject.getJSONArray("query_answer");
+		                    notification = jsonObject.getJSONArray("notification");
 		 
 		                    // looping through All Contacts
-		                    for (int i = 0; i < query_answer.length(); i++) {
-		                        JSONObject c = query_answer.getJSONObject(i);
-		                         query_reply="";
-		                         query_id="";
-		                         reply_date="";
-		                        query_reply = c.getString("query_replay");
-		                        query_id = c.getString("question_id");
-		                        reply_date = c.getString("replay_date");
+		                    for (int i = 0; i < notification.length(); i++) {
+		                        JSONObject c = notification.getJSONObject(i);
+		                         type="";
+		                         notification_date="";
+		                         notification_txt="";
+		                         notification_id="";
+		                        type = c.getString("notification_type");
+		                        notification_date = c.getString("notification_date");
+		                        notification_txt = c.getString("notification_text");
+		                        notification_id = c.getString("created_on");
 
 		                        ContentValues contentValues = new ContentValues();
-		    					contentValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE, query_reply);
-		    					contentValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, reply_date);
-		    					int col = getContentResolver().update(DBConstant.Query_Columns.CONTENT_URI,contentValues,DBConstant.Query_Columns.COLUMN_ID + "=?",new String[] { query_id});
-		    					Log.e("ROWS UPDATED : data : ", col + "");
+		    					contentValues.put(DBConstant.Notification_Columnns.COLUMN_TITLE, notification_txt);
+		    					contentValues.put(DBConstant.Notification_Columnns.COLUMN_NOTIFICATION_DATE, notification_date);
+		    					contentValues.put(DBConstant.Notification_Columnns.COLUMN_BATCH, type);
+		    					contentValues.put(DBConstant.Notification_Columnns.COLUMN_NOTIFICATION_ID, notification_id);
+		    					getContentResolver().insert(DBConstant.Notification_Columnns.CONTENT_URI, contentValues);
+		    					
+		    					
+		                        ContentValues tempValues = new ContentValues();
+		    					tempValues.put(DBConstant.Notification_Temp_Columnns.COLUMN_NOTIFICATION_ID, notification_id);
+		    					getContentResolver().insert(DBConstant.Notification_Temp_Columnns.CONTENT_URI, tempValues);
+		    					
+		    					
+//		    					int col = getContentResolver().update(DBConstant.Query_Columns.CONTENT_URI,contentValues,DBConstant.Query_Columns.COLUMN_ID + "=?",new String[] { query_id});
+		    					Log.e("Notification","New Notifcation Added");
 		                        // adding contact to contact list
 		                    }
 		                } catch (JSONException e) {
 		                    e.printStackTrace();
 		                }
-					}*/
+					}
 					}
 				Log.e("UploadTask","");
 			} catch (Exception e) {
@@ -210,7 +283,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
+			new SelectDataTask().execute(DBConstant.Notification_Columnns.CONTENT_URI);
 			progress.setVisibility(View.GONE);
 		}
 	}
@@ -226,14 +299,15 @@ public class NotificationActivity extends SherlockFragmentActivity{
 		}
 
 		// can use UI thread here
+		@SuppressWarnings("deprecation")
 		@Override
 		protected void onPostExecute(final Cursor result) {
 
 			startManagingCursor(result);
 			int[] listFields = new int[] { R.id.question , R.id.answer};
-			String[] dbColumns = new String[] { DBConstant.Query_Columns.COLUMN_ID, DBConstant.Query_Columns.COLUMN_QUERY , DBConstant.Query_Columns.COLUMN_RESPONSE};
+			String[] dbColumns = new String[] { DBConstant.Notification_Columnns.COLUMN_ID, DBConstant.Notification_Columnns.COLUMN_TITLE , DBConstant.Notification_Columnns.COLUMN_NOTIFICATION_DATE};
 
-			NotificationActivity.this.adapterQuery = new CustomSqlCursorAdapter(NotificationActivity.this, R.layout.post_item,result, dbColumns, listFields,currentUri);
+			NotificationActivity.this.adapterQuery = new NotificationSqlCursorAdapter(NotificationActivity.this, R.layout.post_item,result, dbColumns, listFields,currentUri);
 			NotificationActivity.this.listNotification.setAdapter(NotificationActivity.this.adapterQuery);
 			progress.setVisibility(View.GONE);
 		}
