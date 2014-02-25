@@ -15,7 +15,7 @@
             android:id="@+id/ticker"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#FC3060"
+            android:background="#B40404"
             android:clickable="true"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
@@ -23,8 +23,8 @@
             android:padding="5dp"
             android:singleLine="true"
             android:text="Welcome to Professional Academcy CA Classes Android Application"
-            android:textColor="#FFF"
-            android:textSize="20sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/text_size_ticker" />
     </LinearLayout>
     
     
@@ -55,7 +55,7 @@
             <TextView
                 android:id="@+id/txttimetable"
                 style="@style/DashboardButton"
-                android:drawableTop="@drawable/ic_dashboard_artists"
+                android:drawableTop="@drawable/calendar"
                 android:text="Time Table" />
         </LinearLayout>
 
@@ -76,7 +76,7 @@
             <TextView
                 android:id="@+id/txthelp"
                 style="@style/DashboardButton"
-                android:drawableTop="@drawable/ic_dashboard_events"
+                android:drawableTop="@drawable/post_query"
                 android:text="Post Query" />
         </LinearLayout>
     </LinearLayout>
@@ -104,7 +104,7 @@
             <TextView
                 android:id="@+id/txtnotification"
                 style="@style/DashboardButton"
-                android:drawableTop="@drawable/ic_dashboard_location"
+                android:drawableTop="@drawable/notification"
                 android:text="Notification" />
         </LinearLayout>
 
@@ -125,7 +125,7 @@
             <TextView
                 android:id="@+id/txtsetup"
                 style="@style/DashboardButton"
-                android:drawableTop="@drawable/ic_dashboard_mygigs"
+                android:drawableTop="@drawable/setup"
                 android:text="Setup" />
         </LinearLayout>
     </LinearLayout>

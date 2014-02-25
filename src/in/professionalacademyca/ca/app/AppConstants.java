@@ -47,6 +47,8 @@ public class AppConstants {
 	public static final String IMAGE_DIRECTORY_PATH = Environment.getExternalStorageDirectory().getPath()+"/CA";
 	public static final String IMAGE_DIRECTORY_PATH_DATA = CA.getApplication().getApplicationContext().getFilesDir().getAbsolutePath();
 	public static final String EXTENSION = ".png";
+	public static final String GCM_SENDER_ID = "777045980104";
+	
 	
 	public static final boolean DEBUG = false;
 	

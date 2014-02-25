@@ -129,6 +129,18 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
         }
     }
 	
+	public void onSetDefault(View v)
+	{
+		if(chk_default.isChecked())
+		{
+			chk_default.setChecked(false);
+		}
+		else
+		{
+		chk_default.setChecked(true);
+		}
+	}
+	
 	public void onGo(View v)
 	{
 		if(validate())

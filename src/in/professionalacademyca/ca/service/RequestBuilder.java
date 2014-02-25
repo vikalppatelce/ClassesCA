@@ -62,6 +62,24 @@ public class RequestBuilder {
 		return stringBuffer;//ParentBuffer;
 	}
 	
+	public static JSONObject getPushNotificationData(String imei)
+	{
+		JSONObject stringBuffer = new JSONObject();
+		
+		//JSONObject ParentBuffer = new JSONObject();
+		try
+		{
+			stringBuffer.put("device_id", imei);
+			stringBuffer.put("registration_id", CA.getSharedPreferences().getString("registration_id", "Not yet Registered"));
+			stringBuffer.put("appVersion", CA.getSharedPreferences().getInt("appVersion", 0));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return stringBuffer;//ParentBuffer;
+	}
+	
 	public static JSONArray getQueryDetails(ArrayList<QueryDTO> queryDTO)
 	{
 		JSONArray jsonArray = new JSONArray();
