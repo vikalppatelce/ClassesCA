@@ -6,6 +6,7 @@ import in.professionalacademyca.ca.app.AppConstants;
 import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.service.RequestBuilder;
 import in.professionalacademyca.ca.service.ServiceDelegate;
+import in.professionalacademyca.ca.ui.utils.QustomDialogBuilder;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -110,9 +111,10 @@ public class NewHomeActivity extends SherlockFragmentActivity {
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
-
 		//EA GCM
 	}
+	
+	
 	//SA GCM
 	@Override
 	protected void onResume() {
@@ -372,7 +374,23 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 	
 	public void onTicker(View v)
 	{
-		showDialogBox(TextUtils.isEmpty(tickerText)? "Please check your internet connection" : tickerText);
+//		showDialogBox(TextUtils.isEmpty(tickerText)? "Please check your internet connection" : tickerText);
+		
+		final String HALLOWEEN_RED = "#B40404";
+		QustomDialogBuilder qustomDialogBuilder = new QustomDialogBuilder(v.getContext()).
+				setTitle("News Flash").
+				setTitleColor(HALLOWEEN_RED).
+				setDividerColor(HALLOWEEN_RED).
+				setMessage(TextUtils.isEmpty(tickerText)? "Please check your internet connection" : tickerText).
+				setFontTitle(stylefont).
+				setFontMessage(stylefont);
+				
+//				setCustomView(R.layout.example_ip_address_layout, v.getContext()).
+//				setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+
+		qustomDialogBuilder.show();
+		
+		
 	}
 	
 	@SuppressWarnings("deprecation")

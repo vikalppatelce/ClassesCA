@@ -11,6 +11,7 @@ import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.CustomSqlCursorAdapter;
 import in.professionalacademyca.ca.sql.DBConstant;
 import in.professionalacademyca.ca.ui.utils.CustomToast;
+import in.professionalacademyca.ca.ui.utils.QustomQueryDialogBuilder;
 import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 
 import java.text.SimpleDateFormat;
@@ -22,10 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Typeface;
@@ -35,7 +34,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -119,12 +117,9 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 					long id) {
 				// TODO Auto-generated method stub
 				String query_id=view.getTag().toString();
-//				 listQuery.setItemChecked(position, true);
-//				 listQuery.setSelection(position);
-//				 listQuery.setSelected(true);
 				Log.e("ID", String.valueOf(position) + ":"+ query_id);
 				showDialogBox(query_id);
-				}
+			}
 		});
 		
 		SwipeDismissListViewTouchListener touchListener =
@@ -170,8 +165,8 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		dialogResponse="";
 		dialogQDate="";
 		dialogQuery="";
-		final AlertDialog alertDialog = new AlertDialog.Builder(PostQueryActivity.this).create();
-		alertDialog.setTitle("Query");
+//		final AlertDialog alertDialog = new AlertDialog.Builder(PostQueryActivity.this).create();
+//		alertDialog.setTitle("Query");
 		// Setting Dialog Message
 		Cursor c = getContentResolver().query(DBConstant.Query_Columns.CONTENT_URI, null, DBConstant.Query_Columns.COLUMN_ID +"=?", new String[]{query_id}, null);
 		// Setting Dialog Title
@@ -189,19 +184,34 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 					;
 		}
 		
-		String styledText = "<body><b><div style=\"color:#A7CA01;\">Q."+dialogQuery+"</div></b></br>"
-				+ "</br><div style=\"color:#EFEFEF;\">A. "+dialogResponse+" </div></body>";
 		
-		
-//		alertDialog.setMessage(dialogQuery + "" +dialogQDate + "" +dialogResponse + "" +dialogRDate);
-		alertDialog.setMessage(Html.fromHtml(styledText));
-		alertDialog.setButton("CLOSE", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				alertDialog.dismiss();
-			}
-		});
-		alertDialog.show();
+		final String HALLOWEEN_RED = "#B40404";
+		QustomQueryDialogBuilder qustomDialogBuilder = new QustomQueryDialogBuilder(PostQueryActivity.this).
+				setTitle("Query").
+				setTitleColor(HALLOWEEN_RED).
+				setDividerColor(HALLOWEEN_RED).
+				setMessage("Q. "+dialogQuery).
+				setAnswer("A. "+dialogResponse).
+				setFontTitle(stylefont).
+				setFontAnswer(stylefont).
+				setFontMessage(stylefont);
+		qustomDialogBuilder.show();
+//	
+//		
+//		
+//		String styledText = "<body><b><div style=\"color:#A7CA01;\">Q."+dialogQuery+"</div></b></br>"
+//				+ "</br><div style=\"color:#EFEFEF;\">A. "+dialogResponse+" </div></body>";
+//		
+//		
+////		alertDialog.setMessage(dialogQuery + "" +dialogQDate + "" +dialogResponse + "" +dialogRDate);
+//		alertDialog.setMessage(Html.fromHtml(styledText));
+//		alertDialog.setButton("CLOSE", new DialogInterface.OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				alertDialog.dismiss();
+//			}
+//		});
+//		alertDialog.show();
 	}
 	
 	public void fontActionBar(String str)
