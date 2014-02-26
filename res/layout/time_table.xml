@@ -58,7 +58,7 @@
         android:layout_height="1dp"
         android:layout_below="@id/txtTimeTable2"
         android:layout_margin="10dp"
-        android:background="#0000FF" />
+         />
 
     <ListView
         android:id="@+id/timetable_list"

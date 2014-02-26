@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory android:title="Batch">
-       <Preference android:title="Batch Option" android:key="prefBatch"
+    <in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory android:title="Batch">
+       <in.professionalacademyca.ca.ui.utils.CustomPreference android:title="Batch Option" android:key="prefBatch"
            android:enabled="true"/>       
-   </PreferenceCategory>
-   <PreferenceCategory android:title="Developer">
-       <Preference android:title="Developer Options" android:key="prefDev"
+   </in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory>
+   <in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory android:title="Developer">
+       <in.professionalacademyca.ca.ui.utils.CustomPreference android:title="Developer Options" android:key="prefDev"
            android:enabled="true"/>       
-   </PreferenceCategory>
-   <PreferenceCategory android:title="About">
-       <Preference android:title="About Us" android:key="prefAbout"
+   </in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory>
+   <in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory android:title="About">
+       <in.professionalacademyca.ca.ui.utils.CustomPreference android:title="About Us" android:key="prefAbout"
            android:enabled="true"/>       
-   </PreferenceCategory>
-   <PreferenceCategory android:title="Release Note">
-       <Preference android:title="Change Log" android:key="prefRelease"
+   </in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory>
+   <in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory android:title="Release Note">
+       <in.professionalacademyca.ca.ui.utils.CustomPreference android:title="Change Log" android:key="prefRelease"
            android:enabled="true"/>       
-   </PreferenceCategory>
+   </in.professionalacademyca.ca.ui.utils.CustomPreferenceCategory>
 </PreferenceScreen>
