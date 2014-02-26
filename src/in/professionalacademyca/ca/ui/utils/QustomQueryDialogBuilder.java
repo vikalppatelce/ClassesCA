@@ -84,6 +84,11 @@ public class QustomQueryDialogBuilder extends AlertDialog.Builder{
         return this;
     }
     
+    public QustomQueryDialogBuilder setMessageColor(String colorString) {
+    	mMessage.setTextColor(Color.parseColor(colorString));
+    	return this;
+    }
+    
     public QustomQueryDialogBuilder setAnswer(int textResId) {
         mAnswer.setText(textResId);
         return this;
@@ -97,6 +102,11 @@ public class QustomQueryDialogBuilder extends AlertDialog.Builder{
     public QustomQueryDialogBuilder setFontAnswer(Typeface style) {
         mAnswer.setTypeface(style);
         return this;
+    }
+    
+    public QustomQueryDialogBuilder setAnswerColor(String colorString) {
+    	mAnswer.setTextColor(Color.parseColor(colorString));
+    	return this;
     }
 
     @Override

@@ -222,7 +222,14 @@ public class NewHomeActivity extends SherlockFragmentActivity {
                 // so it can use GCM/HTTP or CCS to send messages to your app.
                 // The request to your server should be authenticated if your app
                 // is using accounts.
+                if(!CA.getSharedPreferences().getBoolean("isRegisteredToServer", false))
+                {
                 sendRegistrationIdToBackend();
+                }
+                else
+                {
+                	Log.i("AndroidToServer", "Already registered to server");
+                }
             } 
             catch (IOException ex) {
                 msg = "Error :" + ex.getMessage();
@@ -254,7 +261,7 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 			JSONObject dataToSend = params[0];
 			boolean status = false;
 			try {
-				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.TICKER_URL, dataToSend);
+				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.REGISTERED_TO_SERVER_URL, dataToSend);
 				
 				//str = "{\"tables\":{\"service\":[]},\"lov\":{\"location\":[\"L 1\"],\"expense_category\":[],\"patient_type\":[\"OPD\",\"IPD\",\"SX\"],\"payment_mode\":[\"M2\",\"M1\"],\"diagnose_procedure\":[],\"referred_by\":[\"R2\",\"R1\"],\"start_time\":[],\"surgery_level\":[\"Level : 7\",\"Level : 6\",\"Level : 5\",\"Level : 4\",\"Level : 3\",\"Level : 2\",\"Level : 1\"],\"team_member\":[],\"ward\":[]}}";
 				if(jsonStr != null)
@@ -265,8 +272,13 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 					{
 						try {
 		                    // Getting JSON Array node
-							tickerText = jsonObject.getString("ticker");
-		                } catch (JSONException e) {
+							//SERVERDEMO
+							final SharedPreferences prefs = getGCMPreferences(context);
+						    Log.i(TAG, "Saving regId on server ");
+						    SharedPreferences.Editor editor = prefs.edit();
+						    editor.putBoolean("isRegisteredToServer", true);
+						    editor.commit();
+		                } catch (Exception e) {
 		                    e.printStackTrace();
 		                }
 					}
@@ -282,7 +294,6 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			ticker.setText(tickerText);
 		}
 	}
 

@@ -71,7 +71,7 @@ public class RequestBuilder {
 		{
 			stringBuffer.put("device_id", imei);
 			stringBuffer.put("registration_id", CA.getSharedPreferences().getString("registration_id", "Not yet Registered"));
-			stringBuffer.put("appVersion", CA.getSharedPreferences().getInt("appVersion", 0));
+			stringBuffer.put("app_version", CA.getSharedPreferences().getInt("appVersion", 0));
 		}
 		catch(Exception e)
 		{

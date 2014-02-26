@@ -18,6 +18,7 @@ public class AppConstants {
 		public static final String ANSWER_URL =  "http://www.netdoers.com/projects/caprofessional/services/query_answer.php";
 		public static final String TICKER_URL =  "http://www.netdoers.com/projects/caprofessional/services/ticker.php";
 		public static final String NOTIFICATION_URL =  "http://www.netdoers.com/projects/caprofessional/services/notification.php";
+		public static final String REGISTERED_TO_SERVER_URL =  "http://www.netdoers.com/projects/caprofessional/services/user_device.php";
 	}
 	
 	public interface RESPONSES
