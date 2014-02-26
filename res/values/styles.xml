@@ -16,19 +16,6 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
-    <style name="IgRedButtonStyle">
-        <item name="android:textSize">12.0sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:background">@drawable/button_large_red_bg</item>
-        <item name="android:paddingLeft">10.0dip</item>
-        <item name="android:paddingTop">2.0dip</item>
-        <item name="android:paddingRight">10.0dip</item>
-        <item name="android:paddingBottom">2.0dip</item>
-    </style>
 
     <style name="StyleSpinner">
         <item name="android:textSize">20sp</item>
@@ -39,32 +26,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:background">@drawable/button_large_green_bg</item>
+        <item name="android:background">@drawable/button_large_red_bg</item>
         <item name="android:shadowColor">@color/text_shadow_red_button</item>
-        <item name="android:shadowDx">0.0</item>
-        <item name="android:shadowDy">1.0</item>
-        <item name="android:shadowRadius">0.1</item>
-    </style>
-    
-    <style name="IgGreenButtonStyleLarge">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:background">@drawable/button_large_green_bg</item>
-        <item name="android:shadowColor">@color/text_shadow_green_button</item>
-        <item name="android:shadowDx">0.0</item>
-        <item name="android:shadowDy">1.0</item>
-        <item name="android:shadowRadius">0.1</item>
-    </style>
-    
-    
-    <style name="IgBlueButtonStyleLarge">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:background">@drawable/button_large_blue_bg</item>
         <item name="android:shadowDx">0.0</item>
         <item name="android:shadowDy">1.0</item>
         <item name="android:shadowRadius">0.1</item>

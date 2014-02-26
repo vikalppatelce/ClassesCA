@@ -1,3 +1,4 @@
+
 package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
@@ -32,11 +33,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -63,7 +66,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	TextView subject;
 	
 	ActionBar actionBar;
-	Typeface stylefont;
+	static Typeface stylefont;
 
 	ListView listQuery;
 	CursorAdapter adapterQuery;
@@ -101,7 +104,12 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		query.setTypeface(stylefont);
 		subject.setTypeface(stylefont);
 		
-		adap_subject = ArrayAdapter.createFromResource(this, R.array.arr_subject, android.R.layout.simple_spinner_dropdown_item);
+		String [] spin_arry = getResources().getStringArray(R.array.arr_subject);        
+		adap_subject = new CustomArrayAdapter<CharSequence>(this, spin_arry);
+
+
+		
+//		adap_subject = ArrayAdapter.createFromResource(this, R.array.arr_subject, android.R.layout.simple_spinner_dropdown_item);
 		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spin_subject.setAdapter(adap_subject);
 		
@@ -150,13 +158,48 @@ public class PostQueryActivity extends SherlockFragmentActivity{
                             }
                         });
 		
+		if(Build.VERSION.SDK_INT > 12)
+		{
 		listQuery.setOnTouchListener(touchListener);
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
 		listQuery.setOnScrollListener(touchListener.makeScrollListener());
-
+		}
 		
 	}
+
+	static class CustomArrayAdapter<T> extends ArrayAdapter<T>
+	{
+	    public CustomArrayAdapter(Context ctx, T [] objects)
+	    {
+	        super(ctx, android.R.layout.simple_spinner_item, objects);
+	    }
+
+	    //other constructors
+
+	    @Override
+		public TextView getView(int position, View convertView, ViewGroup parent) {
+	    	TextView v = (TextView) super.getView(position, convertView, parent);
+	    	v.setTypeface(stylefont);
+	    	v.setPadding(10, 10, 0, 10);
+	    	return v;
+	    	}
+	    
+	    @Override
+	    public View getDropDownView(int position, View convertView, ViewGroup parent)
+	    {
+	        View view = super.getView(position, convertView, parent);
+
+	            TextView text = (TextView)view.findViewById(android.R.id.text1);
+	            text.setTypeface(stylefont);
+	            text.setPadding(10, 10, 0, 10);
+	        return view;
+	    }
+	}
+
+	
+	
+	
 	
 	@SuppressWarnings("deprecation")
 	public void showDialogBox(String query_id)

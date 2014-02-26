@@ -62,6 +62,7 @@
                             android:spinnerMode="dropdown"
                             android:layout_weight="1"
                             android:gravity="right|bottom"
+                            android:textSize="20sp"
                             android:singleLine="true" />
                     </TableRow>
 
@@ -110,7 +111,7 @@
 
         <Button
             android:id="@+id/go"
-            style="@style/IgGreenButtonStyleLarge"
+            style="@style/IgRedButtonStyleLarge"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -11,4 +11,5 @@
     <color name="light_grey">#ffaaaaaa</color>
     <color name="popup_bg_color">#EE666666</color>
 	<color name="popup_text_color">#FFFFFF</color>
+	<color name="grey">#E5E4E2</color>
 </resources>

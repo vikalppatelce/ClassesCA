@@ -4,11 +4,13 @@ import in.professionalacademyca.ca.R;
 import in.professionalacademyca.ca.app.AppConstants;
 import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.ui.utils.CustomToast;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -19,8 +21,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 public class NewCourseActivity  extends SherlockFragmentActivity implements OnItemSelectedListener{
@@ -34,7 +34,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 	
 	ArrayAdapter adap_course,adap_city,adap_area,adap_batch;
 	
-	Typeface stylefont;
+	static Typeface stylefont;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -78,7 +78,10 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		txtsetdefault.setTypeface(stylefont);
 		go.setTypeface(stylefont);
 		
-		adap_course = ArrayAdapter.createFromResource(this, R.array.arr_course_level, android.R.layout.simple_spinner_dropdown_item);
+//		adap_course = ArrayAdapter.createFromResource(this, R.array.arr_course_level, android.R.layout.simple_spinner_dropdown_item);
+		
+		String [] arr_course = getResources().getStringArray(R.array.arr_course_level);        
+		adap_course = new CustomArrayAdapter<CharSequence>(this, arr_course);
 		
 		spin_course.setOnItemSelectedListener(this);
 		adap_course.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -101,13 +104,6 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		}
 	}
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-	       inflater.inflate(R.menu.main, menu);
-		 return true;
-	}
-	
-	@Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
         super.onBackPressed();
@@ -122,8 +118,6 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
             finish();
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             return true;
-        case R.id.notification: 
-        	return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -189,12 +183,43 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		}
 		return false;
 	}
+	
+	static class CustomArrayAdapter<T> extends ArrayAdapter<T>
+	{
+	    public CustomArrayAdapter(Context ctx, T [] objects)
+	    {
+	        super(ctx, android.R.layout.simple_spinner_item, objects);
+	    }
+
+	    //other constructors
+
+	    @Override
+		public TextView getView(int position, View convertView, ViewGroup parent) {
+	    	TextView v = (TextView) super.getView(position, convertView, parent);
+	    	v.setTypeface(stylefont);
+	    	v.setPadding(15, 15, 0, 15);
+	    	return v;
+	    	}
+	    
+	    @Override
+	    public View getDropDownView(int position, View convertView, ViewGroup parent)
+	    {
+	        View view = super.getView(position, convertView, parent);
+
+	            TextView text = (TextView)view.findViewById(android.R.id.text1);
+	            text.setTypeface(stylefont);
+	            text.setPadding(15, 15, 0, 15);
+	        return view;
+	    }
+	}
+	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
 		int pos_course;
 		int which_spinner;
+		String [] arr_batch = null;
 		
 		pos_course = spin_course.getSelectedItemPosition();
 		which_spinner = parent.getId();
@@ -203,12 +228,16 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 			switch(pos_course)
 			{
 			case 0:
-				adap_batch = ArrayAdapter.createFromResource(this, R.array.arr_level_batch, android.R.layout.simple_spinner_dropdown_item);
+//				adap_batch = ArrayAdapter.createFromResource(this, R.array.arr_level_batch, android.R.layout.simple_spinner_dropdown_item);
+				arr_batch = getResources().getStringArray(R.array.arr_level_batch);        
+				
 				break;
 			case 1:
-				adap_batch = ArrayAdapter.createFromResource(this, R.array.arr_level_batch2, android.R.layout.simple_spinner_dropdown_item);
+//				adap_batch = ArrayAdapter.createFromResource(this, R.array.arr_level_batch2, android.R.layout.simple_spinner_dropdown_item);
+				arr_batch = getResources().getStringArray(R.array.arr_level_batch2);
 				break;
 			}
+			adap_batch = new CustomArrayAdapter<CharSequence>(this, arr_batch);
 			adap_batch.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spin_batch.setAdapter(adap_batch);
 		}

@@ -2,9 +2,12 @@ package in.professionalacademyca.ca.service;
 
 import in.professionalacademyca.ca.R;
 import in.professionalacademyca.ca.app.AppConstants;
+import in.professionalacademyca.ca.dto.AnswerDTO;
 import in.professionalacademyca.ca.sql.DBConstant;
 import in.professionalacademyca.ca.ui.NotificationActivity;
 import in.professionalacademyca.ca.ui.PostQueryActivity;
+
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +43,9 @@ public class GcmIntentService extends IntentService {
     String notificationTitle = null;
     
     JSONArray notification;
+
+    ArrayList<AnswerDTO> unAnsQueryDTOs;
+    JSONArray query_answer = null;
 
     public GcmIntentService() {
         super("GcmIntentService");
@@ -93,6 +99,25 @@ public class GcmIntentService extends IntentService {
                     Log.i(TAG, "Working..." + SystemClock.elapsedRealtime());
 				try {
 					uploadNotificationData();
+					} 
+				catch (Exception e) 
+				{
+					
+				}
+                Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
+                
+                // Post notification of received message.
+//                sendNotification("New Notification", notificationContent, "notification");
+                Log.i(TAG, "Received: " + extras.toString());
+            }
+            else if (MESSAGE_TYPE_QUERY.equalsIgnoreCase(messageType)) 
+            {
+                // This loop represents the service doing some work.
+                
+                    Log.i(TAG, "Working..." + SystemClock.elapsedRealtime());
+				try {
+					loadUnQueryData();
+					uploadUnQueryData();
 					} 
 				catch (Exception e) 
 				{
@@ -271,4 +296,150 @@ public class GcmIntentService extends IntentService {
 			sendNotification("New Notification", notificationContent, "notification");
 		}
 	}
+	
+	/*
+	 * QUERY
+	 */
+	
+	public void loadUnQueryData()
+	{
+		String _id;
+		String query;
+		String date;
+
+		Cursor c = getContentResolver().query(DBConstant.Query_Columns.CONTENT_URI, null, DBConstant.Query_Columns.COLUMN_RESPONSE +"=?", new String[]{"0"}, null);
+		if( c != null && c.getCount() > 0)
+		{
+			unAnsQueryDTOs = new ArrayList<AnswerDTO>();
+			while(c.moveToNext())
+			{
+				_id = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_ID));
+				query = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY));
+				date = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY_DATE));
+				unAnsQueryDTOs.add(new AnswerDTO(_id, query, null, date,null));
+			}
+			c.close();
+
+		}
+	}
+	public void uploadUnQueryData()
+	{
+		JSONObject tables = new JSONObject();
+		try
+		{
+			if(unAnsQueryDTOs != null && unAnsQueryDTOs.size() > 0)
+			{
+				JSONArray exp = RequestBuilder.getUnAnsQueryDetails(unAnsQueryDTOs);
+				tables.put("tables", exp);
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			Log.e("jSON - Query", e.toString());
+		}		
+		TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		String currentSIMImsi = mTelephonyMgr.getDeviceId();
+		
+		JSONObject jsonObject = RequestBuilder.getQueryData(currentSIMImsi, tables);
+		Log.e("UNQUERY--------------->>>>>>>>>>", jsonObject.toString());
+		Log.e("UNQUERY--------------->>>>>>>>>>", tables.toString());
+		UploadUnAnswerTask uploadTask = new UploadUnAnswerTask();
+		uploadTask.execute(new JSONObject[]{jsonObject});
+	}
+	
+	private class UploadUnAnswerTask extends AsyncTask<JSONObject, Void, Void>
+	{
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
+		@Override
+		protected Void doInBackground(JSONObject... params) {
+			// TODO Auto-generated method stub
+			JSONObject dataToSend = params[0];
+			boolean status = false;
+			String device_id=null,currentSIMImsi=null;
+			String query_reply =  null, query_id= null, reply_date=null;
+			try {
+				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.ANSWER_URL, dataToSend);
+				TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+				currentSIMImsi = mTelephonyMgr.getDeviceId();
+				
+				//str = "{\"tables\":{\"service\":[]},\"lov\":{\"location\":[\"L 1\"],\"expense_category\":[],\"patient_type\":[\"OPD\",\"IPD\",\"SX\"],\"payment_mode\":[\"M2\",\"M1\"],\"diagnose_procedure\":[],\"referred_by\":[\"R2\",\"R1\"],\"start_time\":[],\"surgery_level\":[\"Level : 7\",\"Level : 6\",\"Level : 5\",\"Level : 4\",\"Level : 3\",\"Level : 2\",\"Level : 1\"],\"team_member\":[],\"ward\":[]}}";
+				if(jsonStr != null)
+				{
+					JSONObject jsonObject = new JSONObject(new String(jsonStr));
+					status = jsonObject.getBoolean(AppConstants.RESPONSES.QueryResponse.QSTATUS);
+					device_id=jsonObject.getString("device_id");
+					if(status && currentSIMImsi.equalsIgnoreCase(device_id))
+					{
+						try {
+		                    // Getting JSON Array node
+		                    query_answer = jsonObject.getJSONArray("query_answer");
+		 
+		                    // looping through All Contacts
+		                    for (int i = 0; i < query_answer.length(); i++) {
+		                        JSONObject c = query_answer.getJSONObject(i);
+								query_reply = "";
+								query_id = "";
+								reply_date = "";
+								query_reply = c.getString("query_replay");
+								query_id = c.getString("question_id");
+								reply_date = c.getString("replay_date");
+								
+								notificationContent = query_reply;
+
+		                        ContentValues contentValues = new ContentValues();
+		    					contentValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE, query_reply);
+		    					contentValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, reply_date);
+		    					int col = getContentResolver().update(DBConstant.Query_Columns.CONTENT_URI,contentValues,DBConstant.Query_Columns.COLUMN_ID + "=?",new String[] { query_id});
+		    					Log.e("ROWS UPDATED : data : ", col + "");
+		    					
+		    					try
+								{
+		    						Cursor cr = getContentResolver().query(DBConstant.Query_Columns.CONTENT_URI, null, DBConstant.Query_Columns.COLUMN_ID +"=?", new String[]{query_id}, null);
+		    						// Setting Dialog Title
+		    						if(cr!=null && cr.getCount()>0)
+		    						{
+		    							cr.moveToFirst();
+		    							notificationTitle = cr.getString(cr.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY));
+		    							
+		    						}
+								}
+								catch(Exception e)
+								{
+									
+								}
+		                        // adding contact to contact list
+		                    }
+		                    
+		                    if(query_answer.length() > 1)
+		                    {
+		                    	notificationTitle = "Query";
+		                    	notificationContent = query_answer + " is Answered";
+		                    }
+		                    
+		                } catch (JSONException e) {
+		                    e.printStackTrace();
+		                }
+					}
+					}
+				Log.e("UploadTask","");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			sendNotification(notificationTitle, notificationContent, "query");
+		}
+	}
+
+
+	
 }

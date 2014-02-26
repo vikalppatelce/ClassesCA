@@ -52,7 +52,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="in.professionalacademyca.ca.ui.PrefsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+             />
         <activity
             android:name="in.professionalacademyca.ca.ui.NotificationActivity"
             android:screenOrientation="portrait" 

@@ -19,7 +19,9 @@ package in.professionalacademyca.ca.ui.utils;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -30,7 +32,6 @@ import android.view.ViewPropertyAnimator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -74,6 +75,7 @@ import java.util.List;
  *
  * @see SwipeDismissTouchListener
  */
+@SuppressLint("NewApi")
 public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
     // Cached ViewConfiguration and system-wide constant values
     private int mSlop;

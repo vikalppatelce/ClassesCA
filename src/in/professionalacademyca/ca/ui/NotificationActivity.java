@@ -24,6 +24,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -116,13 +117,13 @@ public class NotificationActivity extends SherlockFragmentActivity{
                             }
                         });
 		
+		if(Build.VERSION.SDK_INT > 12)
+		{
 		listNotification.setOnTouchListener(touchListener);
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
 		listNotification.setOnScrollListener(touchListener.makeScrollListener());
-
-		
-		
+		}
 	}
 	
 	private boolean isNetworkAvailable() {
