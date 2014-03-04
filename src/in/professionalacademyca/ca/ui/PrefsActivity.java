@@ -3,6 +3,7 @@
  * DEVELOPER		:- VIKALP PATEL
  * AIM      		:- EXPENSES
  * DESCRIPTION 		:- SETTINGS OF APPLICATION
+ * SEARCH           :- D: ADAPTER BUTTON SPINNER ASYNCTASK 
  * 
  * S - START E- END  C- COMMENTED  U -EDITED A -ADDED
  * --------------------------------------------------------------------------------------------------------------------
@@ -139,13 +140,13 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 					// TODO Auto-generated method stub
 				//	showDialog(DEV);
 					AboutDialog aboutDialog = new AboutDialog(PrefsActivity.this);
-					aboutDialog.show();
+					aboutDialog.show(PrefsActivity.this);
 					return false;
 				}
 			});
 		}
 	}
-	
+//	D: APPLY FONT ON ACTION BAR [FONT ACTIONBAR]
 	public void fontActionBar(String str)
 	{
 		try {
@@ -158,6 +159,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 			Log.e("ActionBar Style", e.toString());
 		}
 	}
+//	D: ON OPTION SELECTED [OPTION HOME]
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -172,6 +174,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
         }
     }
 	
+//	D: REGISTER FOR CHANGE OF SETTINGS IN PREFERENCE [REGISTER  PREFERENCES LISTENER]
 	// SA 10001
 	@SuppressWarnings("deprecation")
 	@Override
@@ -180,6 +183,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 		// Set up a listener whenever a key changes
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
+//	D: REGISTER FOR CHANGE OF SETTINGS IN PREFERENCE [REGISTER  PREFERENCES LISTENER]
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPause() {
@@ -187,12 +191,14 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 		// Unregister the listener whenever a key changes
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
+//	D: APPLY ANIMATION ON BACK PRESSED [BACK ANIMATION]
 	@Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
         super.onBackPressed();
         overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
     }
+//	D: UPDATED PREFRENCES VALUE ON CHANGE OF PREFERENCE [PREFERENCE UPDATE VALUE]
 	// EA 10001
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -201,6 +207,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 //		updatePrefSummary(findPreference(key));
 		updatePreference(key);
 	}
+//	D: COPY APPLICATION DATABASE TO SDCARD. [DEVELOPER COPY DATABASE].
 	@SuppressWarnings({ "resource", "unused" })
 	public void copyDatabase()
 	{
@@ -230,6 +237,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
         }
 
 	}
+//	D: INITIALIZE SUMMARY WHENEVER PREFERENCE SCREEN IS CREATED FROM SAVED PREFERENCES [INIT SUMMARY PREFRENCES]
 	//SA 10002
 	@SuppressWarnings("unused")
 	private void initSummary(Preference p) {
@@ -242,7 +250,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
             updatePrefSummary(p);
         }
     }
-	
+//	D: UPDATED SUMMARY VALUE. [PREFRENSE UPDATE]
 	private void updatePrefSummary(Preference p) {
         if (p instanceof EditTextPreference) {
             EditTextPreference editTextPref = (EditTextPreference) p;

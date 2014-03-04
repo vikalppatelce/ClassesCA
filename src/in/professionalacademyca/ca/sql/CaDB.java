@@ -24,11 +24,15 @@ public class CaDB extends ContentProvider {
 	private static final int TIME_TABLE = 2;
 	private static final int NOTIFICATION = 3;
 	private static final int NOTIFICATION_TEMP = 4;
+	private static final int AREA = 5;
+	private static final int BATCH = 6;
 	
 	private static HashMap<String, String> queryProjectionMap;
 	private static HashMap<String, String> timeTableProjectionMap;
 	private static HashMap<String, String> notificationProjectionMap;
 	private static HashMap<String, String> notificationTempProjectionMap;
+	private static HashMap<String, String> areaProjectionMap;
+	private static HashMap<String, String> batchProjectionMap;
 	
 	private static final int DATABASE_VERSION = 1;
 	
@@ -65,10 +69,15 @@ public class CaDB extends ContentProvider {
 			strBuilder.append(DBConstant.TABLE_TIME_TABLE);
 			strBuilder.append('(');
 			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_ID +" INTEGER(20) PRIMARY KEY NOT NULL DEFAULT (STRFTIME('%s',CURRENT_TIMESTAMP))," );
-			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_NAME+" TEXT , " );
-			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_DATA_ID+" TEXT , " );
-			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_URL +" TEXT , " );
-			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_SYNC_STATUS +" NUMBER" );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_AREA_NAME+" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_BATCH_NAME+" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_BATCH_REMARK+" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_END_TIME +" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_LECTURE +" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_PROFESSOR +" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_REMARK +" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_START_TIME +" TEXT , " );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_TIME_TABLE_DATE +" TEXT" );
 			strBuilder.append(')');
 			db.execSQL(strBuilder.toString());
 			Log.i("TABLE",strBuilder.toString());
@@ -97,6 +106,30 @@ public class CaDB extends ContentProvider {
 			strBuilder.append(')');
 			db.execSQL(strBuilder.toString());
 			Log.i("NOTIFICATION TEMP",strBuilder.toString());
+			
+			strBuilder = new StringBuilder();
+			strBuilder.append("CREATE TABLE ");
+			strBuilder.append(DBConstant.TABLE_AREA);
+			strBuilder.append('(');
+			strBuilder.append(DBConstant.Area_Columnns.COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," );
+			strBuilder.append(DBConstant.Area_Columnns.COLUMN_AREA_ID +" INTEGER," );
+			strBuilder.append(DBConstant.Area_Columnns.COLUMN_AREA_NAME +" TEXT" );
+			strBuilder.append(')');
+			db.execSQL(strBuilder.toString());
+			Log.i("AREA",strBuilder.toString());
+			
+			strBuilder = new StringBuilder();
+			strBuilder.append("CREATE TABLE ");
+			strBuilder.append(DBConstant.TABLE_BATCH);
+			strBuilder.append('(');
+			strBuilder.append(DBConstant.Batch_Columns.COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," );
+			strBuilder.append(DBConstant.Batch_Columns.COLUMN_AREA_ID +" INTEGER," );
+			strBuilder.append(DBConstant.Batch_Columns.COLUMN_BATCH_ID +" INTEGER," );
+			strBuilder.append(DBConstant.Batch_Columns.COLUMN_AREA_NAME +" TEXT," );
+			strBuilder.append(DBConstant.Batch_Columns.COLUMN_NAME +" TEXT" );
+			strBuilder.append(')');
+			db.execSQL(strBuilder.toString());
+			Log.i("BATCH",strBuilder.toString());
 		}
 
 		@Override
@@ -106,6 +139,8 @@ public class CaDB extends ContentProvider {
 			db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TABLE_TIME_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TABLE_NOTIFICATION);
 			db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TABLE_NOTIFICATION_TEMP);
+			db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TABLE_AREA);
+			db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TABLE_BATCH);
 			onCreate(db);
 
 		}
@@ -129,6 +164,12 @@ public class CaDB extends ContentProvider {
 		case NOTIFICATION_TEMP:
 			count = db.delete(DBConstant.TABLE_NOTIFICATION_TEMP, where, whereArgs);
 			break;
+		case AREA:
+			count = db.delete(DBConstant.TABLE_AREA, where, whereArgs);
+			break;
+		case BATCH:
+			count = db.delete(DBConstant.TABLE_BATCH, where, whereArgs);
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -148,6 +189,10 @@ public class CaDB extends ContentProvider {
 			return DBConstant.Notification_Columnns.CONTENT_TYPE;
 		case NOTIFICATION_TEMP:
 			return DBConstant.Notification_Temp_Columnns.CONTENT_TYPE;
+		case AREA:
+			return DBConstant.Area_Columnns.CONTENT_TYPE;
+		case BATCH:
+			return DBConstant.Batch_Columns.CONTENT_TYPE;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -157,6 +202,7 @@ public class CaDB extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues initialValues) {
 		// TODO Auto-generated method stub
 		if (sUriMatcher.match(uri) != QUERY && sUriMatcher.match(uri) != TIME_TABLE
+				&& sUriMatcher.match(uri) != BATCH && sUriMatcher.match(uri) != AREA
 				&& sUriMatcher.match(uri) != NOTIFICATION && sUriMatcher.match(uri) != NOTIFICATION_TEMP) 
 		{ 
 			throw new IllegalArgumentException("Unknown URI " + uri); 
@@ -211,6 +257,24 @@ public class CaDB extends ContentProvider {
 					return noteUri;
 				}
 				break;
+			case AREA:
+				 rowId = db.insertWithOnConflict(DBConstant.TABLE_AREA, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+				if (rowId > 0) 
+				{
+					Uri noteUri = ContentUris.withAppendedId(DBConstant.Area_Columnns.CONTENT_URI, rowId);
+					getContext().getContentResolver().notifyChange(noteUri, null);
+					return noteUri;
+				}
+				break;
+			case BATCH:
+				 rowId = db.insertWithOnConflict(DBConstant.TABLE_BATCH, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+				if (rowId > 0) 
+				{
+					Uri noteUri = ContentUris.withAppendedId(DBConstant.Batch_Columns.CONTENT_URI, rowId);
+					getContext().getContentResolver().notifyChange(noteUri, null);
+					return noteUri;
+				}
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI " + uri);
 				
@@ -246,6 +310,14 @@ public class CaDB extends ContentProvider {
 			qb.setTables(DBConstant.TABLE_NOTIFICATION_TEMP);
 			qb.setProjectionMap(notificationTempProjectionMap);
 			break;
+		case AREA:
+			qb.setTables(DBConstant.TABLE_AREA);
+			qb.setProjectionMap(areaProjectionMap);
+			break;
+		case BATCH:
+			qb.setTables(DBConstant.TABLE_BATCH);
+			qb.setProjectionMap(batchProjectionMap);
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -278,6 +350,14 @@ public class CaDB extends ContentProvider {
 			count = db.update(DBConstant.TABLE_NOTIFICATION_TEMP, values, where, whereArgs);
 			Log.e("VIKALP.............", "UPDATING............");
 			break;
+		case AREA:
+			count = db.update(DBConstant.TABLE_AREA, values, where, whereArgs);
+			Log.e("VIKALP.............", "UPDATING............");
+			break;
+		case BATCH:
+			count = db.update(DBConstant.TABLE_BATCH, values, where, whereArgs);
+			Log.e("VIKALP.............", "UPDATING............");
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -292,6 +372,8 @@ static {
 		sUriMatcher.addURI(AUTHORITY, DBConstant.TABLE_TIME_TABLE, TIME_TABLE);
 		sUriMatcher.addURI(AUTHORITY, DBConstant.TABLE_NOTIFICATION, NOTIFICATION);
 		sUriMatcher.addURI(AUTHORITY, DBConstant.TABLE_NOTIFICATION_TEMP, NOTIFICATION_TEMP);
+		sUriMatcher.addURI(AUTHORITY, DBConstant.TABLE_AREA, AREA);
+		sUriMatcher.addURI(AUTHORITY, DBConstant.TABLE_BATCH, BATCH);
 
 		queryProjectionMap = new HashMap<String, String>();
 		queryProjectionMap.put(DBConstant.Query_Columns.COLUMN_ID, DBConstant.Query_Columns.COLUMN_ID);
@@ -306,10 +388,16 @@ static {
 		
 		timeTableProjectionMap = new HashMap<String, String>();
 		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_ID, DBConstant.Time_Table_Columns.COLUMN_ID);
-		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_NAME, DBConstant.Time_Table_Columns.COLUMN_NAME);
-		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_DATA_ID, DBConstant.Time_Table_Columns.COLUMN_DATA_ID);
-		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_URL, DBConstant.Time_Table_Columns.COLUMN_URL);
-		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_SYNC_STATUS, DBConstant.Time_Table_Columns.COLUMN_SYNC_STATUS);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_AREA_NAME, DBConstant.Time_Table_Columns.COLUMN_AREA_NAME);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_BATCH_NAME, DBConstant.Time_Table_Columns.COLUMN_BATCH_NAME);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_BATCH_REMARK, DBConstant.Time_Table_Columns.COLUMN_BATCH_REMARK);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_END_TIME, DBConstant.Time_Table_Columns.COLUMN_END_TIME);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_LECTURE, DBConstant.Time_Table_Columns.COLUMN_LECTURE);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_PROFESSOR, DBConstant.Time_Table_Columns.COLUMN_PROFESSOR);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_REMARK, DBConstant.Time_Table_Columns.COLUMN_REMARK);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_START_TIME, DBConstant.Time_Table_Columns.COLUMN_START_TIME);
+		timeTableProjectionMap.put(DBConstant.Time_Table_Columns.COLUMN_TIME_TABLE_DATE, DBConstant.Time_Table_Columns.COLUMN_TIME_TABLE_DATE);
+		
 		
 		notificationProjectionMap = new HashMap<String, String>();
 		notificationProjectionMap.put(DBConstant.Notification_Columnns.COLUMN_ID, DBConstant.Notification_Columnns.COLUMN_ID);
@@ -323,5 +411,17 @@ static {
 		notificationTempProjectionMap = new HashMap<String, String>();
 		notificationTempProjectionMap.put(DBConstant.Notification_Temp_Columnns.COLUMN_ID, DBConstant.Notification_Temp_Columnns.COLUMN_ID);
 		notificationTempProjectionMap.put(DBConstant.Notification_Temp_Columnns.COLUMN_NOTIFICATION_ID, DBConstant.Notification_Temp_Columnns.COLUMN_NOTIFICATION_ID);
+		
+		areaProjectionMap = new HashMap<String, String>();
+		areaProjectionMap.put(DBConstant.Area_Columnns.COLUMN_ID, DBConstant.Area_Columnns.COLUMN_ID);
+		areaProjectionMap.put(DBConstant.Area_Columnns.COLUMN_AREA_ID, DBConstant.Area_Columnns.COLUMN_AREA_ID);
+		areaProjectionMap.put(DBConstant.Area_Columnns.COLUMN_AREA_NAME, DBConstant.Area_Columnns.COLUMN_AREA_NAME);
+		
+		batchProjectionMap = new HashMap<String, String>();
+		batchProjectionMap.put(DBConstant.Batch_Columns.COLUMN_ID, DBConstant.Batch_Columns.COLUMN_ID);
+		batchProjectionMap.put(DBConstant.Batch_Columns.COLUMN_AREA_ID, DBConstant.Batch_Columns.COLUMN_AREA_ID);
+		batchProjectionMap.put(DBConstant.Batch_Columns.COLUMN_AREA_NAME, DBConstant.Batch_Columns.COLUMN_AREA_NAME);
+		batchProjectionMap.put(DBConstant.Batch_Columns.COLUMN_BATCH_ID, DBConstant.Batch_Columns.COLUMN_BATCH_ID);
+		batchProjectionMap.put(DBConstant.Batch_Columns.COLUMN_NAME, DBConstant.Batch_Columns.COLUMN_NAME);
 	}
 }

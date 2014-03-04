@@ -17,6 +17,9 @@
 package in.professionalacademyca.ca.utils;
 
 import in.professionalacademyca.ca.R;
+import in.professionalacademyca.ca.app.AppConstants;
+import in.professionalacademyca.ca.app.CA;
+import in.professionalacademyca.ca.ui.utils.QustomDialogBuilder;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -27,18 +30,15 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.graphics.Typeface;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.webkit.WebView;
 
 /**
  * Class to show a change log dialog
@@ -47,11 +47,7 @@ public class AboutDialog {
     private static final String TAG = "AboutDialog";
 
     private final Context mContext;
-    private String mStyle = "h1 { margin-left: 0px; font-size: 12pt; }"
-            + "li { margin-left: 0px; font-size: 9pt; }"
-            + "ul { padding-left: 30px; }"
-            + ".summary { font-size: 9pt; color: #606060; display: block; clear: left; }"
-            + ".date { font-size: 9pt; color: #606060;  display: block; }";
+    private String mStyle = "";
 
     protected DialogInterface.OnDismissListener mOnDismissListener;
 
@@ -90,35 +86,9 @@ public class AboutDialog {
 
     //Parse a the release tag and appends it to the changelog builder
     private void parseReleaseTag(final StringBuilder changelogBuilder, final XmlPullParser resourceParser) throws XmlPullParserException, IOException {
-//        changelogBuilder.append("<h3>About Us: ").append("").append("</h3>");
-
-        //Add date if available
-        if (resourceParser.getAttributeValue(null, "date") != null) {
-            changelogBuilder.append("<span class='date'>").append(parseDate(resourceParser.getAttributeValue(null, "date"))).append("</span>");
-        }
-
-        //Add summary if available
         if (resourceParser.getAttributeValue(null, "summary") != null) {
-            changelogBuilder.append("<h6><span class='summary'>").append(resourceParser.getAttributeValue(null, "summary")).append("</span></h6>");
+            changelogBuilder.append("").append(resourceParser.getAttributeValue(null, "summary")).append("");
         }
-
-        changelogBuilder.append("<ul>");
-
-        //Parse child nodes
-        int eventType = resourceParser.getEventType();
-        while ((eventType != XmlPullParser.END_TAG) || (resourceParser.getName().equals("change"))) {
-            if ((eventType == XmlPullParser.START_TAG) && (resourceParser.getName().equals("change"))) {
-                eventType = resourceParser.next();
-                changelogBuilder.append("<li>" + resourceParser.getText() + "</li>");
-            }
-            eventType = resourceParser.next();
-        }
-        changelogBuilder.append("</ul>");
-    }
-
-    //CSS style for the html
-    private String getStyle() {
-        return String.format("<style type=\"text/css\">%s</style>", mStyle);
     }
 
     public void setStyle(final String style) {
@@ -134,7 +104,6 @@ public class AboutDialog {
     private String getHTMLChangelog(final int resourceId, final Resources resources, final int version) {
         boolean releaseFound = false;
         final StringBuilder changelogBuilder = new StringBuilder();
-        changelogBuilder.append("<html><head>").append(getStyle()).append("</head><body>");
         final XmlResourceParser xml = resources.getXml(resourceId);
         try {
             int eventType = xml.getEventType();
@@ -159,7 +128,6 @@ public class AboutDialog {
         } finally {
             xml.close();
         }
-        changelogBuilder.append("</body></html>");
 
         //Check if there was a release tag parsed, if not return an empty string.
         if (releaseFound) {
@@ -184,13 +152,8 @@ public class AboutDialog {
         //Create HTML change log
         return getHTMLChangelog(R.xml.aboutlog, resources, 0);    	
     }
-    
-    //Call to show the change log dialog
-    public void show() {
-        show(0);
-    }
-
-    protected void show(final int version) {
+//    protected void show(final int version) {
+    	public void show(Context c) {
         //Get resources
         final String packageName = mContext.getPackageName();
         final Resources resources;
@@ -205,46 +168,27 @@ public class AboutDialog {
         title = String.format("%s v%s", title, getAppVersion());
 
         //Create html change log
-        final String htmlChangelog = getHTMLChangelog(R.xml.aboutlog, resources, version);
-
-        //Get button strings
-        final String closeString = resources.getString(R.string.changelog_close);
+        final String htmlChangelog = getHTMLChangelog(R.xml.aboutlog, resources, 0);
 
         //Check for empty change log
         if (htmlChangelog.length() == 0) {
             //It seems like there is nothing to show, just bail out.
             return;
         }
-
-        //Create web view and load html
-        final WebView webView = new WebView(mContext);
-        webView.loadDataWithBaseURL(null, htmlChangelog, "text/html", "utf-8", null);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                .setTitle(title)
-                .setView(webView)
-                .setPositiveButton(closeString, new Dialog.OnClickListener() {
-                    @Override
-					public void onClick(final DialogInterface dialogInterface, final int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setOnCancelListener( new OnCancelListener() {
-					
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						dialog.dismiss();						
-					}
-				});        		
-        AlertDialog dialog = builder.create();
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(final DialogInterface dialog) {
-                if (mOnDismissListener != null) {
-                    mOnDismissListener.onDismiss(dialog);
-                }
-            }
-        });
-        dialog.show();
+        /*
+         * CUSTOM DIALOG
+         */
+        Typeface stylefont = Typeface.createFromAsset(CA.getApplication().getApplicationContext().getAssets(), AppConstants.fontStyle);
+		final String HALLOWEEN_RED = "#B40404";
+		QustomDialogBuilder qustomDialogBuilder = new QustomDialogBuilder(c).
+				setTitle(title).
+				setTitleColor(HALLOWEEN_RED).
+				setDividerColor(HALLOWEEN_RED).
+				setMessage(htmlChangelog).
+				setFontTitle(stylefont).
+				setFontMessage(stylefont);
+		qustomDialogBuilder.show();
+        
     }
 
 }

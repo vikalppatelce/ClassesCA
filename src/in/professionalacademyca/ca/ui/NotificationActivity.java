@@ -1,3 +1,18 @@
+/* HISTORY
+ * CATEGORY 		:- ACTIVITY
+ * DEVELOPER		:- VIKALP PATEL
+ * AIM			    :- NOTIFICATION SCREEN
+ * DESCRIPTION 		:- FETCH LATEST NOTIFICATION , SWIPE TO DISMISS NOTIFICATION API > 12
+ * SEARCH           :- D: ADAPTER BUTTON SPINNER ASYNCTASK JSON SERVICES API 
+ * 
+ * S - START E- END  C- COMMENTED  U -EDITED A -ADDED
+ * --------------------------------------------------------------------------------------------------------------------
+ * INDEX       DEVELOPER		DATE			FUNCTION		DESCRIPTION
+ * --------------------------------------------------------------------------------------------------------------------
+ * 10001       VIKALP PATEL    04/03/2014       				
+ * --------------------------------------------------------------------------------------------------------------------
+ */
+
 package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
@@ -123,15 +138,17 @@ public class NotificationActivity extends SherlockFragmentActivity{
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
 		listNotification.setOnScrollListener(touchListener.makeScrollListener());
-		}
+		
+			}
 	}
-	
+//	D: CHECK NETWORK AVAILABILITY [UTILITY].
 	private boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
 	}
+//	D: APPLY FONT ON ACTION BAR [ACTIONBAR]
 	public void fontActionBar(String str)
 	{
 		try {
@@ -144,12 +161,14 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			Log.e("ActionBar Style", e.toString());
 		}
 	}
+//	D: APPLY ANIMATION ON BACK PRESSED [BACK ANIMATION]
 	@Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
         super.onBackPressed();
         overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
     }
+//	D: APPLY ON OPTION SELECTED FUNCTIONALITY [OPTION MENU]
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -164,6 +183,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
         }
     }
 	
+//	D: ON ACTIVITY RESULT [IF BATCH IS NOT SELECTED THEN IT ASK AND GET BACK TO HERE]. [ACTIVITY]
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -181,6 +201,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 		}
 	}
 	
+//	D: GATHERED NOTIFICATION INFORMATION SENT TO SERVICES [JSON SERVICE API]
 	public void uploadNotificationData()
 	{
 		long  notificationID=0;
@@ -195,6 +216,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			else
 			{
 				notificationID = 0;
+//				notificationID = System.currentTimeMillis();
 			}
 		}
 		catch (Exception e) {
@@ -210,7 +232,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 		UploadNotificationTask uploadNotificationTask = new UploadNotificationTask();
 		uploadNotificationTask.execute(new JSONObject[]{jsonObject});
 	}
-	
+//	D: FETCHES NOTIFICATION DATA AND INSERT INTO DATABASE FROM SERVIECS [ASYNCTASK JSON SERVICES API].
 	private class UploadNotificationTask extends AsyncTask<JSONObject, Void, Void>
 	{
 		@Override
@@ -288,7 +310,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			progress.setVisibility(View.GONE);
 		}
 	}
-	
+//	D: SUPPLY DATA FROM DATABASE TO ADAPTER. [AYSNCTASK JSON DATABASE ADAPTER]
 	private class SelectDataTask extends AsyncTask<Uri, Void ,Cursor> {
 
 		Uri currentUri;

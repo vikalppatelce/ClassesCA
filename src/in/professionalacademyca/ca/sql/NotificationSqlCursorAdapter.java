@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,12 +36,14 @@ public class NotificationSqlCursorAdapter extends SimpleCursorAdapter implements
 	Typeface stylefont;
 
 	private Cursor currentCursor;
+	private SparseBooleanArray mSelectedItemsIds;//VIKALP
 	
 	private Uri uri;
 	@SuppressWarnings("deprecation")
 	public NotificationSqlCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, Uri uri) {
 		super(context, layout, c, from, to);
 		this.currentCursor = c;
+		mSelectedItemsIds = new SparseBooleanArray();//VIKALP
 		this.context = context;
 		this.uri = uri;
 		stylefont = Typeface.createFromAsset(CA.getApplication().getApplicationContext().getAssets(), AppConstants.fontStyle);
@@ -52,7 +55,7 @@ public class NotificationSqlCursorAdapter extends SimpleCursorAdapter implements
 		View v = inView;
 		if (v == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = inflater.inflate(R.layout.post_item, null);
+			v = inflater.inflate(R.layout.noti_item, null);
 		}
 
 		this.currentCursor.moveToPosition(pos);
@@ -60,6 +63,10 @@ public class NotificationSqlCursorAdapter extends SimpleCursorAdapter implements
 		long id = getCursor().getLong(getCursor().getColumnIndex(DBConstant.Notification_Columnns.COLUMN_ID));
 
 		TextView txtQuery = (TextView) v.findViewById(R.id.question);
+		
+		Button notiBox = (Button) v.findViewById(R.id.box);
+		notiBox.setTypeface(stylefont);
+		
 		txtQuery.setText(this.currentCursor.getString(currentCursor.getColumnIndex(DBConstant.Notification_Columnns.COLUMN_TITLE)));
 		txtQuery.setTypeface(stylefont);
 
@@ -72,10 +79,16 @@ public class NotificationSqlCursorAdapter extends SimpleCursorAdapter implements
 		txtAnswer.setTypeface(stylefont);
 		
 		v.setTag(String.valueOf(id));
-		v.setBackgroundColor(
+		notiBox.setBackgroundColor(
 				this.currentCursor.getString(currentCursor.getColumnIndex(DBConstant.Notification_Columnns.COLUMN_BATCH)).equalsIgnoreCase("general") 
-				? Color.WHITE :
-					Color.YELLOW
+				? Color.GRAY :
+					Color.parseColor("#E18700")
+				);
+		
+		notiBox.setText(
+				this.currentCursor.getString(currentCursor.getColumnIndex(DBConstant.Notification_Columnns.COLUMN_BATCH)).equalsIgnoreCase("general") 
+				? "G" :
+					"B"
 				);
 //		Button removeLOV = (Button) v.findViewById(R.id.btnRemoveLOV);
 //		removeLOV.setOnClickListener(this);

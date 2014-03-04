@@ -1,4 +1,17 @@
-
+/* HISTORY
+ * CATEGORY 		:- ACTIVITY
+ * DEVELOPER		:- VIKALP PATEL
+ * AIM			    :- POST QUERY SCREEN
+ * DESCRIPTION 		:- SEND QUERY TO SERVER AND SHOW ANSWERED QUERY FROM SERVER.
+ * SEARCH           :- D: ADAPTER BUTTON SPINNER ASYNCTASK 
+ * 
+ * S - START E- END  C- COMMENTED  U -EDITED A -ADDED
+ * --------------------------------------------------------------------------------------------------------------------
+ * INDEX       DEVELOPER		DATE			FUNCTION		DESCRIPTION
+ * --------------------------------------------------------------------------------------------------------------------
+ * 10001       VIKALP PATEL    04/03/2014       				
+ * --------------------------------------------------------------------------------------------------------------------
+ */
 package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.R;
@@ -167,7 +180,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		}
 		
 	}
-
+// D: CUSTOM ARRAY ADAPTER FOR SUBJECT WHILE POSTING QUERY [ARRAYADAPTER CUSTOM FONT SUBJECT]
 	static class CustomArrayAdapter<T> extends ArrayAdapter<T>
 	{
 	    public CustomArrayAdapter(Context ctx, T [] objects)
@@ -196,11 +209,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	        return view;
 	    }
 	}
-
-	
-	
-	
-	
+//	D: SHOW DIALOG ON CLICK OF QUERY FROM THE POST QUERY SCREEN [DIALOG QUERY CLICK LISTVIEW]
 	@SuppressWarnings("deprecation")
 	public void showDialogBox(String query_id)
 	{
@@ -256,7 +265,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 //		});
 //		alertDialog.show();
 	}
-	
+//	D: APPLY FONT ON ACTIONBAR [FONT ACTIONBAR]
 	public void fontActionBar(String str)
 	{
 		try {
@@ -269,12 +278,14 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			Log.e("ActionBar Style", e.toString());
 		}
 	}
+//	D: APPLY ANIMATION ON BACK PRESSED [ANIMATION BACK]
 	@Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
         super.onBackPressed();
         overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
     }
+//	D: ON OPTION SELECTED [OPTION HOME]
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -290,7 +301,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
             return super.onOptionsItemSelected(item);
         }
     }
-	
+//	D: POST QUERY TO SERVER [BUTTON CLICK EVENT]
 	public void onPost(View v)
 	{
       if(validate())
@@ -313,13 +324,14 @@ public class PostQueryActivity extends SherlockFragmentActivity{
     	  query.setError("Please enter query");
       }
 	}
-	
+//	D: CHECK NETWORK AVAILABILITY [UTILITY NETWORK INTERNET]
 	private boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
 	}
+//	D: POST DATA OF QUERY DATA BUILDER IN TO JSON BUILDER [JSON QUERY POST BUILDER UPLOAD]
 	public void uploadQueryData()
 	{
 		JSONObject tables = new JSONObject();
@@ -344,7 +356,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		UploadTask uploadTask = new UploadTask();
 		uploadTask.execute(new JSONObject[]{jsonObject});
 	}
-	
+//	D: POST DATA OF UNQUERY DATA BUILDER IN TO JSON BUILDER [JSON UNQUERY QUERY POST BUILDER UPLOAD]	
 	public void uploadUnQueryData()
 	{
 		JSONObject tables = new JSONObject();
@@ -370,11 +382,12 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		uploadTask.execute(new JSONObject[]{jsonObject});
 	}
 	
+// D: CLEARED QUERY ON POSTING OF QUERY [CLEAR POST QUERY]
 	public void clearQuery()
 	{
 		query.setText("");
 	}
-	
+//	D: SAVE QUERY DATA IN DATABASE USED TO FETCH THE ANSWER OF IT LATER ON [DATABASE QUERY SAVE]
 	public void saveQuery(String str,String sub)
 	{
 		Bundle b = new Bundle();
@@ -398,7 +411,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		getContentResolver().insert(DBConstant.Query_Columns.CONTENT_URI,dataValues);		
 		clearQuery();
 	}
-	
+//	D: VALIDATE POST QUERY [VALIDATE QUERY DATA]
 	public boolean validate()
 	{
 		if(!TextUtils.isEmpty(query.getText().toString()))
@@ -407,7 +420,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		}
 		return false;
 	}
-	
+//	D: BUNDLE QUERY DATA SENT TO SERVICES [CLASSES ARRAYLIST QUERY BUNDEL JSON SEND API SERVICES]
 	public void loadQueryData()
 	{
 		String _id;
@@ -435,7 +448,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 
 		}
 	}
-	
+//	D: BUNDLE UN- ANSWERED QUERY DATA SENT TO SERVICES [CLASSES ARRAYLIST QUERY BUNDEL JSON SEND API SERVICES]	
 	public void loadUnQueryData()
 	{
 		String _id;
@@ -454,10 +467,9 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 				unAnsQueryDTOs.add(new AnswerDTO(_id, query, null, date,null));
 			}
 			c.close();
-
 		}
 	}
-	
+//	D: UPLOAD BUNDLE DATA TO SERVICES [QUERY JSON BUNDLE SEND SERVICES API]
 	private class UploadTask extends AsyncTask<JSONObject, Void, Void>
 	{
 		@Override
@@ -527,7 +539,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			progress.setVisibility(View.GONE);
 		}
 	}
-	
+//	D: UPLOAD BUNDLE DATA OF UN ANSWERED QUERY DATA TO SERVICES [API SERVICES JSON SEND BUNDLE]
 	private class UploadUnAnswerTask extends AsyncTask<JSONObject, Void, Void>
 	{
 		@Override
@@ -597,7 +609,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			progress.setVisibility(View.GONE);
 		}
 	}
-	
+//	D: FETCHES DATA FROM DATABASE AND SUPPLIE TO ADAPTER [ADAPTER DATABASE]
 	private class SelectDataTask extends AsyncTask<Uri, Void ,Cursor> {
 
 		Uri currentUri;

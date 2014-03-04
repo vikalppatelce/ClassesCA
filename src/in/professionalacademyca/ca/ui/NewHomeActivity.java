@@ -1,3 +1,17 @@
+/* HISTORY
+ * CATEGORY 		:- ACTIVITY
+ * DEVELOPER		:- VIKALP PATEL
+ * AIM			    :- HOME SCREEN | DASHBOARD
+ * DESCRIPTION 		:- HOME SCREEN WITH TICKER AND OPTION. USES TO REGISTERED WITH GCM AND SEND DATA TO SERVER [USE IT LATER IN SENDING REQUEST]
+ * SEARCH           :- D: ADAPTER BUTTON SPINNER ASYNCTASK 
+ * 
+ * S - START E- END  C- COMMENTED  U -EDITED A -ADDED
+ * --------------------------------------------------------------------------------------------------------------------
+ * INDEX       DEVELOPER		DATE			FUNCTION		DESCRIPTION
+ * --------------------------------------------------------------------------------------------------------------------
+ * 10001       VIKALP PATEL    04/03/2014       				
+ * --------------------------------------------------------------------------------------------------------------------
+ */
 package in.professionalacademyca.ca.ui;
 
 import in.professionalacademyca.ca.BuildConfig;
@@ -114,13 +128,14 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 		//EA GCM
 	}
 	
-	
+//	D: CHECK PLAY SERVICES ON RESUME [PLAYSERVICES GCM]
 	//SA GCM
 	@Override
 	protected void onResume() {
 	    super.onResume();
 	    checkPlayServices();
 	}
+//	D: CHECK PLAY SERVICES EXIST ON THE DEVICE OR NOT [PLAYSERVICES GCM]	
 	private boolean checkPlayServices() {
 	    int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 	    if (resultCode != ConnectionResult.SUCCESS) {

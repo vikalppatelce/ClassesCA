@@ -48,6 +48,7 @@
             android:layout_margin="10dp"
             android:layout_weight="0.7"
             android:gravity="center"
+            android:onClick="onNext"
             android:text="@string/next"
             android:textSize="20sp" />
     </LinearLayout>
@@ -59,13 +60,27 @@
         android:layout_below="@id/txtTimeTable2"
         android:layout_margin="10dp"
          />
-
-    <ListView
-        android:id="@+id/timetable_list"
+    
+     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:layout_below="@id/divider"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp" />
+        android:layout_height="wrap_content" >
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible" />
+
+        <ListView
+            android:id="@+id/timetable_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+             />
+    </FrameLayout>
 
 </RelativeLayout>
