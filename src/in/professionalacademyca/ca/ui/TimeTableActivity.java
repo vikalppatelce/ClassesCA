@@ -21,9 +21,12 @@ import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.service.RequestBuilder;
 import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.DBConstant;
+import in.professionalacademyca.ca.sql.TimeTableSqlCursorAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import org.apache.commons.lang3.time.DateUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,13 +34,17 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -57,6 +64,12 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	Typeface stylefont;
 	JSONArray timeTableArray;
 	
+	CursorAdapter adapterQuery;
+	
+	Date dated;
+	
+	ListView listTimeTable;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -67,6 +80,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		
 		SimpleDateFormat df = new SimpleDateFormat("dd MM yyyy");
 		_date = df.format(Calendar.getInstance().getTime());
+		
 		
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -80,13 +94,20 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		t2=(TextView)findViewById(R.id.timetable2);
 		next = (Button)findViewById(R.id.next);
 		progress = (ProgressBar)findViewById(R.id.progress);
+		listTimeTable = (ListView)findViewById(R.id.timetable_list);
 		
 		t1.setTypeface(stylefont);
 		t2.setTypeface(stylefont);
 		next.setTypeface(stylefont);
 		
 		t1.setText("Time Table for " + CA.getPreferences().getBatch());
-		t2.setText("date on " + _date);
+		
+		
+		dated = new Date();
+		dated = Calendar.getInstance().getTime();
+		
+		t2.setText("date on " + dated);
+		
 	}
 //	D: APPLY FONT ON ACTION BAR [FONT ACTIONBAR]
 	public void fontActionBar(String str)
@@ -124,7 +145,15 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	
 	public void onNext(View v)
 	{
-		uploadTimeTableData("28-02-2014");
+		uploadTimeTableData(toddMMyy(dated).toString());
+		dated = DateUtils.addDays(dated, 1);
+		Log.i("Date", toddMMyy(dated).toString());
+	}
+
+	public static String toddMMyy(Date day) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String date = formatter.format(day);
+		return date;
 	}
 	
 	public void uploadTimeTableData(String dat)
@@ -172,8 +201,12 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	                    // Getting JSON Array node
 	                    timeTableArray = jsonObject.getJSONArray("timetables");
 	 
+	                    getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
+	                    
 	                    // looping through All Contacts
-	                    for (int i = 0; i < timeTableArray.length(); i++) {
+	                    for (int i = 0; i < timeTableArray.length(); i++) 
+	                    {
+	                    	
 	                        JSONObject c = timeTableArray.getJSONObject(i);
 	                        time_date = "";
 	                        time_remark = "";
@@ -210,9 +243,11 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	    					contentValues.put(DBConstant.Time_Table_Columns.COLUMN_AREA_NAME, areaname);
 	    					
 	    					getContentResolver().insert(DBConstant.Time_Table_Columns.CONTENT_URI, contentValues);
+	    					
 	    					Log.e("TIME TABLE" , "UPDATED");
 	                        // adding contact to contact list
 	                    }
+	                    
 	                } catch (Exception e) { //JSONException
 	                    e.printStackTrace();
 	                }
@@ -228,44 +263,44 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-//			new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
+			new SelectDataTask().execute(DBConstant.Time_Table_Columns.CONTENT_URI);
 			progress.setVisibility(View.GONE);
 		}
 	}
 //	D: FETCHES DATA FROM DATABASE AND SUPPLIE TO ADAPTER [ADAPTER DATABASE]
-//	private class SelectDataTask extends AsyncTask<Uri, Void ,Cursor> {
-//
-//		Uri currentUri;
-//		@Override
-//		protected void onPreExecute() {
-//			// this.dialog.setMessage("Getting Names...");
-//			// this.dialog.show();
-//			progress.setVisibility(View.VISIBLE);
-//		}
-//
-//		// can use UI thread here
-//		@SuppressWarnings("deprecation")
-//		@Override
-//		protected void onPostExecute(final Cursor result) {
-//
-//			startManagingCursor(result);
-//			int[] listFields = new int[] { R.id.question , R.id.answer};
-//			String[] dbColumns = new String[] { DBConstant.Query_Columns.COLUMN_ID, DBConstant.Query_Columns.COLUMN_QUERY , DBConstant.Query_Columns.COLUMN_RESPONSE};
-//
-//			TimeTableActivity.this.adapterQuery = new CustomSqlCursorAdapter(TimeTableActivity.this, R.layout.post_item,result, dbColumns, listFields,currentUri);
-//			TimeTableActivity.this.listQuery.setAdapter(TimeTableActivity.this.adapterQuery);
-//			progress.setVisibility(View.GONE);
-//		}
-//
-//		@Override
-//		protected Cursor doInBackground(Uri... arg0) {
-//			// TODO Auto-generated method stub
-//			try {
-//				currentUri = arg0[0];
-//				return TimeTableActivity.this.getContentResolver().query(currentUri, null, null, null, DBConstant.Query_Columns.COLUMN_ID+" DESC");
-//			} catch (SQLException sqle) {
-//				throw sqle;
-//			}
-//		}
-//	}
+	private class SelectDataTask extends AsyncTask<Uri, Void ,Cursor> {
+
+		Uri currentUri;
+		@Override
+		protected void onPreExecute() {
+			// this.dialog.setMessage("Getting Names...");
+			// this.dialog.show();
+			progress.setVisibility(View.VISIBLE);
+		}
+
+		// can use UI thread here
+		@SuppressWarnings("deprecation")
+		@Override
+		protected void onPostExecute(final Cursor result) {
+
+			startManagingCursor(result);
+			int[] listFields = new int[] { R.id.timetabledate , R.id.timetabletime ,R.id.timetable_batchname , R.id.timetable_lecture , R.id.timetable_prof , R.id.timetable_remark};
+			String[] dbColumns = new String[] { DBConstant.Time_Table_Columns.COLUMN_ID, DBConstant.Time_Table_Columns.COLUMN_TIME_TABLE_DATE , DBConstant.Time_Table_Columns.COLUMN_START_TIME , DBConstant.Time_Table_Columns.COLUMN_BATCH_NAME,DBConstant.Time_Table_Columns.COLUMN_LECTURE,DBConstant.Time_Table_Columns.COLUMN_PROFESSOR,DBConstant.Time_Table_Columns.COLUMN_REMARK};
+
+			TimeTableActivity.this.adapterQuery = new TimeTableSqlCursorAdapter(TimeTableActivity.this, R.layout.time_table_item,result, dbColumns, listFields,currentUri);
+			TimeTableActivity.this.listTimeTable.setAdapter(TimeTableActivity.this.adapterQuery);
+			progress.setVisibility(View.GONE);
+		}
+
+		@Override
+		protected Cursor doInBackground(Uri... arg0) {
+			// TODO Auto-generated method stub
+			try {
+				currentUri = arg0[0];
+				return TimeTableActivity.this.getContentResolver().query(currentUri, null, null, null, DBConstant.Query_Columns.COLUMN_ID+" DESC");
+			} catch (SQLException sqle) {
+				throw sqle;
+			}
+		}
+	}
 }

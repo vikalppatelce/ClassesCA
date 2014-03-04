@@ -68,7 +68,7 @@ public class CaDB extends ContentProvider {
 			strBuilder.append("CREATE TABLE ");
 			strBuilder.append(DBConstant.TABLE_TIME_TABLE);
 			strBuilder.append('(');
-			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_ID +" INTEGER(20) PRIMARY KEY NOT NULL DEFAULT (STRFTIME('%s',CURRENT_TIMESTAMP))," );
+			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," );
 			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_AREA_NAME+" TEXT , " );
 			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_BATCH_NAME+" TEXT , " );
 			strBuilder.append(DBConstant.Time_Table_Columns.COLUMN_BATCH_REMARK+" TEXT , " );

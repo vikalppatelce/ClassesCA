@@ -512,7 +512,7 @@ int id message 0x7f070068
 int id next 0x7f07006e
 int id none 0x7f070000
 int id normal 0x7f070001
-int id notification 0x7f070077
+int id notification 0x7f070079
 int id notificationlist 0x7f07005b
 int id pager 0x7f07004c
 int id parentPanel 0x7f070061
@@ -522,7 +522,7 @@ int id query 0x7f07005e
 int id question 0x7f070058
 int id satellite 0x7f070002
 int id set_default 0x7f07003f
-int id settings 0x7f070076
+int id settings 0x7f070078
 int id showCustom 0x7f07000c
 int id showHome 0x7f070009
 int id showTitle 0x7f07000b
@@ -539,8 +539,10 @@ int id ticker 0x7f070042
 int id timetable1 0x7f07006c
 int id timetable2 0x7f07006d
 int id timetable_batchname 0x7f070074
-int id timetable_desc 0x7f070075
+int id timetable_lecture 0x7f070075
 int id timetable_list 0x7f070070
+int id timetable_prof 0x7f070076
+int id timetable_remark 0x7f070077
 int id timetabledate 0x7f070071
 int id timetableday 0x7f070072
 int id timetabletime 0x7f070073
