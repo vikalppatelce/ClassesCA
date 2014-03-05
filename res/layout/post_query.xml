@@ -47,9 +47,9 @@
                 android:id="@+id/query"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.8"
                 android:background="@drawable/shape_rectangle_query"
                 android:gravity="top"
-                android:layout_weight="0.8"
                 android:hint="@string/query"
                 android:minLines="2"
                 android:padding="7dp"
@@ -61,9 +61,9 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="right"
-                android:gravity="center"
                 android:layout_marginLeft="3dp"
                 android:layout_weight="0.2"
+                android:gravity="center"
                 android:onClick="onPost"
                 android:text="@string/post"
                 android:textSize="15sp" />
@@ -72,7 +72,10 @@
 
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" >
 
         <ProgressBar
             android:id="@+id/progress"
@@ -85,10 +88,7 @@
         <ListView
             android:id="@+id/list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_height="wrap_content" />
     </FrameLayout>
 
 </LinearLayout>

@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5E4E2"
-     >
+    android:background="#E5E4E2" >
 
     <LinearLayout
         android:id="@+id/txtTimeTable2"
@@ -21,7 +20,7 @@
             android:layout_weight="0.3"
             android:orientation="vertical"
             android:padding="10dp" >
-            
+
             <TextView
                 android:id="@+id/txtareaname"
                 android:layout_width="fill_parent"
@@ -45,7 +44,6 @@
                 android:layout_weight="0.3"
                 android:text="dated on 01-01-14"
                 android:textSize="16sp" />
-
         </LinearLayout>
 
         <Button
@@ -66,16 +64,13 @@
         android:id="@+id/divider"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/txtTimeTable2"
-        android:layout_margin="10dp"
-         />
-    
-     <FrameLayout
+        android:layout_below="@id/txtTimeTable2" />
+
+    <FrameLayout
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/divider"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:layout_height="wrap_content" >
+        android:layout_margin="10dp" >
 
         <ProgressBar
             android:id="@+id/progress"
@@ -88,9 +83,7 @@
         <ListView
             android:id="@+id/timetable_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            
-             />
+            android:layout_height="wrap_content" />
     </FrameLayout>
 
 </RelativeLayout>
