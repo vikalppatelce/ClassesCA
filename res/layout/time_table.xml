@@ -21,22 +21,31 @@
             android:layout_weight="0.3"
             android:orientation="vertical"
             android:padding="10dp" >
-
+            
             <TextView
-                android:id="@+id/timetable1"
+                android:id="@+id/txtareaname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.3"
                 android:text="Time Table For Batch"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/timetable2"
+                android:id="@+id/txtbatchname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.3"
                 android:text="dated on 01-01-14"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtdate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="dated on 01-01-14"
+                android:textSize="16sp" />
+
         </LinearLayout>
 
         <Button
@@ -65,6 +74,7 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/divider"
         android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
         android:layout_height="wrap_content" >
 
         <ProgressBar
@@ -79,7 +89,7 @@
             android:id="@+id/timetable_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            
              />
     </FrameLayout>
 
