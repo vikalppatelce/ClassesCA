@@ -42,7 +42,7 @@ public class RequestBuilder {
 		return stringBuffer;//ParentBuffer;
 	}
 	
-	public static JSONObject getTimeTableData(String imei,String date,String area_id)
+	public static JSONObject getTimeTableData(String imei,String date,String area_id,String batch)
 	{
 		JSONObject stringBuffer = new JSONObject();
 		
@@ -51,7 +51,7 @@ public class RequestBuilder {
 		{
 			stringBuffer.put("device_id", imei);
 			stringBuffer.put("act", "get_timetable");
-			stringBuffer.put("batch_name", CA.getPreferences().getBatch());
+			stringBuffer.put("batch_name", batch);
 			stringBuffer.put("batch_date", date);
 			stringBuffer.put("area_id",area_id);
 			

@@ -51,10 +51,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.internal.ck;
 
 public class NewCourseActivity  extends SherlockFragmentActivity implements OnItemSelectedListener{
 
@@ -225,33 +227,65 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 				CA.getPreferences().setBatch(spin_batch.getSelectedItem().toString().trim());
 				CA.getPreferences().setLevel(spin_course.getSelectedItem().toString().trim());
 			}
-			
+//			SAW NOTIFICATION FIRST -> PLEASE SELECT DEFAULT BATCH MESSAGE
 			if(fromWhere.equalsIgnoreCase("Notification"))
 			{
-				setResult(RESULT_OK);
-				finish();
-				overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
+				if(chk_default.isChecked())
+				{
+					setResult(RESULT_OK);
+					finish();
+					overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_right);
+					Toast.makeText(CA.getApplication().getApplicationContext(), "You will be notified for " + CA.getPreferences().getBatch() + " and General Notification", Toast.LENGTH_LONG).show();
+				}
+				else
+				{
+					Toast.makeText(NewCourseActivity.this, "Please select batch as default for Notification", Toast.LENGTH_SHORT).show();
+				}
 			}
-			else if(fromWhere.equalsIgnoreCase("Home"))
+//			FIRST TIME BUT NOT SELECTING BATCH
+			else if(fromWhere.equalsIgnoreCase("Home") && !chk_default.isChecked())
 			{
 			Intent timeTable = new Intent(this, TimeTableActivity.class);
 			timeTable.putExtra("isBatch", spin_batch.getSelectedItem().toString().trim());
+			timeTable.putExtra("isArea", spin_course.getSelectedItem().toString().trim());
 			startActivity(timeTable);
 			finish();
 			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 			}
-			else if(fromWhere.equalsIgnoreCase("Settings"))
+//			FIRST TIME
+			else if(fromWhere.equalsIgnoreCase("Home") && chk_default.isChecked())
+			{
+			Intent timeTable = new Intent(this, TimeTableActivity.class);
+			startActivity(timeTable);
+			finish();
+			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+			}
+//			BROWSING TIME TABLE FOR OTHER BATCHES
+			else if(fromWhere.equalsIgnoreCase("Settings") && !chk_default.isChecked())
 			{
 				Intent timeTable = new Intent(this, TimeTableActivity.class);
 				timeTable.putExtra("isBatch", spin_batch.getSelectedItem().toString().trim());
+				timeTable.putExtra("isArea", spin_course.getSelectedItem().toString().trim());
 				startActivity(timeTable);
 				finish();
 				overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 			}
+//			CHANGE ITS BATCH AND SHOULD GET NOTIFICATION FOR THESE NEW BATCHES
+			else if(fromWhere.equalsIgnoreCase("Settings") && chk_default.isChecked())
+			{
+				Intent timeTable = new Intent(this, TimeTableActivity.class);
+				CA.getPreferences().setDefault(true);
+				CA.getPreferences().setBatch(spin_batch.getSelectedItem().toString().trim());
+				CA.getPreferences().setLevel(spin_course.getSelectedItem().toString().trim());
+				startActivity(timeTable);
+				finish();
+				overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+				Toast.makeText(CA.getApplication().getApplicationContext(), "You will be notified for " + CA.getPreferences().getBatch() + " and General Notification", Toast.LENGTH_LONG).show();
+			}
 		}
 		else
 		{
-			CustomToast.showToastMessage(this,"Please select Batch");
+			Toast.makeText(CA.getApplication().getApplicationContext(), "Please select batch", Toast.LENGTH_SHORT).show();
 		}
 	}
 //	D: VALIDATE SPINNER SELECT [SPINNER]

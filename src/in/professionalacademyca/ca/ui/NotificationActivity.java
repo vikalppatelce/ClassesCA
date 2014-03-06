@@ -25,6 +25,12 @@ import in.professionalacademyca.ca.sql.NotificationSqlCursorAdapter;
 import in.professionalacademyca.ca.ui.utils.CustomToast;
 import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +54,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -138,7 +145,6 @@ public class NotificationActivity extends SherlockFragmentActivity{
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
 		listNotification.setOnScrollListener(touchListener.makeScrollListener());
-		
 			}
 	}
 //	D: CHECK NETWORK AVAILABILITY [UTILITY].
@@ -200,6 +206,22 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			}
 		}
 	}
+//	
+	private static long strDateToUnixTimestamp(String dt) {
+        DateFormat formatter;
+        Date date = null;
+        long unixtime;
+        formatter = new SimpleDateFormat("dd/MM/yy");
+        try {
+            date = formatter.parse(dt);
+        } catch (ParseException ex) {
+ 
+            ex.printStackTrace();
+        }
+        unixtime = date.getTime() / 1000L;
+        return unixtime;
+    }
+//	
 	
 //	D: GATHERED NOTIFICATION INFORMATION SENT TO SERVICES [JSON SERVICE API]
 	public void uploadNotificationData()
@@ -215,8 +237,19 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			}
 			else
 			{
-				notificationID = 0;
-//				notificationID = System.currentTimeMillis();
+				//VIKALP
+				try
+				{
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					String _date = df.format(Calendar.getInstance().getTime());
+					notificationID = strDateToUnixTimestamp(_date);
+					Log.i("Notification ID", String.valueOf(notificationID) + ": "+ System.currentTimeMillis()/1000);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			    //VIKALP
 			}
 		}
 		catch (Exception e) {

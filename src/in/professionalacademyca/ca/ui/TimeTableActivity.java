@@ -42,6 +42,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -61,6 +62,10 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	TextView lblarea,lblbatch,lbldate;
 	Button next;
 	String _date =null;
+
+	String fromWhere = null;
+	String fromBatch = null;
+	String fromLevel = null;
 	
 	ProgressBar progress;
 	
@@ -116,8 +121,31 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		
 		next.setTypeface(stylefont);
 		
-		txtarea.setText(CA.getPreferences().getLevel());
-		txtbatch.setText(CA.getPreferences().getBatch());
+		try
+		{
+			fromWhere = getIntent().getExtras().getString("FROM");
+			fromBatch = getIntent().getExtras().getString("isBatch");
+			fromLevel = getIntent().getExtras().getString("isArea");
+		}
+		catch(Exception e)
+		{
+			Log.e("Traversal", e.toString());
+		}
+		
+		try {
+			if (!TextUtils.isEmpty(fromLevel)) {
+				txtarea.setText(fromLevel);
+			} else {
+				txtarea.setText(CA.getPreferences().getLevel());
+			}
+			if (!TextUtils.isEmpty(fromBatch)) {
+				txtbatch.setText(fromBatch);
+			} else {
+				txtbatch.setText(CA.getPreferences().getBatch());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		dated = new Date();
 		dated = Calendar.getInstance().getTime();
@@ -126,6 +154,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		txtdate.setText(_date.toString());
 		
 		getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
+		
 		
 		if(isNetworkAvailable())
 		{
@@ -214,7 +243,20 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		String currentSIMImsi = mTelephonyMgr.getDeviceId();
 		String _id = null;
-		Cursor c  = getContentResolver().query(DBConstant.Area_Columnns.CONTENT_URI, null, DBConstant.Area_Columnns.COLUMN_AREA_NAME + "=?", new String[] {CA.getPreferences().getLevel()}, null);
+		Cursor c;
+		String batch = null;
+		
+		if(!TextUtils.isEmpty(fromBatch) && !TextUtils.isEmpty(fromLevel))
+		{
+			c  = getContentResolver().query(DBConstant.Area_Columnns.CONTENT_URI, null, DBConstant.Area_Columnns.COLUMN_AREA_NAME + "=?", new String[] {fromLevel}, null);
+			batch = fromBatch.toString();
+		}
+		else
+		{
+			c  = getContentResolver().query(DBConstant.Area_Columnns.CONTENT_URI, null, DBConstant.Area_Columnns.COLUMN_AREA_NAME + "=?", new String[] {CA.getPreferences().getLevel()}, null);
+			batch =  CA.getPreferences().getBatch();
+			
+		}
 		
 		if(c!=null && c.getCount() > 0)
 		{
@@ -224,7 +266,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		
 		c.close();
 		
-		JSONObject jsonObject = RequestBuilder.getTimeTableData(currentSIMImsi, dat ,_id);
+		JSONObject jsonObject = RequestBuilder.getTimeTableData(currentSIMImsi, dat ,_id ,batch);
 		Log.e("TIMETABLE--------------->>>>>>>>>>", jsonObject.toString());
 		getTimeTableTask getTask = new getTimeTableTask();
 		getTask.execute(new JSONObject[]{jsonObject});
