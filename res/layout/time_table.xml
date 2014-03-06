@@ -4,86 +4,156 @@
     android:layout_height="match_parent"
     android:background="#E5E4E2" >
 
-    <LinearLayout
-        android:id="@+id/txtTimeTable2"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
-        android:background="@drawable/shape_card"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.3"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/txtareaname"
+            <LinearLayout
+                android:id="@+id/txtTimeTable2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Time Table For Batch"
-                android:textSize="16sp" />
+                android:layout_alignParentTop="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_card"
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/txtbatchname"
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical"
+                    android:padding="5dp" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/txt_areaname"
+                            android:layout_width="fill_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:background="#E5E4E2"
+                            android:gravity="right|center_vertical"
+                            android:padding="5dp"
+                            android:text="Area"
+                             />
+
+                        <TextView
+                            android:id="@+id/txtareaname"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:padding="5dp"
+                            android:text="Andheri"
+                             />
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:layout_marginTop="1dp"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/txt_batchname"
+                            android:layout_width="fill_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:background="#E5E4E2"
+                            android:gravity="right|center_vertical"
+                            android:padding="5dp"
+                            android:text="Batch"
+                             />
+
+                        <TextView
+                            android:id="@+id/txtbatchname"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:padding="5dp"
+                            android:text="Nov May 14 Special Nov May 14 Special"
+                             />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:layout_marginTop="1dp"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/txt_date"
+                            android:layout_width="fill_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:background="#E5E4E2"
+                            android:gravity="right|center_vertical"
+                            android:padding="5dp"
+                            android:text="Date"
+                             />
+
+                        <TextView
+                            android:id="@+id/txtdate"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:padding="5dp"
+                            android:text="01-01-2014"
+                             />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/next"
+                    style="@style/IgRedButtonStyleLarge"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.7"
+                    android:gravity="center"
+                    android:onClick="onNext"
+                    android:text="@string/next"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/txtTimeTable2" />
+
+            <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="dated on 01-01-14"
-                android:textSize="16sp" />
+                android:layout_below="@id/divider"
+                android:layout_margin="10dp" >
 
-            <TextView
-                android:id="@+id/txtdate"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="dated on 01-01-14"
-                android:textSize="16sp" />
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="visible" />
+
+                <ListView
+                    android:id="@+id/timetable_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/next"
-            style="@style/IgRedButtonStyleLarge"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center"
-            android:layout_margin="10dp"
-            android:layout_weight="0.7"
-            android:gravity="center"
-            android:onClick="onNext"
-            android:text="@string/next"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/txtTimeTable2" />
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/divider"
-        android:layout_margin="10dp" >
-
-        <ProgressBar
-            android:id="@+id/progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="visible" />
-
-        <ListView
-            android:id="@+id/timetable_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+    </ScrollView>
 
 </RelativeLayout>

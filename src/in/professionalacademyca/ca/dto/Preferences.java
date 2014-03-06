@@ -118,4 +118,16 @@ public class Preferences {
 		String phoneId = sharedPreferences.getString("iMEINo", "IMEI Not Found");
 		return phoneId;
 	}
+	
+	public void setFirstTime(boolean b)
+	{
+		editor = sharedPreferences.edit();
+		editor.putBoolean("isFirstTime", b);
+		editor.commit();
+	}
+	public boolean getFirstTime()
+	{
+		boolean phoneId = sharedPreferences.getBoolean("isFirstTime", false);
+		return phoneId;
+	}
 }

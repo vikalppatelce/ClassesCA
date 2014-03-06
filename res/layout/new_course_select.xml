@@ -126,6 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:button="@drawable/selector_checkbox"
+                android:checked="true"
                 android:text="" />
 
             <TextView

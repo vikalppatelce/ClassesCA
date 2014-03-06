@@ -36,10 +36,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -56,12 +58,11 @@ import com.actionbarsherlock.view.MenuItem;
 public class TimeTableActivity extends SherlockFragmentActivity {
 
 	TextView txtarea,txtbatch,txtdate;
+	TextView lblarea,lblbatch,lbldate;
 	Button next;
 	String _date =null;
 	
 	ProgressBar progress;
-	
-	Handler mHandler;
 	
 	ActionBar actionBar;
 	Typeface stylefont;
@@ -96,15 +97,23 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		txtarea= (TextView)findViewById(R.id.txtareaname);
 		txtbatch=(TextView)findViewById(R.id.txtbatchname);
 		txtdate=(TextView)findViewById(R.id.txtdate);
+		
+		lblarea=(TextView)findViewById(R.id.txt_areaname);
+		lblbatch=(TextView)findViewById(R.id.txt_batchname);
+		lbldate=(TextView)findViewById(R.id.txt_date);
+		
 		next = (Button)findViewById(R.id.next);
 		progress = (ProgressBar)findViewById(R.id.progress);
 		listTimeTable = (ListView)findViewById(R.id.timetable_list);
 		
-		mHandler = new Handler();
-		
 		txtarea.setTypeface(stylefont);
 		txtbatch.setTypeface(stylefont);
 		txtdate.setTypeface(stylefont);
+		
+		lblarea.setTypeface(stylefont);
+		lblbatch.setTypeface(stylefont);
+		lbldate.setTypeface(stylefont);
+		
 		next.setTypeface(stylefont);
 		
 		txtarea.setText(CA.getPreferences().getLevel());
@@ -116,8 +125,26 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 //		t2.setText("date on " + dated);
 		txtdate.setText(_date.toString());
 		
-		uploadTimeTableData(_date.toString());
+		getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
+		
+		if(isNetworkAvailable())
+		{
+			uploadTimeTableData(_date.toString());
+		}
+		else
+		{
+			Toast.makeText(TimeTableActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+		}
+//		uploadTimeTableData("28-02-2014");
 	}
+	
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}
+	
 //	D: APPLY FONT ON ACTION BAR [FONT ACTIONBAR]
 	public void fontActionBar(String str)
 	{
@@ -154,17 +181,25 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	
 	public void onNext(View v)
 	{
-		dated = DateUtils.addDays(dated, 1);
-		uploadTimeTableData(toddMMyy(dated).toString());
-		getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
-		
-		TimeTableActivity.this.runOnUiThread(new Runnable(){
-		    public void run(){
-//		        Log.d("UI thread", "I am the UI thread");
-		    	txtdate.setText(toddMMyy(dated).toString());
-		    	Log.i("Date", toddMMyy(dated).toString());
-		    }
-		});
+		if(isNetworkAvailable())
+		{
+			dated = DateUtils.addDays(dated, 1);
+			uploadTimeTableData(toddMMyy(dated).toString());
+			getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
+			
+			TimeTableActivity.this.runOnUiThread(new Runnable(){
+			    @Override
+				public void run(){
+//			        Log.d("UI thread", "I am the UI thread");
+			    	txtdate.setText(toddMMyy(dated).toString());
+			    	Log.i("Date", toddMMyy(dated).toString());
+			    }
+			});
+		}
+		else
+		{
+			Toast.makeText(TimeTableActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+		}
 //		adapterQuery.notifyDataSetInvalidated();
 	}
 
@@ -313,7 +348,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 					DBConstant.Time_Table_Columns.COLUMN_PROFESSOR,
 					DBConstant.Time_Table_Columns.COLUMN_REMARK };
 
-			TimeTableActivity.this.adapterQuery = new TimeTableSqlCursorAdapter(TimeTableActivity.this, R.layout.time_table_item,result, dbColumns, listFields,currentUri);
+			TimeTableActivity.this.adapterQuery = new TimeTableSqlCursorAdapter(TimeTableActivity.this, R.layout.new_time_table_item,result, dbColumns, listFields,currentUri);
 			TimeTableActivity.this.listTimeTable.setAdapter(TimeTableActivity.this.adapterQuery);
 			progress.setVisibility(View.GONE);
 		}

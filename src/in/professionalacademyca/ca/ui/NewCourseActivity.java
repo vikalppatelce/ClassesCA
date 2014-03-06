@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -63,6 +64,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 	Button go;
 	ActionBar actionBar;
 	String fromWhere;
+	ProgressDialog pDialog;
 	
 	ArrayAdapter adap_course,adap_city,adap_area,adap_batch;
 	
@@ -363,7 +365,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		String currentSIMImsi = mTelephonyMgr.getDeviceId();
 		JSONObject jsonObject = RequestBuilder.getSpinnerData(currentSIMImsi);
 		Log.e("COURSE------>>>>>>>>>>", jsonObject.toString());
-		SpinnerDataTask spinnerDataTask = new SpinnerDataTask();
+		SpinnerDataTask spinnerDataTask = new SpinnerDataTask(this);
 		spinnerDataTask.execute(new JSONObject[]{jsonObject});
 	}
 
@@ -371,10 +373,19 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 //	D: FETCH DATA FROM SERVICES AND INSERT IN TO TABLE. [SPINNER - AYSNCTASK]
 	private class SpinnerDataTask extends AsyncTask<JSONObject, Void, Void>
 	{
+		Context context;
+		public SpinnerDataTask(Context context) {
+			// TODO Auto-generated constructor stub
+        	this.context = context;
+		}
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
+			pDialog = new ProgressDialog(context);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(true);
+            pDialog.show();
 		}
 		@Override
 		protected Void doInBackground(JSONObject... params) {
@@ -466,6 +477,12 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 			
 			adap_course.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spin_course.setAdapter(adap_course);
+			
+			   if (pDialog.isShowing())
+			   {
+	                pDialog.dismiss();
+			   }
+	         
 
 		}
 	}

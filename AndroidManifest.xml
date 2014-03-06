@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.professionalacademyca.ca"
-    android:versionCode="7"
+    android:versionCode="11"
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="8" />
@@ -38,9 +38,6 @@
             android:authorities="in.professionalacademyca.ca.sql.CaDB" />
 
         <activity
-            android:name="in.professionalacademyca.ca.ui.CourseActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="in.professionalacademyca.ca.ui.NewCourseActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -68,12 +65,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="in.professionalacademyca.ca.ui.HomeActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-        </activity>
-        
         <receiver
             android:name="in.professionalacademyca.ca.receiver.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >

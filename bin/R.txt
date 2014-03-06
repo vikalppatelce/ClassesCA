@@ -497,7 +497,7 @@ int id dashboard_top_left 0x7f070043
 int id dashboard_top_right 0x7f070045
 int id defaulttext 0x7f070053
 int id disableHome 0x7f07000d
-int id divider 0x7f070079
+int id divider 0x7f07007c
 int id edit_query 0x7f07002e
 int id go 0x7f07003e
 int id homeAsUp 0x7f07000a
@@ -511,7 +511,7 @@ int id listMode 0x7f070006
 int id logo 0x7f070055
 int id marqueeTicker 0x7f07004b
 int id message 0x7f070071
-int id next 0x7f070078
+int id next 0x7f07007b
 int id none 0x7f070000
 int id normal 0x7f070001
 int id notification 0x7f07007f
@@ -541,13 +541,10 @@ int id terrain 0x7f070003
 int id text 0x7f070040
 int id ticker 0x7f070042
 int id time 0x7f070059
-int id timetable_batchname 0x7f07007d
 int id timetable_lecture 0x7f070058
-int id timetable_list 0x7f07007a
+int id timetable_list 0x7f07007d
 int id timetable_prof 0x7f07005c
 int id timetable_remark 0x7f07005f
-int id timetabledate 0x7f07007b
-int id timetableday 0x7f07007c
 int id timetabletime 0x7f07005a
 int id titleDivider 0x7f07006f
 int id title_template 0x7f07006c
@@ -555,9 +552,12 @@ int id top 0x7f070017
 int id topPanel 0x7f07006b
 int id triangle 0x7f070014
 int id txtTimeTable2 0x7f070074
-int id txtareaname 0x7f070075
-int id txtbatchname 0x7f070076
-int id txtdate 0x7f070077
+int id txt_areaname 0x7f070075
+int id txt_batchname 0x7f070077
+int id txt_date 0x7f070079
+int id txtareaname 0x7f070076
+int id txtbatchname 0x7f070078
+int id txtdate 0x7f07007a
 int id txthelp 0x7f070046
 int id txtnotification 0x7f070048
 int id txtsetdefault 0x7f070054
@@ -614,7 +614,6 @@ int layout row_spinner 0x7f030023
 int layout sherlock_spinner_dropdown_item 0x7f030024
 int layout sherlock_spinner_item 0x7f030025
 int layout time_table 0x7f030026
-int layout time_table_item 0x7f030027
 int menu main 0x7f0e0000
 int string about_summary 0x7f08003c
 int string abs__action_bar_home_description 0x7f08001a

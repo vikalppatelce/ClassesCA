@@ -9,7 +9,7 @@
  * --------------------------------------------------------------------------------------------------------------------
  * INDEX       DEVELOPER		DATE			FUNCTION		DESCRIPTION
  * --------------------------------------------------------------------------------------------------------------------
- * 10001       VIKALP PATEL    04/03/2014       				
+ * 10001       VIKALP PATEL    04/03/2014       SPINNER         GET SPINNER DATA     
  * --------------------------------------------------------------------------------------------------------------------
  */
 package in.professionalacademyca.ca.ui;
@@ -25,6 +25,7 @@ import in.professionalacademyca.ca.ui.utils.QustomDialogBuilder;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +37,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -43,6 +46,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -73,6 +77,7 @@ public class NewHomeActivity extends SherlockFragmentActivity {
     AtomicInteger msgId = new AtomicInteger();
     SharedPreferences prefs;
     Context context;
+    JSONArray areaarray,batcharray;//ADDED 10001
 
     String regid;
 	//EA GCM
@@ -104,30 +109,40 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 		setup.setTypeface(stylefont);
 		
 		ticker.setSelected(true);
-		fetchTickerData();
-		//SA GCM
 		context = getApplicationContext();
-		
-		if(BuildConfig.DEBUG)
-		{
-		Log.i("REG_ID", CA.getSharedPreferences().getString("registration_id", "Not yet Registered"));
-		Log.i("Version", String.valueOf(getAppVersion(context)));
-		Log.i("SENDER_ID",SENDER_ID);
+
+		if (isNetworkAvailable()) {
+			fetchTickerData();
+			// SA GCM
+
+			if (BuildConfig.DEBUG) {
+				Log.i("REG_ID",CA.getSharedPreferences().getString("registration_id","Not yet Registered"));
+				Log.i("Version", String.valueOf(getAppVersion(context)));
+				Log.i("SENDER_ID", SENDER_ID);
+			}
+
+			if (checkPlayServices()) {
+				gcm = GoogleCloudMessaging.getInstance(this);
+				regid = getRegistrationId(context);
+				Log.i("REG_ID", regid);
+				if (TextUtils.isEmpty(regid)) {
+					registerInBackground();
+				}
+			} else {
+				Log.i(TAG, "No valid Google Play Services APK found.");
+			}
+			// EA GCM
+		} else {
+			Toast.makeText(NewHomeActivity.this,"Please check your internet connection", Toast.LENGTH_SHORT).show();
 		}
-		
-		if (checkPlayServices()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
-            regid = getRegistrationId(context);
-            Log.i("REG_ID", regid);
-            if (TextUtils.isEmpty(regid)) {
-                registerInBackground();
-            }
-        } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
-        }
-		//EA GCM
-	}
 	
+	}
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}	
 //	D: CHECK PLAY SERVICES ON RESUME [PLAYSERVICES GCM]
 	//SA GCM
 	@Override
