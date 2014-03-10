@@ -20,6 +20,7 @@ public class AppConstants {
 		public static final String NOTIFICATION_URL =  "http://www.netdoers.com/projects/caprofessional/services/notification.php";
 		public static final String REGISTERED_TO_SERVER_URL =  "http://www.netdoers.com/projects/caprofessional/services/user_device.php";
 		public static final String GET_DATA_URL =  "http://netdoers.com/projects/caprofessional/services/api.php";
+		public static final String SET_DEFAULT_BATCH = "http://netdoers.com/projects/caprofessional/services/set_default_batch.php";
 	}
 	
 	public interface RESPONSES

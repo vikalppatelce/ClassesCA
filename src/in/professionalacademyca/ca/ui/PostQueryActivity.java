@@ -24,7 +24,6 @@ import in.professionalacademyca.ca.service.ResponseParser;
 import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.CustomSqlCursorAdapter;
 import in.professionalacademyca.ca.sql.DBConstant;
-import in.professionalacademyca.ca.ui.utils.CustomToast;
 import in.professionalacademyca.ca.ui.utils.QustomQueryDialogBuilder;
 import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 
@@ -61,7 +60,6 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +73,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	Button post;
 	EditText query;
 	ProgressBar progress;
-	Spinner spin_subject;
+	EditText spin_subject;
 	TextView subject;
 	
 	ActionBar actionBar;
@@ -107,7 +105,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		actionBar.setIcon(android.R.drawable.ic_menu_help);
 		
 		post= (Button)findViewById(R.id.post);
-		spin_subject = (Spinner)findViewById(R.id.spin_subject);
+		spin_subject = (EditText)findViewById(R.id.spin_subject);
 		subject = (TextView)findViewById(R.id.txtsubject);
 		query = (EditText)findViewById(R.id.query);
 		listQuery = (ListView)findViewById(R.id.list);
@@ -116,15 +114,16 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		post.setTypeface(stylefont);
 		query.setTypeface(stylefont);
 		subject.setTypeface(stylefont);
+		spin_subject.setTypeface(stylefont);
 		
-		String [] spin_arry = getResources().getStringArray(R.array.arr_subject);        
-		adap_subject = new CustomArrayAdapter<CharSequence>(this, spin_arry);
+//		String [] spin_arry = getResources().getStringArray(R.array.arr_subject);        
+//		adap_subject = new CustomArrayAdapter<CharSequence>(this, spin_arry);
 
 
 		
 //		adap_subject = ArrayAdapter.createFromResource(this, R.array.arr_subject, android.R.layout.simple_spinner_dropdown_item);
-		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spin_subject.setAdapter(adap_subject);
+//		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		spin_subject.setAdapter(adap_subject);
 		
 //		listQuery.setSelector(R.drawable.listselector);  
 //		new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
@@ -160,7 +159,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
                                 	{
                                 	long _id  = adapterQuery.getItemId(position);
                                 	getContentResolver().delete(DBConstant.Query_Columns.CONTENT_URI, "_id=?", new String[] { String.valueOf(_id) });
-                                	CustomToast.showToastMessage(PostQueryActivity.this, "Deleted");
+                                	Toast.makeText(PostQueryActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                                 	}
                                 	catch(Exception e)
                                 	{
@@ -307,21 +306,29 @@ public class PostQueryActivity extends SherlockFragmentActivity{
       if(validate())
       {
     	  Log.e("Saving", "Saving");
-          saveQuery(query.getText().toString().trim(),spin_subject.getSelectedItem().toString().trim());
+          
           if (isNetworkAvailable()) {
+        	  saveQuery(query.getText().toString().trim(),spin_subject.getText().toString().trim());
+        	  
               loadQueryData();
               loadUnQueryData();
               uploadQueryData();
               uploadUnQueryData();
+              
   		}
   		else
   		{
-  			Toast.makeText(PostQueryActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+  			Toast.makeText(PostQueryActivity.this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
   		}
       }
       else
       {
+    	  if(TextUtils.isEmpty(query.getText().toString()))
     	  query.setError("Please enter query");
+    	  
+    	  if(TextUtils.isEmpty(spin_subject.getText().toString()))
+    	  spin_subject.setError("Please enter subject");
+
       }
 	}
 //	D: CHECK NETWORK AVAILABILITY [UTILITY NETWORK INTERNET]
@@ -386,6 +393,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	public void clearQuery()
 	{
 		query.setText("");
+		spin_subject.setText("");
 	}
 //	D: SAVE QUERY DATA IN DATABASE USED TO FETCH THE ANSWER OF IT LATER ON [DATABASE QUERY SAVE]
 	public void saveQuery(String str,String sub)
@@ -414,7 +422,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 //	D: VALIDATE POST QUERY [VALIDATE QUERY DATA]
 	public boolean validate()
 	{
-		if(!TextUtils.isEmpty(query.getText().toString()))
+		if(!TextUtils.isEmpty(query.getText().toString()) && !TextUtils.isEmpty(spin_subject.getText().toString()))
 		{
 			return true;
 		}

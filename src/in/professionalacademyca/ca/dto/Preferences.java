@@ -58,6 +58,19 @@ public class Preferences {
 		editor.commit();
 	}
 	
+	public boolean getServerDefaultBatch()
+	{
+		boolean flag = sharedPreferences.getBoolean("isServerBatchDefault", false);
+		return flag;
+	}
+	
+	public void setServerDefaultBatch(boolean flag)
+	{
+		editor = sharedPreferences.edit();
+		editor.putBoolean("isServerBatchDefault", flag);
+		editor.commit();
+	}
+	
 	public String getLevel()
 	{
 		String area = sharedPreferences.getString("isLevel", null);
@@ -68,6 +81,19 @@ public class Preferences {
 	{
 		editor = sharedPreferences.edit();
 		editor.putString("isLevel", area);
+		editor.commit();
+	}
+	
+	public String getAreaId()
+	{
+		String area = sharedPreferences.getString("isAreaId", null);
+		return area;
+	}
+	
+	public void setAreaId(String area)
+	{
+		editor = sharedPreferences.edit();
+		editor.putString("isAreaId", area);
 		editor.commit();
 	}
 	

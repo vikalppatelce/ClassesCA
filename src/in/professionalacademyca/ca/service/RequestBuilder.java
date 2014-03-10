@@ -74,7 +74,7 @@ public class RequestBuilder {
 		{
 			stringBuffer.put("device_id", imei);
 			stringBuffer.put("batch_name", CA.getPreferences().getBatch());
-			stringBuffer.put("level_name", CA.getPreferences().getLevel());
+			stringBuffer.put("area_id", CA.getPreferences().getAreaId());
 			stringBuffer.put("date_time", id);
 		}
 		catch(Exception e)
@@ -135,6 +135,24 @@ public class RequestBuilder {
 		}
 		return stringBuffer;//ParentBuffer;
 	}
+	public static JSONObject getDefaultBatchData(String imei,String _id)
+	{
+		JSONObject stringBuffer = new JSONObject();
+		
+		//JSONObject ParentBuffer = new JSONObject();
+		try
+		{
+			stringBuffer.put("device_id", imei);
+			stringBuffer.put("area_id", _id);
+			stringBuffer.put("batch_name", CA.getPreferences().getBatch());
+			stringBuffer.put("app_version", CA.getSharedPreferences().getInt("appVersion", 0));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return stringBuffer;//ParentBuffer;
+	}
 //	D: REQUEST BUILDER SENT AT TIME OF PUSHING QUERY ON SERVER  [REQUEST BUILDER QUERY]
 	public static JSONArray getQueryDetails(ArrayList<QueryDTO> queryDTO)
 	{
@@ -149,8 +167,8 @@ public class RequestBuilder {
 					jsonObject.put("question_id", queryDTO.get(i).getId());
 					jsonObject.put("user_query", queryDTO.get(i).getQuery());
 					jsonObject.put("query_date", queryDTO.get(i).getDate());
-					jsonObject.put("level_name", queryDTO.get(i).getLevel());
-					jsonObject.put("batch_name", queryDTO.get(i).getBatch());
+					jsonObject.put("area_id", CA.getPreferences().getAreaId());
+					jsonObject.put("batch_name", CA.getPreferences().getBatch());
 					jsonObject.put("subject_name", queryDTO.get(i).getSubject());
 					jsonArray.put(jsonObject);
 				}
@@ -170,7 +188,7 @@ public class RequestBuilder {
 				try
 				{
 					jsonObject.put("batch_name", CA.getPreferences().getBatch());
-					jsonObject.put("level_name", CA.getPreferences().getLevel());
+					jsonObject.put("area_id", CA.getPreferences().getAreaId());
 					jsonArray.put(jsonObject);
 				}
 				catch (Exception e) {

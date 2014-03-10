@@ -87,7 +87,7 @@ public class CaDB extends ContentProvider {
 			strBuilder.append(DBConstant.TABLE_NOTIFICATION);
 			strBuilder.append('(');
 			strBuilder.append(DBConstant.Notification_Columnns.COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," );
-			strBuilder.append(DBConstant.Notification_Columnns.COLUMN_NOTIFICATION_ID +" INTEGER , " );
+			strBuilder.append(DBConstant.Notification_Columnns.COLUMN_NOTIFICATION_ID +" INTEGER UNIQUE, " );
 			strBuilder.append(DBConstant.Notification_Columnns.COLUMN_BATCH+" TEXT , " );
 			strBuilder.append(DBConstant.Notification_Columnns.COLUMN_TITLE+" TEXT , " );
 			strBuilder.append(DBConstant.Notification_Columnns.COLUMN_DESCRIPTION +" TEXT , " );
@@ -102,7 +102,7 @@ public class CaDB extends ContentProvider {
 			strBuilder.append(DBConstant.TABLE_NOTIFICATION_TEMP);
 			strBuilder.append('(');
 			strBuilder.append(DBConstant.Notification_Temp_Columnns.COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," );
-			strBuilder.append(DBConstant.Notification_Temp_Columnns.COLUMN_NOTIFICATION_ID +" INTEGER" );
+			strBuilder.append(DBConstant.Notification_Temp_Columnns.COLUMN_NOTIFICATION_ID +" INTEGER UNIQUE" );
 			strBuilder.append(')');
 			db.execSQL(strBuilder.toString());
 			Log.i("NOTIFICATION TEMP",strBuilder.toString());

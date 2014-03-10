@@ -22,19 +22,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.5"
+                android:layout_weight="0.3"
                 android:text="@string/subject"
                 android:textSize="18sp" />
 
-            <Spinner
+            <EditText
                 android:id="@+id/spin_subject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.5"
+                android:layout_weight="0.7"
                 android:gravity="left"
-                android:minWidth="200dp"
-                android:text="Economics"
+                android:hint="Name"
                 android:textSize="18sp" />
         </LinearLayout>
 

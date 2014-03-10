@@ -115,20 +115,20 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 			});
 		}
 		
-		Preference dev = prefMgr.findPreference("prefDev");
-		if(dev!=null)
-		{
-			dev.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-				
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					// TODO Auto-generated method stub
-				//	showDialog(DEV);
-					copyDatabase(); 
-					return false;
-				}
-			});
-		}
+//		Preference dev = prefMgr.findPreference("prefDev");
+//		if(dev!=null)
+//		{
+//			dev.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//				
+//				@Override
+//				public boolean onPreferenceClick(Preference preference) {
+//					// TODO Auto-generated method stub
+//				//	showDialog(DEV);
+//					copyDatabase(); 
+//					return false;
+//				}
+//			});
+//		}
 		
 		Preference about = prefMgr.findPreference("prefAbout");
 		if(about!=null)

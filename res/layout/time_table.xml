@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_card"
+                android:background="@drawable/redesign_shape_card"
                 android:orientation="horizontal" >
 
                 <LinearLayout
@@ -28,7 +28,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.3"
                     android:orientation="vertical"
-                    android:padding="5dp" >
+                     >
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -40,7 +40,7 @@
                             android:id="@+id/txt_areaname"
                             android:layout_width="fill_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.7"
+                            android:layout_weight="0.63"
                             android:background="#E5E4E2"
                             android:gravity="right|center_vertical"
                             android:padding="5dp"
@@ -51,7 +51,7 @@
                             android:id="@+id/txtareaname"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
+                            android:layout_weight="0.47"
                             android:padding="5dp"
                             android:text="Andheri"
                              />
@@ -68,7 +68,7 @@
                             android:id="@+id/txt_batchname"
                             android:layout_width="fill_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.7"
+                            android:layout_weight="0.63"
                             android:background="#E5E4E2"
                             android:gravity="right|center_vertical"
                             android:padding="5dp"
@@ -79,7 +79,7 @@
                             android:id="@+id/txtbatchname"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
+                            android:layout_weight="0.47"
                             android:padding="5dp"
                             android:text="Nov May 14 Special Nov May 14 Special"
                              />
@@ -92,22 +92,23 @@
                         android:layout_marginTop="1dp"
                         android:orientation="horizontal" >
 
+<!--                         android:layout_weight="0.7" -->
                         <TextView
                             android:id="@+id/txt_date"
                             android:layout_width="fill_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.7"
+                            android:layout_weight="0.63"
                             android:background="#E5E4E2"
                             android:gravity="right|center_vertical"
                             android:padding="5dp"
                             android:text="Date"
                              />
-
+<!-- android:layout_weight="0.3" -->
                         <TextView
                             android:id="@+id/txtdate"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
+                            android:layout_weight="0.47"
                             android:padding="5dp"
                             android:text="01-01-2014"
                              />

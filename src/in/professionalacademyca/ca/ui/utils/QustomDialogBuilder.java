@@ -80,6 +80,11 @@ public class QustomDialogBuilder extends AlertDialog.Builder{
         mMessage.setTypeface(style);
         return this;
     }
+    
+    public QustomDialogBuilder setFontSize(Float size) {
+        mMessage.setTextSize(size);;
+        return this;
+    }
 
     @Override
     public QustomDialogBuilder setIcon(int drawableResId) {

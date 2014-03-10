@@ -47,7 +47,13 @@ public class AboutDialog {
     private static final String TAG = "AboutDialog";
 
     private final Context mContext;
-    private String mStyle = "";
+    
+    private String mStyle = "h1 { margin-left: 0px; font-size: 12pt; }"
+            + "li { margin-left: 0px; font-size: 9pt; }"
+            + "ul { padding-left: 30px; }"
+            + ".summary { font-size: 9pt; color: #606060; display: block; clear: left; }"
+            + ".date { font-size: 9pt; color: #606060;  display: block; }";
+
 
     protected DialogInterface.OnDismissListener mOnDismissListener;
 
@@ -186,10 +192,10 @@ public class AboutDialog {
 				setDividerColor(HALLOWEEN_RED).
 				setMessage(htmlChangelog).
 				setFontTitle(stylefont).
+				setFontSize(12f).
 				setFontMessage(stylefont);
 		qustomDialogBuilder.show();
         
     }
-
 }
 

@@ -21,7 +21,6 @@ import in.professionalacademyca.ca.app.CA;
 import in.professionalacademyca.ca.service.RequestBuilder;
 import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.DBConstant;
-import in.professionalacademyca.ca.ui.utils.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +49,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,17 +57,18 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.google.android.gms.internal.ck;
 
 public class NewCourseActivity  extends SherlockFragmentActivity implements OnItemSelectedListener{
 
 	Spinner spin_course,spin_city,spin_area,spin_batch;
 	CheckBox chk_default;
-	TextView header,txtcourse,txtbatch,txtsetdefault;
+	TextView header,txtcourse,txtbatch,txtsetdefault,txtprevdefaultbatch,txtprevdefaultarea;
+	TextView txtparea,txtpbatch,txtprev;
 	Button go;
 	ActionBar actionBar;
 	String fromWhere;
 	ProgressDialog pDialog;
+	LinearLayout prevDefault;
 	
 	ArrayAdapter adap_course,adap_city,adap_area,adap_batch;
 	
@@ -106,17 +108,37 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		txtbatch = (TextView)findViewById(R.id.batch);
 		txtcourse = (TextView)findViewById(R.id.course);
 		txtsetdefault = (TextView)findViewById(R.id.txtsetdefault);
+		txtprevdefaultbatch = (TextView)findViewById(R.id.txtprevbatch);
+		txtprevdefaultarea = (TextView)findViewById(R.id.txtprevarea);
+		
+		txtparea = (TextView)findViewById(R.id.prevarea);
+		txtpbatch = (TextView)findViewById(R.id.prevbatch);
+		txtprev = (TextView)findViewById(R.id.txtprev);
+		
+		
+		prevDefault = (LinearLayout)findViewById(R.id.boxprevbatch);
+		
 		go =(Button)findViewById(R.id.go);
 				
 		chk_default.setTypeface(stylefont);
 		txtbatch.setTypeface(stylefont);
 		txtcourse.setTypeface(stylefont);
 		txtsetdefault.setTypeface(stylefont);
+		txtprevdefaultbatch.setTypeface(stylefont);
+		txtprevdefaultarea.setTypeface(stylefont);
+		
+		txtparea.setTypeface(stylefont);
+		txtpbatch.setTypeface(stylefont);
+		txtprev.setTypeface(stylefont);
 		go.setTypeface(stylefont);
 		
 		if(isNetworkAvailable())
 		{
 			getSpinnerData();	
+		}
+		else
+		{
+			Toast.makeText(NewCourseActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
 		}
 		
 		
@@ -138,6 +160,15 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 
 		}		 
 		
+		try {
+			if (!TextUtils.isEmpty(CA.getPreferences().getBatch())) {
+				prevDefault.setVisibility(View.VISIBLE);
+				txtprevdefaultarea.setText(CA.getPreferences().getLevel());
+				txtprevdefaultbatch.setText(CA.getPreferences().getBatch());
+			}
+		} catch (Exception e) {
+
+		}
 //		String [] arr_course = getResources().getStringArray(R.array.arr_course_level);        
 		
 	}
@@ -226,6 +257,17 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 				CA.getPreferences().setDefault(true);
 				CA.getPreferences().setBatch(spin_batch.getSelectedItem().toString().trim());
 				CA.getPreferences().setLevel(spin_course.getSelectedItem().toString().trim());
+				
+				try {
+					Cursor c = getContentResolver().query(DBConstant.Area_Columnns.CONTENT_URI, null,DBConstant.Area_Columnns.COLUMN_AREA_NAME + "=?",new String[] { CA.getPreferences().getLevel() }, null);
+					if (c != null && c.getCount() > 0) {
+						c.moveToFirst();
+						String _id = c.getString(c.getColumnIndex(DBConstant.Area_Columnns.COLUMN_AREA_ID));
+						CA.getPreferences().setAreaId(_id);
+					}
+				} catch (Exception e) {
+
+				}
 			}
 //			SAW NOTIFICATION FIRST -> PLEASE SELECT DEFAULT BATCH MESSAGE
 			if(fromWhere.equalsIgnoreCase("Notification"))
@@ -257,6 +299,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 			{
 			Intent timeTable = new Intent(this, TimeTableActivity.class);
 			startActivity(timeTable);
+			sendDefaultBatchToBackend();
 			finish();
 			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 			}
@@ -278,6 +321,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 				CA.getPreferences().setBatch(spin_batch.getSelectedItem().toString().trim());
 				CA.getPreferences().setLevel(spin_course.getSelectedItem().toString().trim());
 				startActivity(timeTable);
+				sendDefaultBatchToBackend();
 				finish();
 				overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 				Toast.makeText(CA.getApplication().getApplicationContext(), "You will be notified for " + CA.getPreferences().getBatch() + " and General Notification", Toast.LENGTH_LONG).show();
@@ -402,6 +446,28 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		SpinnerDataTask spinnerDataTask = new SpinnerDataTask(this);
 		spinnerDataTask.execute(new JSONObject[]{jsonObject});
 	}
+	
+	private void sendDefaultBatchToBackend() {
+	    // Your implementation here.
+		
+		TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		String currentSIMImsi = mTelephonyMgr.getDeviceId();
+		String _id = null;
+		try {
+			Cursor c = getContentResolver().query(DBConstant.Area_Columnns.CONTENT_URI, null,DBConstant.Area_Columnns.COLUMN_AREA_NAME + "=?",new String[] { CA.getPreferences().getLevel() }, null);
+			if (c != null && c.getCount() > 0) {
+				c.moveToFirst();
+				_id = c.getString(c.getColumnIndex(DBConstant.Area_Columnns.COLUMN_AREA_ID));
+			}
+		} catch (Exception e) {
+
+		}
+		
+		JSONObject jsonObject = RequestBuilder.getDefaultBatchData(currentSIMImsi,_id);
+		Log.e("PUSH BATCH---->>>>>>>>>>", jsonObject.toString());
+		SendToServerTask sendTask = new SendToServerTask();
+		sendTask.execute(new JSONObject[]{jsonObject});
+	}
 
 	
 //	D: FETCH DATA FROM SERVICES AND INSERT IN TO TABLE. [SPINNER - AYSNCTASK]
@@ -511,13 +577,56 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 			
 			adap_course.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spin_course.setAdapter(adap_course);
-			
 			   if (pDialog.isShowing())
 			   {
 	                pDialog.dismiss();
 			   }
-	         
-
 		}
 	}
+	
+	
+	private class SendToServerTask extends AsyncTask<JSONObject, Void, Void>
+	{
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
+		@Override
+		protected Void doInBackground(JSONObject... params) {
+			// TODO Auto-generated method stub
+			JSONObject dataToSend = params[0];
+			boolean status = false;
+			try {
+				String jsonStr = ServiceDelegate.postData(AppConstants.URLS.SET_DEFAULT_BATCH, dataToSend);
+				
+				//str = "{\"tables\":{\"service\":[]},\"lov\":{\"location\":[\"L 1\"],\"expense_category\":[],\"patient_type\":[\"OPD\",\"IPD\",\"SX\"],\"payment_mode\":[\"M2\",\"M1\"],\"diagnose_procedure\":[],\"referred_by\":[\"R2\",\"R1\"],\"start_time\":[],\"surgery_level\":[\"Level : 7\",\"Level : 6\",\"Level : 5\",\"Level : 4\",\"Level : 3\",\"Level : 2\",\"Level : 1\"],\"team_member\":[],\"ward\":[]}}";
+				if(jsonStr != null)
+				{
+					JSONObject jsonObject = new JSONObject(new String(jsonStr));
+					status = jsonObject.getBoolean(AppConstants.RESPONSES.QueryResponse.QSTATUS);
+					if(status)
+					{
+						try {
+		                    // Getting JSON Array node
+							CA.getPreferences().setServerDefaultBatch(true);
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                }
+					}
+					}
+				Log.e("TickerTask","");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+		}
+	}
+
 }

@@ -22,7 +22,6 @@ import in.professionalacademyca.ca.service.RequestBuilder;
 import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.DBConstant;
 import in.professionalacademyca.ca.sql.NotificationSqlCursorAdapter;
-import in.professionalacademyca.ca.ui.utils.CustomToast;
 import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 
 import java.text.DateFormat;
@@ -107,7 +106,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			}
 			else
 			{
-				CustomToast.showToastMessage(this, "Please check your internet connection");
+				Toast.makeText(NotificationActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
 			}
 		}
 		
@@ -128,13 +127,14 @@ public class NotificationActivity extends SherlockFragmentActivity{
                                 	{
                                 	long _id  = adapterQuery.getItemId(position);
                                 	getContentResolver().delete(DBConstant.Notification_Columnns.CONTENT_URI, "_id=?", new String[] { String.valueOf(_id) });
-                                	CustomToast.showToastMessage(NotificationActivity.this, "Keep it Clean!");
+
                                 	}
                                 	catch(Exception e)
                                 	{
                                 		Log.e("Swipe to Dismiss", e.toString());
                                 	}
                                 }
+                            	Toast.makeText(NotificationActivity.this, "Keep it Clean!", Toast.LENGTH_SHORT).show();
                                 adapterQuery.notifyDataSetChanged();
                             }
                         });
@@ -202,7 +202,7 @@ public class NotificationActivity extends SherlockFragmentActivity{
 			}
 			else
 			{
-				CustomToast.showToastMessage(this, "Please check your internet connection");
+			Toast.makeText(NotificationActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

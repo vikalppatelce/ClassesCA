@@ -7,7 +7,12 @@ import in.professionalacademyca.ca.sql.DBConstant;
 import in.professionalacademyca.ca.ui.NotificationActivity;
 import in.professionalacademyca.ca.ui.PostQueryActivity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -196,7 +201,18 @@ public class GcmIntentService extends IntentService {
 			}
 			else
 			{
-				notificationID = 0;
+				try
+				{
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					String _date = df.format(Calendar.getInstance().getTime());
+					notificationID = strDateToUnixTimestamp(_date);
+					Log.i("Notification ID", String.valueOf(notificationID) + ": "+ System.currentTimeMillis()/1000);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+//				notificationID = 0;
 			}
 		}
 		catch (Exception e) {
@@ -213,6 +229,20 @@ public class GcmIntentService extends IntentService {
 		uploadNotificationTask.execute(new JSONObject[]{jsonObject});
 	}
 	
+	private static long strDateToUnixTimestamp(String dt) {
+        DateFormat formatter;
+        Date date = null;
+        long unixtime;
+        formatter = new SimpleDateFormat("dd/MM/yy");
+        try {
+            date = formatter.parse(dt);
+        } catch (ParseException ex) {
+ 
+            ex.printStackTrace();
+        }
+        unixtime = date.getTime() / 1000L;
+        return unixtime;
+    }
 	private class UploadNotificationTask extends AsyncTask<JSONObject, Void, Void>
 	{
 		@Override
