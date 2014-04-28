@@ -160,6 +160,7 @@ public class GcmIntentService extends IntentService {
         .setSmallIcon(R.drawable.ic_launcher)
 //        .setContentTitle("GCM Notification")
         .setContentTitle(title)
+        .setAutoCancel(true)
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(title))
         .setContentText(content);
@@ -177,6 +178,7 @@ public class GcmIntentService extends IntentService {
         .setSmallIcon(R.drawable.ic_launcher)
 //        .setContentTitle("GCM Notification")
         .setContentTitle(msg)
+        .setAutoCancel(true)
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(msg))
         .setContentText(msg);

@@ -30,14 +30,17 @@ import in.professionalacademyca.ca.ui.utils.SwipeDismissListViewTouchListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Typeface;
@@ -50,8 +53,10 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -60,6 +65,7 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +79,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	Button post;
 	EditText query;
 	ProgressBar progress;
-	EditText spin_subject;
+	Spinner spin_subject;
 	TextView subject;
 	
 	ActionBar actionBar;
@@ -105,7 +111,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		actionBar.setIcon(android.R.drawable.ic_menu_help);
 		
 		post= (Button)findViewById(R.id.post);
-		spin_subject = (EditText)findViewById(R.id.spin_subject);
+		spin_subject = (Spinner)findViewById(R.id.spin_subject);
 		subject = (TextView)findViewById(R.id.txtsubject);
 		query = (EditText)findViewById(R.id.query);
 		listQuery = (ListView)findViewById(R.id.list);
@@ -114,16 +120,16 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		post.setTypeface(stylefont);
 		query.setTypeface(stylefont);
 		subject.setTypeface(stylefont);
-		spin_subject.setTypeface(stylefont);
+//		spin_subject.setTypeface(stylefont);
 		
-//		String [] spin_arry = getResources().getStringArray(R.array.arr_subject);        
-//		adap_subject = new CustomArrayAdapter<CharSequence>(this, spin_arry);
+		String [] spin_arry = getResources().getStringArray(R.array.arr_subject);        
+		adap_subject = new CustomArrayAdapter<CharSequence>(this, spin_arry);
 
 
 		
 //		adap_subject = ArrayAdapter.createFromResource(this, R.array.arr_subject, android.R.layout.simple_spinner_dropdown_item);
-//		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//		spin_subject.setAdapter(adap_subject);
+		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spin_subject.setAdapter(adap_subject);
 		
 //		listQuery.setSelector(R.drawable.listselector);  
 //		new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
@@ -224,15 +230,15 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		if(c!=null && c.getCount()>0)
 		{
 			c.moveToFirst();
-			dialogQDate = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY_DATE));
+//			dialogQDate = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY_DATE));
 			dialogQuery= c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_QUERY));
 			dialogResponse = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE)).equalsIgnoreCase("0")?
 					"Not yet answered": c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE))
 					;
 			
-			dialogRDate = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE)).equalsIgnoreCase("0")?
-					"": c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE))
-					;
+//			dialogRDate = c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE)).equalsIgnoreCase("0")?
+//					"": c.getString(c.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE))
+//					;
 		}
 		
 		
@@ -308,13 +314,14 @@ public class PostQueryActivity extends SherlockFragmentActivity{
     	  Log.e("Saving", "Saving");
           
           if (isNetworkAvailable()) {
-        	  saveQuery(query.getText().toString().trim(),spin_subject.getText().toString().trim());
-        	  
-              loadQueryData();
-              loadUnQueryData();
-              uploadQueryData();
-              uploadUnQueryData();
-              
+//        	  saveQuery(query.getText().toString().trim(),spin_subject.getText().toString().trim());
+//        	  saveQuery(query.getText().toString().trim(),spin_subject.getSelectedItem().toString());
+//        	  
+//              loadQueryData();
+//              loadUnQueryData();
+//              uploadQueryData();
+//              uploadUnQueryData();
+              showInputDialog();
   		}
   		else
   		{
@@ -326,11 +333,108 @@ public class PostQueryActivity extends SherlockFragmentActivity{
     	  if(TextUtils.isEmpty(query.getText().toString()))
     	  query.setError("Please enter query");
     	  
-    	  if(TextUtils.isEmpty(spin_subject.getText().toString()))
-    	  spin_subject.setError("Please enter subject");
+//    	  if(TextUtils.isEmpty(spin_subject.getText().toString()))
+//    	  spin_subject.setError("Please enter subject");
 
       }
 	}
+	
+	public void postQueryNow()
+	{
+		  saveQuery(query.getText().toString().trim(),spin_subject.getSelectedItem().toString());
+    	  
+          loadQueryData();
+          loadUnQueryData();
+          uploadQueryData();
+          uploadUnQueryData();
+	}
+	public void showInputDialog()
+	{
+		final Dialog dialog = new Dialog(PostQueryActivity.this);
+		try {
+			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		} catch (Exception e) {
+			Log.e("Dialog", e.toString());
+		}
+		dialog.setContentView(R.layout.qustom_dialog_post_query_layout);
+		
+		try {
+//			int y = Resources.getSystem().getIdentifier("title","id", "android");
+//			TextView mTitle = (TextView)findViewById(y);
+//			mTitle.setTypeface(stylefont);
+//			mTitle.setTextColor(PostQueryActivity.this.getResources().getColor(R.color.red_halloween));
+//			
+//			int x = Resources.getSystem().getIdentifier("titleDivider","id", "android");
+//			View titleDivider = findViewById(x);
+//			titleDivider.setBackgroundColor(PostQueryActivity.this.getResources().getColor(R.color.red_halloween));
+		} catch (Exception e) {
+			Log.e("Dialog", e.toString());
+		}
+		
+		dialog.setTitle("Please verify");
+		
+		TextView mNumber1 = (TextView)dialog.findViewById(R.id.number1);
+		TextView mNumber2 = (TextView)dialog.findViewById(R.id.number2);
+		
+		TextView mAlertTitle = (TextView)dialog.findViewById(R.id.alertTitle);
+		
+		final EditText mAnswer = (EditText)dialog.findViewById(R.id.answer);
+		
+		Button mBtnOk = (Button)dialog.findViewById(R.id.btn_ok);
+		Button mBtnCancel = (Button)dialog.findViewById(R.id.btn_cancel);
+		
+		Random r = new Random();
+		int Low = 1;
+		int High = 10;
+		final int nNumber1 = r.nextInt(High-Low) + Low;
+		final int nNumber2 = r.nextInt(High-Low) + Low;
+		
+		mNumber1.setText(String.valueOf(nNumber1));
+		mNumber2.setText(String.valueOf(nNumber2));
+		mAlertTitle.setText(getString(R.string.captcha));
+		
+		mNumber1.setTypeface(stylefont);
+		mNumber2.setTypeface(stylefont);
+		mAlertTitle.setTypeface(stylefont);
+		
+		mBtnOk.setTypeface(stylefont);
+		mBtnCancel.setTypeface(stylefont);
+		
+		mBtnOk.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(!TextUtils.isEmpty(mAnswer.getText().toString()))
+				{
+					if(nNumber1+nNumber2 == Integer.parseInt(mAnswer.getText().toString()))
+					{
+						postQueryNow();
+						dialog.dismiss();
+					}
+					else
+					{
+						Toast.makeText(PostQueryActivity.this, "Please enter correct value", Toast.LENGTH_SHORT).show();
+					}
+				}
+				else
+				{
+					mAnswer.setError("Please enter input");
+				}
+			}
+		});
+		
+		mBtnCancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
+	}
+	
 //	D: CHECK NETWORK AVAILABILITY [UTILITY NETWORK INTERNET]
 	private boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
@@ -393,7 +497,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	public void clearQuery()
 	{
 		query.setText("");
-		spin_subject.setText("");
+		spin_subject.setSelection(0);
 	}
 //	D: SAVE QUERY DATA IN DATABASE USED TO FETCH THE ANSWER OF IT LATER ON [DATABASE QUERY SAVE]
 	public void saveQuery(String str,String sub)
@@ -415,14 +519,15 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		dataValues.put(DBConstant.Query_Columns.COLUMN_BATCH, "batch");
 		dataValues.put(DBConstant.Query_Columns.COLUMN_SUBJECT, sub);
 		dataValues.put(DBConstant.Query_Columns.COLUMN_LEVEL, "level");
-		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, "0");
+//		dataValues.put(DBConstant.Query_Columns.COLUMN_RESPONSE_DATE, "0");
 		getContentResolver().insert(DBConstant.Query_Columns.CONTENT_URI,dataValues);		
 		clearQuery();
 	}
 //	D: VALIDATE POST QUERY [VALIDATE QUERY DATA]
 	public boolean validate()
 	{
-		if(!TextUtils.isEmpty(query.getText().toString()) && !TextUtils.isEmpty(spin_subject.getText().toString()))
+//		if(!TextUtils.isEmpty(query.getText().toString()) && !TextUtils.isEmpty(spin_subject.getText().toString()))
+		if(!TextUtils.isEmpty(query.getText().toString()))
 		{
 			return true;
 		}
@@ -634,8 +739,8 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		protected void onPostExecute(final Cursor result) {
 
 			startManagingCursor(result);
-			int[] listFields = new int[] { R.id.question , R.id.answer};
-			String[] dbColumns = new String[] { DBConstant.Query_Columns.COLUMN_ID, DBConstant.Query_Columns.COLUMN_QUERY , DBConstant.Query_Columns.COLUMN_RESPONSE};
+			int[] listFields = new int[] { R.id.question , R.id.answer,R.id.questiondate,R.id.answerdate};
+			String[] dbColumns = new String[] { DBConstant.Query_Columns.COLUMN_ID, DBConstant.Query_Columns.COLUMN_QUERY , DBConstant.Query_Columns.COLUMN_RESPONSE,DBConstant.Query_Columns.COLUMN_QUERY_DATE,DBConstant.Query_Columns.COLUMN_RESPONSE_DATE};
 
 			PostQueryActivity.this.adapterQuery = new CustomSqlCursorAdapter(PostQueryActivity.this, R.layout.post_item,result, dbColumns, listFields,currentUri);
 			PostQueryActivity.this.listQuery.setAdapter(PostQueryActivity.this.adapterQuery);

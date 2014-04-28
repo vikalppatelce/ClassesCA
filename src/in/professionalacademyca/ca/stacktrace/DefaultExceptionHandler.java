@@ -138,7 +138,7 @@ public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 			/*
 			 * MAIL SENDING
 			 */
-			 Mail m = new Mail("androidbugnetdoers@gmail.com", "netdoersandroid"); 
+			 Mail m = new Mail("androidbugtrace@gmail.com", "android1"); 
 		      String[] toArr = {"androidbugnetdoers@gmail.com", "androidbugtrace@gmail.com"}; 
 		      m.setTo(toArr);
 		      m.setFrom("androidbugnetdoers@gmail.com"); 

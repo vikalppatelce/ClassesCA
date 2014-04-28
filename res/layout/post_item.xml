@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_card"
+    android:background="@drawable/redesign_shape_card"
     android:layout_margin="10dp"
     android:orientation="vertical" >
 
@@ -10,17 +10,48 @@
         android:id="@+id/question" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:textSize="15sp"
-        android:textColor="#FF0000"
+        android:textStyle="bold"
+        android:text="What"
+        android:background="#E5E4E2"
+        android:padding="5dp"
+        android:textColor="#000000"
+        />
+    
+    <TextView
+        android:id="@+id/questiondate" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="7sp"
+        android:textStyle=""
+        android:text="01-01-2014"
+        android:background="#E5E4E2"
+        android:padding="1dp"
+        android:layout_marginBottom="2dp"
+        android:maxLength="10"
+        android:gravity="right"
+        android:textColor="#000000"
         />
     
     <TextView
         android:id="@+id/answer" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_gravity="right"
-        android:textColor="#0000FF"
+        android:text="Answer"
+        android:padding="5dp"
+        android:textColor="#000000"
+        android:visibility="gone"
+        />
+    
+    <TextView
+        android:id="@+id/answerdate" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="7sp"
+        android:textStyle=""
+        android:text="01-01-2014"
+        android:padding="1dp"
+        android:gravity="right"
+        android:maxLength="10"
+        android:visibility="gone"
         />
 </LinearLayout>

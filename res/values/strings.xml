@@ -99,5 +99,6 @@
     <string name="changelog_close">Close</string>
     <string name="about_summary">About Professional Academy</string>
     <string name="alert_image_content_description">TODO</string>
+    <string name="captcha">Please verify</string>
 
 </resources>

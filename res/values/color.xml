@@ -12,4 +12,5 @@
     <color name="popup_bg_color">#EE666666</color>
 	<color name="popup_text_color">#FFFFFF</color>
 	<color name="grey">#E5E4E2</color>
+	<color name="red_halloween">#B40404</color>
 </resources>

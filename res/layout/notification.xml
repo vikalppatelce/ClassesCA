@@ -4,22 +4,28 @@
     android:layout_height="match_parent"
     android:background="#E5E4E2"
     android:orientation="vertical" >
-    <FrameLayout 
+
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
-    <ProgressBar
-        android:id="@+id/progress" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_gravity="center_horizontal"
-        />
-    <ListView 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/notificationlist"
-        />
+        android:layout_height="wrap_content" >
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible" />
+
+        <ListView
+            android:id="@+id/notificationlist"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="#E5E4E2"
+            android:listSelector="@drawable/list_item_selected"
+            android:drawSelectorOnTop="true" 
+            android:dividerHeight="2dp"
+            />
     </FrameLayout>
+
 </LinearLayout>

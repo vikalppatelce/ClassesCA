@@ -117,7 +117,7 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 
 			if (BuildConfig.DEBUG) {
 				Log.i("REG_ID",CA.getSharedPreferences().getString("registration_id","Not yet Registered"));
-				Log.i("Version", String.valueOf(getAppVersion(context)));
+				Log.i("VERSION", String.valueOf(getAppVersion(context)));
 				Log.i("SENDER_ID", SENDER_ID);
 			}
 
@@ -127,15 +127,25 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 				Log.i("REG_ID", regid);
 				if (TextUtils.isEmpty(regid)) {
 					registerInBackground();
+					CA.getPreferences().setFirstTime(false);
 				}
 			} else {
 				Log.i(TAG, "No valid Google Play Services APK found.");
 			}
+			
+//			try {
+//				if (!CA.getPreferences().getFirstTime()) {
+//					if (!CA.getSharedPreferences().getBoolean("isRegisteredToServer", false)) {
+//						sendRegistrationIdToBackend();
+//					}
+//				}
+//			} catch (Exception e) {
+//			}
+			
 			// EA GCM
 		} else {
 			Toast.makeText(NewHomeActivity.this,"Please check your internet connection", Toast.LENGTH_SHORT).show();
 		}
-	
 	}
 	private boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
@@ -313,7 +323,7 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 		                }
 					}
 					}
-				Log.e("TickerTask","");
+				Log.e("PushServer",jsonStr.toString());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -341,7 +351,7 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 		String currentSIMImsi = mTelephonyMgr.getDeviceId();
 		
 		JSONObject jsonObject = RequestBuilder.getPushNotificationData(currentSIMImsi);
-		Log.e("PUSH NOTIFICATION---->>>>>>>>>>", jsonObject.toString());
+		Log.e("PUSH REGID SERVER---->>>>>>>>>>", jsonObject.toString());
 		SendToServerTask sendTask = new SendToServerTask();
 		sendTask.execute(new JSONObject[]{jsonObject});
 	}

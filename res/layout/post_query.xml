@@ -26,15 +26,27 @@
                 android:text="@string/subject"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/spin_subject"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.7"
-                android:gravity="left"
-                android:hint="Name"
-                android:textSize="18sp" />
+<!--             <EditText -->
+<!--                 android:id="@+id/spin_subject" -->
+<!--                 android:layout_width="0dp" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_gravity="center_vertical" -->
+<!--                 android:layout_weight="0.7" -->
+<!--                 android:gravity="left" -->
+<!--                 android:hint="Name" -->
+<!--                 android:textSize="18sp" /> -->
+            
+            <Spinner
+                    android:id="@+id/spin_subject"
+                    android:layout_width="0dp"
+                	android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:layout_gravity="center_vertical"
+                	android:gravity="left"
+                    android:singleLine="true"
+                    android:spinnerMode="dropdown"
+                    android:textSize="18sp" />
+            
         </LinearLayout>
 
         <LinearLayout
@@ -87,6 +99,8 @@
         <ListView
             android:id="@+id/list"
             android:layout_width="fill_parent"
+            android:dividerHeight="5dp"
+            android:divider="#E5E4E2"
             android:layout_height="wrap_content" />
     </FrameLayout>
 
