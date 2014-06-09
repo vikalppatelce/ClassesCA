@@ -62,7 +62,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 
 	Spinner spin_course,spin_city,spin_area,spin_batch;
 	CheckBox chk_default;
-	TextView header,txtcourse,txtbatch,txtsetdefault,txtprevdefaultbatch,txtprevdefaultarea;
+	TextView header,txtcourse,txtbatch,txtsetdefaultbatch,txtprevdefaultbatch,txtprevdefaultarea;
 	TextView txtparea,txtpbatch,txtprev;
 	Button go;
 	ActionBar actionBar;
@@ -107,7 +107,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		
 		txtbatch = (TextView)findViewById(R.id.batch);
 		txtcourse = (TextView)findViewById(R.id.course);
-		txtsetdefault = (TextView)findViewById(R.id.txtsetdefault);
+		txtsetdefaultbatch = (TextView)findViewById(R.id.txtsetdefault);
 		txtprevdefaultbatch = (TextView)findViewById(R.id.txtprevbatch);
 		txtprevdefaultarea = (TextView)findViewById(R.id.txtprevarea);
 		
@@ -123,7 +123,7 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 		chk_default.setTypeface(stylefont);
 		txtbatch.setTypeface(stylefont);
 		txtcourse.setTypeface(stylefont);
-		txtsetdefault.setTypeface(stylefont);
+		txtsetdefaultbatch.setTypeface(stylefont);
 		txtprevdefaultbatch.setTypeface(stylefont);
 		txtprevdefaultarea.setTypeface(stylefont);
 		

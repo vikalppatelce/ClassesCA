@@ -79,7 +79,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	Button post;
 	EditText query;
 	ProgressBar progress;
-	Spinner spin_subject;
+//	Spinner spin_subject;
 	TextView subject;
 	
 	ActionBar actionBar;
@@ -111,7 +111,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		actionBar.setIcon(android.R.drawable.ic_menu_help);
 		
 		post= (Button)findViewById(R.id.post);
-		spin_subject = (Spinner)findViewById(R.id.spin_subject);
+//		spin_subject = (Spinner)findViewById(R.id.spin_subject);
 		subject = (TextView)findViewById(R.id.txtsubject);
 		query = (EditText)findViewById(R.id.query);
 		listQuery = (ListView)findViewById(R.id.list);
@@ -122,14 +122,14 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 		subject.setTypeface(stylefont);
 //		spin_subject.setTypeface(stylefont);
 		
-		String [] spin_arry = getResources().getStringArray(R.array.arr_subject);        
-		adap_subject = new CustomArrayAdapter<CharSequence>(this, spin_arry);
+//		String [] spin_arry = getResources().getStringArray(R.array.arr_subject);        
+//		adap_subject = new CustomArrayAdapter<CharSequence>(this, spin_arry);
 
 
 		
 //		adap_subject = ArrayAdapter.createFromResource(this, R.array.arr_subject, android.R.layout.simple_spinner_dropdown_item);
-		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spin_subject.setAdapter(adap_subject);
+//		adap_subject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		spin_subject.setAdapter(adap_subject);
 		
 //		listQuery.setSelector(R.drawable.listselector);  
 //		new SelectDataTask().execute(DBConstant.Query_Columns.CONTENT_URI);
@@ -341,7 +341,8 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	
 	public void postQueryNow()
 	{
-		  saveQuery(query.getText().toString().trim(),spin_subject.getSelectedItem().toString());
+//		  saveQuery(query.getText().toString().trim(),spin_subject.getSelectedItem().toString());
+		  saveQuery(query.getText().toString().trim(),"General");
     	  
           loadQueryData();
           loadUnQueryData();
@@ -371,7 +372,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 			Log.e("Dialog", e.toString());
 		}
 		
-		dialog.setTitle("Please verify");
+		dialog.setTitle(getString(R.string.captcha));
 		
 		TextView mNumber1 = (TextView)dialog.findViewById(R.id.number1);
 		TextView mNumber2 = (TextView)dialog.findViewById(R.id.number2);
@@ -497,7 +498,7 @@ public class PostQueryActivity extends SherlockFragmentActivity{
 	public void clearQuery()
 	{
 		query.setText("");
-		spin_subject.setSelection(0);
+//		spin_subject.setSelection(0);
 	}
 //	D: SAVE QUERY DATA IN DATABASE USED TO FETCH THE ANSWER OF IT LATER ON [DATABASE QUERY SAVE]
 	public void saveQuery(String str,String sub)

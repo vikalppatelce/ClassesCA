@@ -14,13 +14,24 @@ public class AppConstants {
 		/*
 		 * Testing Environment
 		 */
-		public static final String BASE_URL =  "http://www.netdoers.com/projects/caprofessional/services/query.php";
-		public static final String ANSWER_URL =  "http://www.netdoers.com/projects/caprofessional/services/query_answer.php";
-		public static final String TICKER_URL =  "http://www.netdoers.com/projects/caprofessional/services/ticker.php";
-		public static final String NOTIFICATION_URL =  "http://www.netdoers.com/projects/caprofessional/services/notification.php";
-		public static final String REGISTERED_TO_SERVER_URL =  "http://www.netdoers.com/projects/caprofessional/services/user_device.php";
-		public static final String GET_DATA_URL =  "http://netdoers.com/projects/caprofessional/services/api.php";
-		public static final String SET_DEFAULT_BATCH = "http://netdoers.com/projects/caprofessional/services/set_default_batch.php";
+//		public static final String BASE_URL =  "http://www.netdoers.com/projects/caprofessional/services/query.php";
+//		public static final String ANSWER_URL =  "http://www.netdoers.com/projects/caprofessional/services/query_answer.php";
+//		public static final String TICKER_URL =  "http://www.netdoers.com/projects/caprofessional/services/ticker.php";
+//		public static final String NOTIFICATION_URL =  "http://www.netdoers.com/projects/caprofessional/services/notification.php";
+//		public static final String REGISTERED_TO_SERVER_URL =  "http://www.netdoers.com/projects/caprofessional/services/user_device.php";
+//		public static final String GET_DATA_URL =  "http://netdoers.com/projects/caprofessional/services/api.php";
+//		public static final String SET_DEFAULT_BATCH = "http://netdoers.com/projects/caprofessional/services/set_default_batch.php";
+		
+		/*
+		 * Production Environment
+		 */
+		public static final String BASE_URL =  "http://www.professionalacademyca.in/app/services/query.php";
+		public static final String ANSWER_URL =  "http://www.professionalacademyca.in/app/services/query_answer.php";
+		public static final String TICKER_URL =  "http://www.professionalacademyca.in/app/services/ticker.php";
+		public static final String NOTIFICATION_URL =  "http://www.professionalacademyca.in/app/services/notification.php";
+		public static final String REGISTERED_TO_SERVER_URL =  "http://www.professionalacademyca.in/app/services/user_device.php";
+		public static final String GET_DATA_URL =  "http://www.professionalacademyca.in/app/services/api.php";
+		public static final String SET_DEFAULT_BATCH = "http://www.professionalacademyca.in/app/services/set_default_batch.php";
 	}
 	
 	public interface RESPONSES

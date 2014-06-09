@@ -89,6 +89,7 @@
     <string name="post">Post</string>
     <string name="subject">Subject</string>
     <string name="next">Next</string>
+    <string name="prev">Prev</string>
     <string name="strTimeTable1">Time Table of Batch Andheri</string>
     <string name="strTimeTable2">01-01-14</string>
     <string name="query">Write your Query</string>
@@ -99,6 +100,7 @@
     <string name="changelog_close">Close</string>
     <string name="about_summary">About Professional Academy</string>
     <string name="alert_image_content_description">TODO</string>
-    <string name="captcha">Please verify</string>
+    <string name="captcha">Please verify and post</string>
+    <string name="no_data">No lectures for today</string>
 
 </resources>

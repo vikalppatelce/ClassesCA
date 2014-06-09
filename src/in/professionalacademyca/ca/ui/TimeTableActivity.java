@@ -60,7 +60,9 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 
 	TextView txtarea,txtbatch,txtdate;
 	TextView lblarea,lblbatch,lbldate;
-	Button next;
+	TextView lblNoData;
+	boolean  booleanDataNotAvailable = false;
+	Button next,prev;
 	String _date =null;
 
 	String fromWhere = null;
@@ -106,8 +108,10 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		lblarea=(TextView)findViewById(R.id.txt_areaname);
 		lblbatch=(TextView)findViewById(R.id.txt_batchname);
 		lbldate=(TextView)findViewById(R.id.txt_date);
+		lblNoData=(TextView)findViewById(R.id.txt_no_data);
 		
 		next = (Button)findViewById(R.id.next);
+		prev = (Button)findViewById(R.id.prev);
 		progress = (ProgressBar)findViewById(R.id.progress);
 		listTimeTable = (ListView)findViewById(R.id.timetable_list);
 		
@@ -118,8 +122,12 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		lblarea.setTypeface(stylefont);
 		lblbatch.setTypeface(stylefont);
 		lbldate.setTypeface(stylefont);
+		lblNoData.setTypeface(stylefont);
 		
 		next.setTypeface(stylefont);
+		prev.setTypeface(stylefont);
+//		prev.setEnabled(false);
+		prev.setVisibility(View.GONE);
 		
 		try
 		{
@@ -220,6 +228,37 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 			    @Override
 				public void run(){
 //			        Log.d("UI thread", "I am the UI thread");
+//			    	prev.setEnabled(true);
+			    	prev.setVisibility(View.VISIBLE);
+			    	txtdate.setText(toddMMyy(dated).toString());
+			    	Log.i("Date", toddMMyy(dated).toString());
+			    }
+			});
+		}
+		else
+		{
+			Toast.makeText(TimeTableActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+		}
+//		adapterQuery.notifyDataSetInvalidated();
+	}
+	
+	public void onPrev(View v)
+	{
+		if(isNetworkAvailable())
+		{
+			dated = DateUtils.addDays(dated, -1); //DateUtils.addDays(dated, 1);
+			uploadTimeTableData(toddMMyy(dated).toString());
+			getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
+			
+			TimeTableActivity.this.runOnUiThread(new Runnable(){
+			    @Override
+				public void run(){
+//			        Log.d("UI thread", "I am the UI thread");
+			    	if(toddMMyy(dated).toString().equalsIgnoreCase(_date))
+			    	{
+//			    		prev.setEnabled(false);
+			    		prev.setVisibility(View.GONE);
+			    	}
 			    	txtdate.setText(toddMMyy(dated).toString());
 			    	Log.i("Date", toddMMyy(dated).toString());
 			    }
@@ -280,6 +319,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			progress.setVisibility(View.VISIBLE);
+			lblNoData.setVisibility(View.GONE);
 		}
 		@Override
 		protected Void doInBackground(JSONObject... params) {
@@ -298,6 +338,10 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	 
 	                    getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
 	                    
+	                    if(timeTableArray.length() == 0)
+	                    {
+	                    	booleanDataNotAvailable=true;
+	                    }
 	                    // looping through All Contacts
 	                    for (int i = 0; i < timeTableArray.length(); i++) 
 	                    {
@@ -360,6 +404,11 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 			super.onPostExecute(result);
 			new SelectDataTask().execute(DBConstant.Time_Table_Columns.CONTENT_URI);
 			progress.setVisibility(View.GONE);
+			if(booleanDataNotAvailable)
+			{
+				lblNoData.setVisibility(View.VISIBLE);
+				booleanDataNotAvailable = false;
+			}
 		}
 	}
 //	D: FETCHES DATA FROM DATABASE AND SUPPLIE TO ADAPTER [ADAPTER DATABASE]
