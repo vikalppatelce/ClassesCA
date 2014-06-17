@@ -8,6 +8,7 @@
  * --------------------------------------------------------------------------------------------------------------------
  * INDEX       DEVELOPER		DATE			FUNCTION		DESCRIPTION
  * --------------------------------------------------------------------------------------------------------------------
+ * B0001      VIKALP PATEL   17/06/2014           BUG           SWAPPING OF ANSWER IN WRONG QUERY
  * --------------------------------------------------------------------------------------------------------------------
  */
 package in.professionalacademyca.ca.sql;
@@ -68,6 +69,9 @@ public class CustomSqlCursorAdapter extends SimpleCursorAdapter implements
 
 		TextView txtAnswer = (TextView) v.findViewById(R.id.answer);
 		
+		txtAnswer.setVisibility(View.GONE); //SA B0001
+		txtAnswerDate.setVisibility(View.GONE); //EA B0001
+		
 		if(!this.currentCursor.getString(currentCursor.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE)).equalsIgnoreCase("0"))
 		{
 			txtAnswer.setVisibility(View.VISIBLE);
@@ -77,6 +81,7 @@ public class CustomSqlCursorAdapter extends SimpleCursorAdapter implements
 					this.currentCursor.getString(currentCursor.getColumnIndex(DBConstant.Query_Columns.COLUMN_RESPONSE))		
 					);
 		}
+		
 		
 		txtAnswer.setTypeface(stylefont);
 		

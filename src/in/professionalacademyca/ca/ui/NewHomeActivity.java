@@ -432,7 +432,7 @@ public class NewHomeActivity extends SherlockFragmentActivity {
 				setTitle("News Flash").
 				setTitleColor(HALLOWEEN_RED).
 				setDividerColor(HALLOWEEN_RED).
-				setMessage(TextUtils.isEmpty(tickerText)? "Please check your internet connection" : tickerText).
+				setMessage(TextUtils.isEmpty(tickerText)? "No data found" : tickerText).
 				setFontTitle(stylefont).
 				setFontMessage(stylefont);
 				

@@ -115,6 +115,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 			});
 		}
 		
+//		DEVELOPER
 //		Preference dev = prefMgr.findPreference("prefDev");
 //		if(dev!=null)
 //		{
@@ -129,6 +130,7 @@ public class PrefsActivity extends SherlockPreferenceActivity implements OnShare
 //				}
 //			});
 //		}
+//		DEVELOPER
 		
 		Preference about = prefMgr.findPreference("prefAbout");
 		if(about!=null)

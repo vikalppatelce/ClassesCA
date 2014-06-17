@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-    <release version="1.0" versioncode="13" date="06/09/2014">
+    <release version="1.0(beta)" versioncode="19" date="06/09/2014">
         <change>Time Table</change>
         <change>Batch Specific Notification</change>
         <change>General Notification</change>

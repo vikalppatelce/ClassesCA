@@ -1,3 +1,17 @@
+/* HISTORY
+ * CATEGORY 		:- DATABASE
+ * DEVELOPER		:- VIKALP PATEL
+ * AIM			    :- DATABASE CONSTANTS
+ * DESCRIPTION 		:- SUPPLIES DATABASE CONSTANTS CREATING AT TIME OF OWN CONTENT PROVIDER [DATABASE CREATION]
+ * SEARCH           :- D: ADAPTER BUTTON SPINNER ASYNCTASK 
+ * 
+ * S - START E- END  C- COMMENTED  U -EDITED A -ADDED
+ * --------------------------------------------------------------------------------------------------------------------
+ * INDEX       DEVELOPER		DATE			FUNCTION		DESCRIPTION
+ * --------------------------------------------------------------------------------------------------------------------
+ * 10001       VIKALP PATEL    04/03/2014       	
+ * --------------------------------------------------------------------------------------------------------------------
+ */
 package in.professionalacademyca.ca.sql;
 
 import java.util.HashMap;
