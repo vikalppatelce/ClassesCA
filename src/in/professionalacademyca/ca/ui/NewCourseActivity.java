@@ -335,9 +335,14 @@ public class NewCourseActivity  extends SherlockFragmentActivity implements OnIt
 //	D: VALIDATE SPINNER SELECT [SPINNER]
 	public boolean validate()
 	{
-		if(spin_batch.getSelectedItem().toString()!=null && spin_batch.getSelectedItem().toString().length() > 0)
-		{
-		return true;	
+//		if(spin_batch.getSelectedItem().toString()!=null && spin_batch.getSelectedItem().toString().length() > 0){
+		try{
+			if(!TextUtils.isEmpty(spin_batch.getSelectedItem().toString())){
+				return true;	
+				}
+		}catch(NullPointerException e){
+			Log.e("NewCourseActivity.validate()", e.toString());
+			return false;
 		}
 		return false;
 	}

@@ -78,7 +78,7 @@ public class ChangeLogDialog {
     //Parse a date string from the xml and format it using the local date format
     @SuppressLint("SimpleDateFormat")
     private String parseDate(final String dateString) {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
             final Date parsedDate = dateFormat.parse(dateString);
             return DateFormat.getDateFormat(getContext()).format(parsedDate);

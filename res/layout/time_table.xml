@@ -4,130 +4,154 @@
     android:layout_height="match_parent"
     android:background="#E5E4E2" >
 
-<!--     <ScrollView -->
-<!--         android:layout_width="fill_parent" -->
-<!--         android:layout_height="wrap_content" > -->
+    <!-- <ScrollView -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" > -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <LinearLayout
+            android:id="@+id/txtTimeTable2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_margin="10dp"
+            android:background="@drawable/redesign_shape_card"
+            android:orientation="horizontal" >
 
             <LinearLayout
-                android:id="@+id/txtTimeTable2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/redesign_shape_card"
-                android:orientation="horizontal" >
+                android:layout_gravity="fill"
+                android:layout_weight="0.3"
+                android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
                     android:layout_weight="0.3"
-                    android:orientation="vertical"
-                     >
+                    android:orientation="horizontal" >
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/txt_areaname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.63"
+                        android:background="#E5E4E2"
+                        android:gravity="right|center_vertical"
+                        android:padding="5dp"
+                        android:text="Area" />
+
+                    <TextView
+                        android:id="@+id/txtareaname"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:orientation="horizontal" >
-
-                        <TextView
-                            android:id="@+id/txt_areaname"
-                            android:layout_width="fill_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.63"
-                            android:background="#E5E4E2"
-                            android:gravity="right|center_vertical"
-                            android:padding="5dp"
-                            android:text="Area"
-                             />
-
-                        <TextView
-                            android:id="@+id/txtareaname"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.47"
-                            android:padding="5dp"
-                            android:text="Andheri"
-                             />
-                    </LinearLayout>
-                    
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:layout_marginTop="1dp"
-                        android:orientation="horizontal" >
-
-                        <TextView
-                            android:id="@+id/txt_batchname"
-                            android:layout_width="fill_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.63"
-                            android:background="#E5E4E2"
-                            android:gravity="right|center_vertical"
-                            android:padding="5dp"
-                            android:text="Batch"
-                             />
-
-                        <TextView
-                            android:id="@+id/txtbatchname"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.47"
-                            android:padding="5dp"
-                            android:text="Nov May 14 Special Nov May 14 Special"
-                             />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:orientation="horizontal" >
-
-<!--                         android:layout_weight="0.7" -->
-                        <TextView
-                            android:id="@+id/txt_date"
-                            android:layout_width="fill_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.63"
-                            android:background="#E5E4E2"
-                            android:gravity="right|center_vertical"
-                            android:padding="5dp"
-                            android:text="Date"
-                             />
-<!-- android:layout_weight="0.3" -->
-                        <TextView
-                            android:id="@+id/txtdate"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.47"
-                            android:padding="5dp"
-                            android:text="01-01-2014"
-                             />
-                    </LinearLayout>
+                        android:layout_weight="0.47"
+                        android:padding="5dp"
+                        android:text="Andheri" />
                 </LinearLayout>
 
-                <LinearLayout 
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center"
-                    android:layout_weight="0.7"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:paddingTop="1dp"
-                    android:paddingBottom="1dp"
-                    android:background="@android:color/white"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    >
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="0.3"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/txt_batchname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.63"
+                        android:background="#E5E4E2"
+                        android:gravity="right|center_vertical"
+                        android:padding="5dp"
+                        android:text="Batch" />
+
+                    <TextView
+                        android:id="@+id/txtbatchname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.47"
+                        android:padding="5dp"
+                        android:text="Nov May 14 Special Nov May 14 Special" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="0.3"
+                    android:orientation="horizontal" >
+
+                    <!-- android:layout_weight="0.7" -->
+
+                    <TextView
+                        android:id="@+id/txt_date"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.63"
+                        android:background="#E5E4E2"
+                        android:gravity="right|center_vertical"
+                        android:padding="5dp"
+                        android:text="Date" />
+                    <!-- android:layout_weight="0.3" -->
+
+                    <TextView
+                        android:id="@+id/txtdate"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.47"
+                        android:padding="5dp"
+                        android:text="01-01-2014" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="0.3"
+                    android:orientation="horizontal" >
+
+                    <!-- android:layout_weight="0.7" -->
+
+                    <TextView
+                        android:id="@+id/txt_day"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.63"
+                        android:background="#E5E4E2"
+                        android:gravity="right|center_vertical"
+                        android:padding="5dp"
+                        android:text="Day" />
+                    <!-- android:layout_weight="0.3" -->
+
+                    <TextView
+                        android:id="@+id/txtday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.47"
+                        android:padding="5dp"
+                        android:text="Thursday" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="0.7"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="1dp"
+                android:paddingTop="1dp" >
+
                 <Button
                     android:id="@+id/next"
                     style="@style/IgRedButtonStyleLarge"
@@ -137,59 +161,58 @@
                     android:onClick="onNext"
                     android:text="@string/next"
                     android:textSize="18sp" />
+
                 <Button
                     android:id="@+id/prev"
                     style="@style/IgRedButtonStyleLarge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
-                    android:onClick="onPrev"
                     android:layout_marginTop="5dp"
+                    android:onClick="onPrev"
                     android:text="@string/prev"
                     android:textSize="18sp" />
-                </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
 
-            <View
-                android:id="@+id/divider"
+        <View
+            android:id="@+id/divider"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/txtTimeTable2" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider"
+            android:layout_margin="10dp" >
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txt_no_data"
                 android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/txtTimeTable2" />
+                android:layout_height="100dp"
+                android:background="@drawable/redesign_shape_card"
+                android:gravity="center"
+                android:text="@string/no_data"
+                android:textSize="20sp"
+                android:visibility="gone" />
 
-            <FrameLayout
+            <ListView
+                android:id="@+id/timetable_list"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider"
-                android:layout_margin="10dp" >
-
-                <ProgressBar
-                    android:id="@+id/progress"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="visible" />
-
-                <TextView 
-                    android:id="@+id/txt_no_data"
-                    android:layout_width="fill_parent"
-                    android:layout_height="100dp"
-                    android:background="@drawable/redesign_shape_card"
-                    android:textSize="20sp"
-                    android:text="@string/no_data"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    />
-                
-                <ListView
-                    android:id="@+id/timetable_list"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="#E5E4E2"
-                    android:dividerHeight="10dp" />
-
-            </FrameLayout>
-        </LinearLayout>
-<!--     </ScrollView> -->
+                android:divider="#E5E4E2"
+                android:dividerHeight="10dp" />
+        </FrameLayout>
+    </LinearLayout>
+    <!-- </ScrollView> -->
 
 </RelativeLayout>

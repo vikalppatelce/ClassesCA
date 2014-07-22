@@ -23,6 +23,7 @@ import in.professionalacademyca.ca.service.ServiceDelegate;
 import in.professionalacademyca.ca.sql.DBConstant;
 import in.professionalacademyca.ca.sql.TimeTableSqlCursorAdapter;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,8 +59,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class TimeTableActivity extends SherlockFragmentActivity {
 
-	TextView txtarea,txtbatch,txtdate;
-	TextView lblarea,lblbatch,lbldate;
+	TextView txtarea,txtbatch,txtdate,txtday;
+	TextView lblarea,lblbatch,lbldate,lblday;
 	TextView lblNoData;
 	boolean  booleanDataNotAvailable = false;
 	Button next,prev;
@@ -104,10 +105,12 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		txtarea= (TextView)findViewById(R.id.txtareaname);
 		txtbatch=(TextView)findViewById(R.id.txtbatchname);
 		txtdate=(TextView)findViewById(R.id.txtdate);
+		txtday = (TextView)findViewById(R.id.txtday);
 		
 		lblarea=(TextView)findViewById(R.id.txt_areaname);
 		lblbatch=(TextView)findViewById(R.id.txt_batchname);
 		lbldate=(TextView)findViewById(R.id.txt_date);
+		lblday = (TextView)findViewById(R.id.txt_day);
 		lblNoData=(TextView)findViewById(R.id.txt_no_data);
 		
 		next = (Button)findViewById(R.id.next);
@@ -118,10 +121,12 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		txtarea.setTypeface(stylefont);
 		txtbatch.setTypeface(stylefont);
 		txtdate.setTypeface(stylefont);
+		txtday.setTypeface(stylefont);
 		
 		lblarea.setTypeface(stylefont);
 		lblbatch.setTypeface(stylefont);
 		lbldate.setTypeface(stylefont);
+		lblday.setTypeface(stylefont);
 		lblNoData.setTypeface(stylefont);
 		
 		next.setTypeface(stylefont);
@@ -160,6 +165,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		
 //		t2.setText("date on " + dated);
 		txtdate.setText(_date.toString());
+		txtday.setText(toDay(dated));
 		
 		getContentResolver().delete(DBConstant.Time_Table_Columns.CONTENT_URI, null, null);
 		
@@ -231,6 +237,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 //			    	prev.setEnabled(true);
 			    	prev.setVisibility(View.VISIBLE);
 			    	txtdate.setText(toddMMyy(dated).toString());
+			    	txtday.setText(toDay(dated).toString());
 			    	Log.i("Date", toddMMyy(dated).toString());
 			    }
 			});
@@ -260,6 +267,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 			    		prev.setVisibility(View.GONE);
 			    	}
 			    	txtdate.setText(toddMMyy(dated).toString());
+			    	txtday.setText(toDay(dated).toString());
 			    	Log.i("Date", toddMMyy(dated).toString());
 			    }
 			});
@@ -275,6 +283,12 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		String date = formatter.format(day);
 		return date;
+	}
+	
+	public static String toDay(Date day){
+		SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd-MM-yyyy");
+		String mday[] = formatter.format(day).split(" ");
+		return mday[0];
 	}
 	
 	public void uploadTimeTableData(String dat)
@@ -314,6 +328,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	
 	private class getTimeTableTask extends AsyncTask<JSONObject, Void, Void>
 	{
+		String mNoDataMessage;
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -341,6 +356,7 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 	                    if(timeTableArray.length() == 0)
 	                    {
 	                    	booleanDataNotAvailable=true;
+	                    	mNoDataMessage= jsonObject.getString("msg");
 	                    }
 	                    // looping through All Contacts
 	                    for (int i = 0; i < timeTableArray.length(); i++) 
@@ -408,6 +424,9 @@ public class TimeTableActivity extends SherlockFragmentActivity {
 			{
 				lblNoData.setVisibility(View.VISIBLE);
 				booleanDataNotAvailable = false;
+				if(!TextUtils.isEmpty(mNoDataMessage)){
+					lblNoData.setText(mNoDataMessage);
+				}
 			}
 		}
 	}
